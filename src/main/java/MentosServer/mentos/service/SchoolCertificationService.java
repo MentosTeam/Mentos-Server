@@ -2,6 +2,7 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.GetSchoolCertificationReq;
+import MentosServer.mentos.model.dto.MailDto;
 import MentosServer.mentos.repository.SchoolCertificationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ public class SchoolCertificationService {
 	
 	
 	private SchoolCertificationRepository schoolCertificationRepository;
+	private MailService mailService;
 	
 	@Autowired
-	public void SchoolCertificationService(SchoolCertificationRepository schoolCertificationRepository){
+	public void SchoolCertificationService(SchoolCertificationRepository schoolCertificationRepository, MailService mailService){
 		this.schoolCertificationRepository = schoolCertificationRepository;
+		this.mailService = mailService;
 	}
 	
 	public boolean checkEmail(GetSchoolCertificationReq req) {
@@ -57,14 +60,15 @@ public class SchoolCertificationService {
 		return ret;
 	}
 	
-	public void sendEmail(String email) throws BaseException{
+	public String sendEmail(String email) throws BaseException {
 		try{
 			String randomNumber = createRandomNumber();
-			// email 보내는 logic 구현하기
-			
-			
+			// email 보내기
+			MailDto mailDto = new MailDto(email, "Mentos 인증번호", randomNumber);
+			mailService.mailSend(mailDto);
+			return randomNumber;
 		} catch (Exception exception) {
-		
+			throw new BaseException(MAIL_SEND_ERROR);
 		}
 	}
 	
@@ -79,6 +83,4 @@ public class SchoolCertificationService {
 		}
 		return num;
 	}
-	
-	
 }

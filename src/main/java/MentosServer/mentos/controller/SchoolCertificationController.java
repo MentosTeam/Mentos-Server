@@ -18,9 +18,9 @@ import static MentosServer.mentos.utils.ValidationRegex.isRegexEmail;
 @RestController
 public class SchoolCertificationController {
 	
-	@Autowired
 	private final SchoolCertificationService schoolCertificationService;
 	
+	@Autowired
 	public SchoolCertificationController(SchoolCertificationService schoolCertificationService){
 		this.schoolCertificationService = schoolCertificationService;
 	}
@@ -40,14 +40,11 @@ public class SchoolCertificationController {
 			return new BaseResponse<>(GET_USERS_EXISTS_EMAIL);
 		}
 		try {
+			// 학교 이메일이 맞는지 검사
 			schoolCertificationService.cmpSchoolEmail(req);
-			// 여기서 email 보내는 service 실행
-			// schoolCertificationService.sendEmail(req.getEmail());
-			
-			
-			GetSchoolCertificationRes res = new GetSchoolCertificationRes();
-			// res.set
-			return new BaseResponse<>(res);
+			// 인증번호 메일 전송
+			String randomNumber = schoolCertificationService.sendEmail(req.getEmail());
+			return new BaseResponse<>(new GetSchoolCertificationRes(randomNumber));
 		} catch (BaseException exception) {
 			return new BaseResponse<>((exception.getStatus()));
 		}

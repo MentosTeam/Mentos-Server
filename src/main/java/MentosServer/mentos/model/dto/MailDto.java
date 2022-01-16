@@ -5,7 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetSchoolCertificationRes {
-	
-	private String certificationNumber;
+public class MailDto {
+	private String address;
+	private String title;
+	private String message;
 }
