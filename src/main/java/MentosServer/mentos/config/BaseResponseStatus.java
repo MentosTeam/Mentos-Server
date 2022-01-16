@@ -30,6 +30,12 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
     
+    // [GET] /schoolCertification
+    GET_USERS_EMPTY_EMAIL(false, 2019, "이메일을 입력해주세요."),
+    GET_USERS_INVALID_EMAIL(false, 2020, "이메일 형식을 확인해주세요."),
+    GET_USERS_EXISTS_EMAIL(false,2021,"중복된 이메일입니다."),
+    INVALID_SCHOOL_EMAIL(false, 2022, "학교 이메일이 아닙니다."),
+    
     // Item
     ITEM_EMPTY_ITEM_ID(false, 2018, "아이템 아이디 값을 확인해주세요."),
     
