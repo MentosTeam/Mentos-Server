@@ -8,7 +8,7 @@ public class SignUpReq {
     private String memberNickName; //수정
     private String memberSex;
     private int memberStudentId; //수정
-    private String schoolName;
+    private String memberSchoolName;
     private String memberEmail;
     private String memberPw;
 }
