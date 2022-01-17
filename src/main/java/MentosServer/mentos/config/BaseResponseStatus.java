@@ -56,6 +56,7 @@ public enum BaseResponseStatus {
     // [POST] /items
     DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
     DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
+    VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
 
 
 

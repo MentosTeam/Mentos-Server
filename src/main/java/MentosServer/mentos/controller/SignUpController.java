@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static MentosServer.mentos.config.BaseResponseStatus.EMPTY_USER_NICKNAME;
-import static MentosServer.mentos.config.BaseResponseStatus.INVALID_USER_NICKNAME;
+import static MentosServer.mentos.config.BaseResponseStatus.*;
 import static MentosServer.mentos.utils.ValidationRegex.isRegexNickName;
 
 @RestController
@@ -65,8 +64,12 @@ public class SignUpController {
         }
         //service 호출
         try{
-            NickNameChkRes nickChkRes = new NickNameChkRes(signUpService.checkNickName(nickName));
-            return new BaseResponse<>(nickChkRes);
+            if(signUpService.checkNickName(nickName)==0){
+                return new BaseResponse<>(VALID_USER_NICKNAME);
+            }
+            else{
+                return new BaseResponse<>(DUPLICATED_NICKNAME);
+            }
         } catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
