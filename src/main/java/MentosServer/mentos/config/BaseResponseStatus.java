@@ -32,8 +32,17 @@ public enum BaseResponseStatus {
     
     // Item
     ITEM_EMPTY_ITEM_ID(false, 2018, "아이템 아이디 값을 확인해주세요."),
-    
 
+    // [POST] /sign-up
+    EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
+    INVALID_USER_NAME(false,2402,"이름의 형식을 확인해주세요"),
+    EMPTY_USER_NICKNAME(false,2403,"닉네임을 입력해주세요"),
+    INVALID_USER_NICKNAME(false,2404,"닉네임의 형식을 확인해주세요"),
+    EMPTY_USER_SEX(false,2405,"성별을 입력해주세요"),
+    EMPTY_USER_STUDENT_ID(false,2046,"학번을 입력해주세요"),
+    EMPTY_USER_SCHOOL_NAME(false,2047,"학교명을 입력해주세요"),
+    EMPTY_USER_PASSWORD(false,2048,"비밀번호를 입력해주세요"),
+    INVALID_USER_PASSWORD(false,2049,"비밀번호의 형식을 확인해주세요"),
     /**
      * 3000 : Response 오류
      */
@@ -46,6 +55,7 @@ public enum BaseResponseStatus {
     
     // [POST] /items
     DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
+    DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
 
 
 
@@ -74,5 +84,8 @@ public enum BaseResponseStatus {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
+    }
+    public static BaseResponseStatus of(final String errorName){
+        return BaseResponseStatus.valueOf(errorName);
     }
 }

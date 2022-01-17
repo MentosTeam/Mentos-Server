@@ -2,7 +2,7 @@ package MentosServer.mentos.controller;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
-import MentosServer.mentos.model.dto.NickNameChkReq;
+import MentosServer.mentos.config.BaseResponseStatus;
 import MentosServer.mentos.model.dto.NickNameChkRes;
 import MentosServer.mentos.model.dto.SignUpReq;
 import MentosServer.mentos.model.dto.SignUpRes;
@@ -11,7 +11,14 @@ import MentosServer.mentos.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static MentosServer.mentos.config.BaseResponseStatus.EMPTY_USER_NICKNAME;
+import static MentosServer.mentos.config.BaseResponseStatus.INVALID_USER_NICKNAME;
+import static MentosServer.mentos.utils.ValidationRegex.isRegexNickName;
 
 @RestController
 @RequestMapping("/members")
@@ -33,8 +40,12 @@ public class SignUpController {
      */
     @ResponseBody
     @PostMapping("/sign-up")
-    public BaseResponse<SignUpRes> createMember(@RequestBody SignUpReq signUpReq){
-        //validation 추가 - @Validated 사용
+    public BaseResponse<SignUpRes> createMember(@Valid @RequestBody SignUpReq signUpReq, BindingResult br){
+        //validation 추가
+        if(br.hasErrors()){
+            String errorName = br.getAllErrors().get(0).getDefaultMessage();
+            return new BaseResponse<>(BaseResponseStatus.of(errorName));
+        }
         //service 호출
         try{
             SignUpRes signUpRes = signUpService.createMember(signUpReq);
@@ -44,15 +55,21 @@ public class SignUpController {
         }
     }
     @ResponseBody
-    @PostMapping("/nickNameChk")
-    public BaseResponse<NickNameChkRes> checkNickName(@RequestBody NickNameChkReq nickChkReq){
-        //validation - 닉네임 형식
+    @GetMapping("/nickNameChk")
+    public BaseResponse<NickNameChkRes> checkNickName(@RequestParam String nickName){
+        if(nickName==null || nickName==""){
+            return new BaseResponse<>(EMPTY_USER_NICKNAME);
+        }
+        if(!isRegexNickName(nickName)) {
+            return new BaseResponse<>(INVALID_USER_NICKNAME);
+        }
         //service 호출
         try{
-            NickNameChkRes nickChkRes = signUpService.checkNickName(nickChkReq);
+            NickNameChkRes nickChkRes = new NickNameChkRes(signUpService.checkNickName(nickName));
             return new BaseResponse<>(nickChkRes);
         } catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
 }

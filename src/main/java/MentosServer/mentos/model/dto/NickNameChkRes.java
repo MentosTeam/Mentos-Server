@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class NickNameChkRes {
-    private boolean existNickName; //true면 존재 false면 존재x
+    private int existNickName; //1이면 존재 0면 존재x
 
 
 }

@@ -2,8 +2,6 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.secret.Secret;
-import MentosServer.mentos.model.dto.NickNameChkReq;
-import MentosServer.mentos.model.dto.NickNameChkRes;
 import MentosServer.mentos.model.dto.SignUpReq;
 import MentosServer.mentos.model.dto.SignUpRes;
 import MentosServer.mentos.repository.SignUpRepository;
@@ -14,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static MentosServer.mentos.config.BaseResponseStatus.DATABASE_ERROR;
-import static MentosServer.mentos.config.BaseResponseStatus.PASSWORD_ENCRYPTION_ERROR;
+import static MentosServer.mentos.config.BaseResponseStatus.*;
 
 @Service
 public class SignUpService {
@@ -30,7 +27,13 @@ public class SignUpService {
 
     @Transactional
     public SignUpRes createMember(SignUpReq signUpReq) throws BaseException {
-        //중복 확인 (닉네임, 이메일) 
+        //중복 확인 (닉네임, 이메일)
+        if (checkNickName(signUpReq.getMemberNickName()) == 1) {
+            throw new BaseException(DUPLICATED_NICKNAME);
+        }
+        if (checkEmail(signUpReq.getMemberEmail())==1){
+            throw new BaseException(DUPLICATED_EMAIL);
+        }
         //비밀번호 암호화
         String pwd;
         try {
@@ -53,13 +56,19 @@ public class SignUpService {
         }
     }
 
-    public NickNameChkRes checkNickName(NickNameChkReq nickChkReq) throws BaseException {
+    private int checkEmail(String memberEmail) throws BaseException {
         try {
-            if(signUpRepository.checkNickName(nickChkReq)==1){
-                return new NickNameChkRes(true);
-            }else{
-                return new NickNameChkRes(false);
-            }
+            return signUpRepository.checkEmail(memberEmail);
+
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkNickName(String nickName) throws BaseException {
+        try {
+            return signUpRepository.checkNickName(nickName);
+
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
