@@ -3,7 +3,6 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.config.BaseResponseStatus;
-import MentosServer.mentos.model.dto.NickNameChkRes;
 import MentosServer.mentos.model.dto.SignUpReq;
 import MentosServer.mentos.model.dto.SignUpRes;
 import MentosServer.mentos.service.SignUpService;
@@ -55,7 +54,7 @@ public class SignUpController {
     }
     @ResponseBody
     @GetMapping("/nickNameChk")
-    public BaseResponse<NickNameChkRes> checkNickName(@RequestParam String nickName){
+    public BaseResponse checkNickName(@RequestParam String nickName){
         if(nickName==null || nickName==""){
             return new BaseResponse<>(EMPTY_USER_NICKNAME);
         }
