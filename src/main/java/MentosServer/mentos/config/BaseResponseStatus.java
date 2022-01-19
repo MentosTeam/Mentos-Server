@@ -7,11 +7,11 @@ import lombok.Getter;
  */
 @Getter
 public enum BaseResponseStatus {
+
     /**
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
-
 
     /**
      * 2000 : Request 오류
@@ -38,7 +38,18 @@ public enum BaseResponseStatus {
     
     // Item
     ITEM_EMPTY_ITEM_ID(false, 2018, "아이템 아이디 값을 확인해주세요."),
-    
+
+    /**
+     * ROZY
+     * 201 - 300 : Requset 오류
+     */
+    //[POST] /setProfile
+    POST_PROFILE_INVALID_ROLE(false, 2201, "올바르지 않은 역할(멘토/멘티) 선택입니다."),
+    POST_PROFILE_EMPTY_MEMBERID(false, 2202, "memberId가 입력되지 않았습니다."),
+    POST_PROFILE_EMPTY_MAJORFIRST(false, 2203, "majorFirst가 선택되지 않았습니다."),
+    POST_PROFILE_EMPTY_INTRODUCTION(false, 2204, "자기소개가 입력되지 않았습니다."),
+    POST_PROFILE_SHORT_INTRODUCTION(false, 2205, "자기소개는 10글자 이상 입력해주세요."),
+    POST_PROFILE_INVALID_IMAGEURL(false, 2206, "이미지 확장자(jpg | jpeg | png | bmp)를 확인해주세요."),
 
     /**
      * 3000 : Response 오류
@@ -66,6 +77,14 @@ public enum BaseResponseStatus {
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
+
+    /**
+     * ROZY
+     * 301 -  400 : Response 오류
+     */
+    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
+    POST_DUPLICATED_PROFILE(false,4302,"멘티, 멘토 프로필이 모두 존재합니다."),
+
 
     // [GET] /schoolCertification
     MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");

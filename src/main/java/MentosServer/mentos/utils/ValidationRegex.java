@@ -12,6 +12,13 @@ public class ValidationRegex {
         return matcher.find();
     }
 
+    public static boolean isRegexImgUrl(String target){//이미지 파일 형식 체크
+        String regex = "(.*?)\\.(jpg|jpeg|png|bmp)$";
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(target);
+        return matcher.find();
+    }
+
     // 날짜 형식, 전화 번호 형식 등 여러 Regex 인터넷에 검색하면 나옴.
 }
 
