@@ -39,10 +39,10 @@ public enum BaseResponseStatus {
     EMPTY_USER_NICKNAME(false,2403,"닉네임을 입력해주세요"),
     INVALID_USER_NICKNAME(false,2404,"닉네임의 형식을 확인해주세요"),
     EMPTY_USER_SEX(false,2405,"성별을 입력해주세요"),
-    EMPTY_USER_STUDENT_ID(false,2046,"학번을 입력해주세요"),
-    EMPTY_USER_SCHOOL_NAME(false,2047,"학교명을 입력해주세요"),
-    EMPTY_USER_PASSWORD(false,2048,"비밀번호를 입력해주세요"),
-    INVALID_USER_PASSWORD(false,2049,"비밀번호의 형식을 확인해주세요"),
+    EMPTY_USER_STUDENT_ID(false,2406,"학번을 입력해주세요"),
+    EMPTY_USER_SCHOOL_NAME(false,2407,"학교명을 입력해주세요"),
+    EMPTY_USER_PASSWORD(false,2408,"비밀번호를 입력해주세요"),
+    INVALID_USER_PASSWORD(false,2409,"비밀번호의 형식을 확인해주세요"),
     /**
      * 3000 : Response 오류
      */
