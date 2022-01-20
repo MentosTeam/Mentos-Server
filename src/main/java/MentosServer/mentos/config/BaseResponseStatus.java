@@ -7,11 +7,11 @@ import lombok.Getter;
  */
 @Getter
 public enum BaseResponseStatus {
+
     /**
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
-
 
     /**
      * 2000 : Request 오류
@@ -30,10 +30,37 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
     
+    // [GET] /schoolCertification
+    GET_USERS_EMPTY_EMAIL(false, 2019, "이메일을 입력해주세요."),
+    GET_USERS_INVALID_EMAIL(false, 2020, "이메일 형식을 확인해주세요."),
+    GET_USERS_EXISTS_EMAIL(false,2021,"중복된 이메일입니다."),
+    INVALID_SCHOOL_EMAIL(false, 2022, "학교 이메일이 아닙니다."),
+    
     // Item
     ITEM_EMPTY_ITEM_ID(false, 2018, "아이템 아이디 값을 확인해주세요."),
-    
 
+    /**
+     * ROZY
+     * 201 - 300 : Requset 오류
+     */
+    //[POST] /setProfile
+    POST_PROFILE_INVALID_ROLE(false, 2201, "올바르지 않은 역할(멘토/멘티) 선택입니다."),
+    POST_PROFILE_EMPTY_MEMBERID(false, 2202, "memberId가 입력되지 않았습니다."),
+    POST_PROFILE_EMPTY_MAJORFIRST(false, 2203, "majorFirst가 선택되지 않았습니다."),
+    POST_PROFILE_EMPTY_INTRODUCTION(false, 2204, "자기소개가 입력되지 않았습니다."),
+    POST_PROFILE_SHORT_INTRODUCTION(false, 2205, "자기소개는 10글자 이상 입력해주세요."),
+    POST_PROFILE_INVALID_IMAGEURL(false, 2206, "이미지 확장자(jpg | jpeg | png | bmp)를 확인해주세요."),
+
+    // [POST] /sign-up
+    EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
+    INVALID_USER_NAME(false,2402,"이름의 형식을 확인해주세요"),
+    EMPTY_USER_NICKNAME(false,2403,"닉네임을 입력해주세요"),
+    INVALID_USER_NICKNAME(false,2404,"닉네임의 형식을 확인해주세요"),
+    EMPTY_USER_SEX(false,2405,"성별을 입력해주세요"),
+    EMPTY_USER_STUDENT_ID(false,2406,"학번을 입력해주세요"),
+    EMPTY_USER_SCHOOL_NAME(false,2407,"학교명을 입력해주세요"),
+    EMPTY_USER_PASSWORD(false,2408,"비밀번호를 입력해주세요"),
+    INVALID_USER_PASSWORD(false,2409,"비밀번호의 형식을 확인해주세요"),
     /**
      * 3000 : Response 오류
      */
@@ -46,6 +73,8 @@ public enum BaseResponseStatus {
     
     // [POST] /items
     DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
+    DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
+    VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
 
 
 
@@ -59,8 +88,18 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USERNAME(false,4014,"유저네임 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
+    /**
+     * ROZY
+     * 301 -  400 : Response 오류
+     */
+    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
+    POST_DUPLICATED_PROFILE(false,4302,"멘티, 멘토 프로필이 모두 존재합니다."),
+
+
+    // [GET] /schoolCertification
+    MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
@@ -74,5 +113,8 @@ public enum BaseResponseStatus {
         this.isSuccess = isSuccess;
         this.code = code;
         this.message = message;
+    }
+    public static BaseResponseStatus of(final String errorName){
+        return BaseResponseStatus.valueOf(errorName);
     }
 }
