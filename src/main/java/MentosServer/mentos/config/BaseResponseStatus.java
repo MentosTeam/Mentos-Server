@@ -43,13 +43,22 @@ public enum BaseResponseStatus {
      * ROZY
      * 201 - 300 : Requset 오류
      */
-    //[POST] /setProfile
+    //[POST] members/setProfile
     POST_PROFILE_INVALID_ROLE(false, 2201, "올바르지 않은 역할(멘토/멘티) 선택입니다."),
     POST_PROFILE_EMPTY_MEMBERID(false, 2202, "memberId가 입력되지 않았습니다."),
     POST_PROFILE_EMPTY_MAJORFIRST(false, 2203, "majorFirst가 선택되지 않았습니다."),
     POST_PROFILE_EMPTY_INTRODUCTION(false, 2204, "자기소개가 입력되지 않았습니다."),
     POST_PROFILE_SHORT_INTRODUCTION(false, 2205, "자기소개는 10글자 이상 입력해주세요."),
     POST_PROFILE_INVALID_IMAGEURL(false, 2206, "이미지 확장자(jpg | jpeg | png | bmp)를 확인해주세요."),
+
+    //[POST] /mentoring/registration
+    POST_MENTORING_INVALID_MENTOID(false, 2208, "유효하지 않은 mentoId 값입니다."),
+    POST_MENTORING_GERATER_MENTORINGCOUNT(false, 2209, "멘토링 횟수(mentoringCount)는 최대 10입니다."),
+    POST_MENTORING_LESS_MENTORINGCOUNT(false, 2210, "멘토링 횟수(mentoringCount)는 최소 1입니다."),
+    POST_MENTORING_INVALID_MAJORCATEGORYID(false, 2211, "유효하지 않은 멘토-쓰 종류(majorCategoryId)값 입니다."),
+    POST_MENTORING_INVALID_MENTOS(false, 2212, "멘토-쓰 개수(mentos)의 형식을 확인해주세요."),
+    POST_MENTORING_SAME_MENTOMENTI(false, 2213, "멘토(mentoId)와 멘티(mentiId)가 같습니다."),
+
 
     // [POST] /sign-up
     EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
@@ -77,6 +86,15 @@ public enum BaseResponseStatus {
     VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
 
 
+    /**
+     * ROZY
+     * 301 -  400 : Response 오류
+     */
+    //[POST] members/setProfile
+    POST_DUPLICATED_PROFILE(false,3302,"멘티, 멘토 프로필이 모두 존재합니다."),
+
+    //[POST] /mentoring/registration
+    POST_MENTORING_DUPLICATED_MENTORING(false,3303, "수락 요청 대기중인 멘토링 요청이 있습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -90,12 +108,8 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    /**
-     * ROZY
-     * 301 -  400 : Response 오류
-     */
+    //[POST] members/setProfile
     FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
-    POST_DUPLICATED_PROFILE(false,4302,"멘티, 멘토 프로필이 모두 존재합니다."),
 
 
     // [GET] /schoolCertification

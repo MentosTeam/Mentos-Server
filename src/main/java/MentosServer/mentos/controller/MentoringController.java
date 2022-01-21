@@ -20,7 +20,7 @@ import static MentosServer.mentos.config.BaseResponseStatus.POST_MENTORING_SAME_
 @RestController
 @RequestMapping("/mentoring")
 public class MentoringController {
-    //final Logger logger = LoggerFactory.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final MentoringService mentoringService;
     private final JwtService jwtService;
 
@@ -44,12 +44,13 @@ public class MentoringController {
             return new BaseResponse<>(BaseResponseStatus.of(errorName));
         }
 
-        if(postMentoringReq.getMentoId() == postMentoringReq.getMentiId()){ //멘토와 멘티 같은 유저인지 확인
-            return new BaseResponse<>(POST_MENTORING_SAME_MENTOMENTI);
-        }
-
         try{
             int memberIdByJwt = jwtService.getMemberId();
+
+            if(memberIdByJwt == postMentoringReq.getMentoId()){ //멘토와 멘티 같은 유저인지 확인
+                return new BaseResponse<>(POST_MENTORING_SAME_MENTOMENTI);
+            }
+
             postMentoringReq.setMentiId(memberIdByJwt);
 
             PostMentoringRes postMentoringRes = mentoringService.createMentoring(postMentoringReq);

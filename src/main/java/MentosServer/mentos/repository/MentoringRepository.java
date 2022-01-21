@@ -25,4 +25,11 @@ public class MentoringRepository {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
+
+    //멘토링 중복 확인
+    public int checkMentoring(PostMentoringReq postMentoringReq){
+        String query = "select exists (select mentoringId from MENTORING where mentoringmentoId=? and mentoringmentiId=? and majorCategoryId=? and mentoringStatus=0)";
+        Object[] params = new Object[]{postMentoringReq.getMentoId(), postMentoringReq.getMentiId(), postMentoringReq.getMajorCategoryId()};
+        return this.jdbcTemplate.queryForObject(query, int.class, params);
+    }
 }
