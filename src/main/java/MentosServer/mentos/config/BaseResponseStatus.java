@@ -62,6 +62,9 @@ public enum BaseResponseStatus {
     //[POST] /mentoring/acceptance
     POST_INVALID_MENTORING(false,2214, "유효하지 않은 멘토링 요청입니다."),
 
+    //[PATCH] /mentoring/stop
+    PATCH_INVALID_MENTORING(false,2215, "유효하지 않은 멘토링입니다."),
+
 
     // [POST] /sign-up
     EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
@@ -112,11 +115,14 @@ public enum BaseResponseStatus {
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
     //[POST] members/setProfile
-    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
+    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패하였습니다."),
 
     //[POST] /mentoring/acceptance
-    FAILED_TO_ACCEPTMENTORING(false,4302,"멘토링 요청 수락에 실패했습니다."),
-    FAILED_TO_REJECTMENTORING(false,4303,"멘토링 요청 거절에 실패했습니다."),
+    FAILED_TO_ACCEPTMENTORING(false,4302,"멘토링 요청 수락에 실패하였습니다."),
+    FAILED_TO_REJECTMENTORING(false,4303,"멘토링 요청 거절에 실패하였습니다."),
+
+    //[PATCH] /mentoring/stop
+    FAILED_TO_STOPMENTORING(false,4304,"멘토링 강제 종료에 실패하였습니다."),
 
 
     // [GET] /schoolCertification

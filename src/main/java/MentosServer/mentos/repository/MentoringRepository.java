@@ -33,7 +33,7 @@ public class MentoringRepository {
         return this.jdbcTemplate.queryForObject(query, int.class, params);
     }
 
-    //멘토링 수락/거절 시 유효 멘토링 존재 여부 확인
+    //멘토가 멘토링 수락/거절 시 유효 멘토링 존재 여부 확인
     public int checkMentoringByMento(int mentoringId, int mentoId){
         String query = "select exists (select mentoringId from MENTORING where mentoringId=? and mentoringMentoId=? and mentoringStatus=0)";
         Object[] params = new Object[]{mentoringId, mentoId};
@@ -50,6 +50,20 @@ public class MentoringRepository {
     //멘토링 요청 거절
     public int rejectMentoring(int mentoringId){
         String query = "delete from MENTORING where mentoringId=?";
+        int param = mentoringId;
+        return jdbcTemplate.update(query, param);
+    }
+
+    //멘티가 멘토링 강제 종료시 유효 멘토링 존재 여부 확인
+    public int checkMentoringByMenti(int mentoringId, int mentiId){
+        String query = "select exists (select mentoringId from MENTORING where mentoringId=? and mentoringMentiId=? and mentoringStatus=1)";
+        Object[] params = new Object[]{mentoringId, mentiId};
+        return this.jdbcTemplate.queryForObject(query, int.class, params);
+    }
+
+    //멘토링 강제 종료
+    public int stopMentoring(int mentoringId){
+        String query = "update MENTORING set mentoringStatus=2 where mentoringId=?";
         int param = mentoringId;
         return jdbcTemplate.update(query, param);
     }

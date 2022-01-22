@@ -3,6 +3,7 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.config.BaseResponseStatus;
+import MentosServer.mentos.model.dto.PatchStopMentoringRes;
 import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
 import MentosServer.mentos.model.dto.PostMentoringReq;
 import MentosServer.mentos.model.dto.PostMentoringRes;
@@ -46,13 +47,11 @@ public class MentoringController {
 
         try{
             int memberIdByJwt = jwtService.getMemberId();
-
             if(memberIdByJwt == postMentoringReq.getMentoId()){ //멘토와 멘티 같은 유저인지 확인
                 return new BaseResponse<>(POST_MENTORING_SAME_MENTOMENTI);
             }
 
             postMentoringReq.setMentiId(memberIdByJwt);
-
             PostMentoringRes postMentoringRes = mentoringService.createMentoring(postMentoringReq);
             return new BaseResponse<>(postMentoringRes);
         } catch (BaseException e){
@@ -73,6 +72,24 @@ public class MentoringController {
             PostAcceptMentoringRes postAcceptMentoringRes = mentoringService.acceptMentoring(mentoringId, mentoIdByJwt, acceptance);
 
             return new BaseResponse<>(postAcceptMentoringRes);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    /**
+     * 멘토링 강제 종료 API
+     * @param mentoringId
+     * @return
+     */
+    @ResponseBody
+    @PatchMapping("/stop")
+    public BaseResponse<PatchStopMentoringRes> stopMentoring(@RequestParam("mentoringId") int mentoringId){
+        try{
+            int mentiByJwt = jwtService.getMemberId();
+            PatchStopMentoringRes patchStopMentoringRes = mentoringService.stopMentoring(mentoringId, mentiByJwt);
+
+            return new BaseResponse<>(patchStopMentoringRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }

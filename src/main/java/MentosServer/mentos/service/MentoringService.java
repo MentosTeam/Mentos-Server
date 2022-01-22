@@ -1,6 +1,7 @@
 package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
+import MentosServer.mentos.model.dto.PatchStopMentoringRes;
 import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
 import MentosServer.mentos.model.dto.PostMentoringReq;
 import MentosServer.mentos.model.dto.PostMentoringRes;
@@ -70,6 +71,24 @@ public class MentoringService {
             }
 
             return postAcceptMentoringRes;
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //멘토링 강제 종료
+    public PatchStopMentoringRes stopMentoring(int mentoringId, int mentiId) throws BaseException{
+        if(mentoringRepository.checkMentoringByMenti(mentoringId, mentiId) == 0){
+            throw new BaseException(PATCH_INVALID_MENTORING);
+        }
+
+        try{
+            if(mentoringRepository.stopMentoring(mentoringId) == 0){
+                throw new BaseException(FAILED_TO_STOPMENTORING);
+            }
+
+            PatchStopMentoringRes patchStopMentoringRes = new PatchStopMentoringRes(mentoringId, mentiId, "멘토링이 강제 종료 되었습니다.");
+            return patchStopMentoringRes;
         } catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
