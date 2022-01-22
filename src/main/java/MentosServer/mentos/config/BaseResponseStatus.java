@@ -59,6 +59,9 @@ public enum BaseResponseStatus {
     POST_MENTORING_INVALID_MENTOS(false, 2212, "멘토-쓰 개수(mentos)의 형식을 확인해주세요."),
     POST_MENTORING_SAME_MENTOMENTI(false, 2213, "멘토(mentoId)와 멘티(mentiId)가 같습니다."),
 
+    //[POST] /mentoring/acceptance
+    POST_INVALID_MENTORING(false,2214, "유효하지 않은 멘토링 요청입니다."),
+
 
     // [POST] /sign-up
     EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
@@ -90,7 +93,7 @@ public enum BaseResponseStatus {
      * ROZY
      * 301 -  400 : Response 오류
      */
-    //[POST] members/setProfile
+    //[POST] /members/setProfile
     POST_DUPLICATED_PROFILE(false,3302,"멘티, 멘토 프로필이 모두 존재합니다."),
 
     //[POST] /mentoring/registration
@@ -110,6 +113,10 @@ public enum BaseResponseStatus {
 
     //[POST] members/setProfile
     FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
+
+    //[POST] /mentoring/acceptance
+    FAILED_TO_ACCEPTMENTORING(false,4302,"멘토링 요청 수락에 실패했습니다."),
+    FAILED_TO_REJECTMENTORING(false,4303,"멘토링 요청 거절에 실패했습니다."),
 
 
     // [GET] /schoolCertification

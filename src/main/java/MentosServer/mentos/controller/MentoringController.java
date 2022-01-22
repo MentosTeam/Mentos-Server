@@ -3,6 +3,7 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.config.BaseResponseStatus;
+import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
 import MentosServer.mentos.model.dto.PostMentoringReq;
 import MentosServer.mentos.model.dto.PostMentoringRes;
 import MentosServer.mentos.service.MentoringService;
@@ -34,7 +35,6 @@ public class MentoringController {
      * 멘토링 등록 API
      * @param postMentoringReq
      * @return PostMentoringRes => 멘토링 등록 ID, 멘토 ID, 멘티 ID
-     *
      */
     @ResponseBody
     @PostMapping("/registration")
@@ -55,6 +55,24 @@ public class MentoringController {
 
             PostMentoringRes postMentoringRes = mentoringService.createMentoring(postMentoringReq);
             return new BaseResponse<>(postMentoringRes);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    /**
+     * 멘토링 요청 수락/거절 API
+     * @param mentoringId
+     * @return PostAcceptMentoringRes
+     */
+    @ResponseBody
+    @PostMapping("/acceptance")
+    public BaseResponse<PostAcceptMentoringRes> acceptMentoring(@RequestParam("mentoringId") int mentoringId, @RequestParam("accept") Boolean acceptance){
+        try{
+            int mentoIdByJwt = jwtService.getMemberId();
+            PostAcceptMentoringRes postAcceptMentoringRes = mentoringService.acceptMentoring(mentoringId, mentoIdByJwt, acceptance);
+
+            return new BaseResponse<>(postAcceptMentoringRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }

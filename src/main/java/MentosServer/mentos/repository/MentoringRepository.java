@@ -32,4 +32,25 @@ public class MentoringRepository {
         Object[] params = new Object[]{postMentoringReq.getMentoId(), postMentoringReq.getMentiId(), postMentoringReq.getMajorCategoryId()};
         return this.jdbcTemplate.queryForObject(query, int.class, params);
     }
+
+    //멘토링 수락/거절 시 유효 멘토링 존재 여부 확인
+    public int checkMentoringByMento(int mentoringId, int mentoId){
+        String query = "select exists (select mentoringId from MENTORING where mentoringId=? and mentoringMentoId=? and mentoringStatus=0)";
+        Object[] params = new Object[]{mentoringId, mentoId};
+        return this.jdbcTemplate.queryForObject(query, int.class, params);
+    }
+
+    //멘토링 요청 수락
+    public int acceptMentoring(int mentoringId){
+        String query = "update MENTORING set mentoringStatus=1 where mentoringId=?";
+        int param = mentoringId;
+        return jdbcTemplate.update(query, param);
+    }
+
+    //멘토링 요청 거절
+    public int rejectMentoring(int mentoringId){
+        String query = "delete from MENTORING where mentoringId=?";
+        int param = mentoringId;
+        return jdbcTemplate.update(query, param);
+    }
 }
