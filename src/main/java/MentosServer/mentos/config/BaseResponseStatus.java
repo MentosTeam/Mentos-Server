@@ -97,10 +97,10 @@ public enum BaseResponseStatus {
      * 301 -  400 : Response 오류
      */
     //[POST] /members/setProfile
-    POST_DUPLICATED_PROFILE(false,3302,"멘티, 멘토 프로필이 모두 존재합니다."),
+    POST_DUPLICATED_PROFILE(false,3301,"멘티, 멘토 프로필이 모두 존재합니다."),
 
     //[POST] /mentoring/registration
-    POST_MENTORING_DUPLICATED_MENTORING(false,3303, "수락 요청 대기중인 멘토링 요청이 있습니다."),
+    POST_MENTORING_DUPLICATED_MENTORING(false,3302, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
 
     /**
      * 4000 : Database, Server 오류
