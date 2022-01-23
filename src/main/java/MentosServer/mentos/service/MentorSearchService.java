@@ -48,9 +48,22 @@ public class MentorSearchService {
 			List<Post> posts = mentorSearchRepository.getPosts(req, schoolId);
 			// UpdateAt으로 정렬 실행
 			ArrayList<PostDto> postDtos = sortByUpdateAt(posts);
+			// postId를 가지고 관련 이미지들 찾아서 추가
+			getImageUrlByPostId(postDtos);
 			return postDtos;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
 			throw new BaseException(DATABASE_ERROR);
+		}
+	}
+	
+	/**
+	 * postId로 해당 포스트의 Image들 찾아서 추가
+	 * @param postDtos
+	 */
+	private void getImageUrlByPostId(ArrayList<PostDto> postDtos) {
+		for(PostDto post : postDtos) {
+			String postId = post.getPostId();
+			post.setImageUrls(mentorSearchRepository.getImageUrl(postId));
 		}
 	}
 	

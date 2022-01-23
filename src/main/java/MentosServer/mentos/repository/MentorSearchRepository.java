@@ -74,4 +74,14 @@ public class MentorSearchRepository {
 	public String changeParam(String text){
 		return "%" + text + "%";
 	}
+	
+	public List<String> getImageUrl(String postId){
+		String searchImageQuery = "select imageUrl from Image where postId = ?";
+		String searchImageParam = postId;
+		return this.jdbcTemplate.query(searchImageQuery,
+				(rs, rowNum) -> rs.getString("imageUrl")
+				, searchImageParam
+		);
+	}
+	
 }

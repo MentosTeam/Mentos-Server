@@ -1,10 +1,10 @@
 package MentosServer.mentos.model.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
 public class PostDto {
 	
 	private String postId;
@@ -14,4 +14,13 @@ public class PostDto {
 	private String postTitle;
 	
 	private String postContents;
+	
+	private List<String> imageUrls;
+	
+	public PostDto(String postId, String memberId, String postTitle, String postContents) {
+		this.postId = postId;
+		this.memberId = memberId;
+		this.postTitle = postTitle;
+		this.postContents = postContents;
+	}
 }
