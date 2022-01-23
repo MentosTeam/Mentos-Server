@@ -9,7 +9,13 @@ public class PostDto {
 	
 	private String postId;
 	
-	private String memberId;
+	private String majorCategoryId;
+	
+	private String mentoId;
+	
+	private String mentoImage;
+	
+	private String mentoNickName;
 	
 	private String postTitle;
 	
@@ -17,9 +23,13 @@ public class PostDto {
 	
 	private List<String> imageUrls;
 	
-	public PostDto(String postId, String memberId, String postTitle, String postContents) {
+	
+	public PostDto(String postId, String majorCategoryId, String mentoId, String mentoImage, String mentoNickName, String postTitle, String postContents) {
 		this.postId = postId;
-		this.memberId = memberId;
+		this.majorCategoryId = majorCategoryId;
+		this.mentoId = mentoId;
+		this.mentoImage = mentoImage;
+		this.mentoNickName = mentoNickName;
 		this.postTitle = postTitle;
 		this.postContents = postContents;
 	}

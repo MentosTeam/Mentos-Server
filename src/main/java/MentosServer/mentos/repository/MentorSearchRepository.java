@@ -1,6 +1,6 @@
 package MentosServer.mentos.repository;
 
-import MentosServer.mentos.model.domain.Post;
+import MentosServer.mentos.model.dto.PostWithProfile;
 import MentosServer.mentos.model.dto.GetMentorSearchReq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class MentorSearchRepository {
 	
 	public String getSchoolById(String memberId){
 		// Menti table에 접근해서 가져와야함
-		String getMajorQuery = "select memberSchoolId from member where memberId = ?";
-		String getMajorParam = memberId;
-		return Integer.toString(this.jdbcTemplate.queryForObject(getMajorQuery, Integer.class, getMajorParam));
+		String getSchoolQuery = "select memberSchoolId from member where memberId = ?";
+		String getSchoolParam = memberId;
+		return Integer.toString(this.jdbcTemplate.queryForObject(getSchoolQuery, Integer.class, getSchoolParam));
 	}
 	
 	/**
@@ -44,24 +44,27 @@ public class MentorSearchRepository {
 	 * @param req
 	 * @return
 	 */
-	public List<Post> getPosts(GetMentorSearchReq req, String schoolId){
+	public List<PostWithProfile> getPosts(GetMentorSearchReq req, String schoolId){
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
-				"select postId, majorCategoryId, memberId, postTitle, postContents, postCreateAt, postUpdateAt " +
+				"select postId, majorCategoryId, memberId, memberNickName, mentoImage, postTitle, postContents, postCreateAt, postUpdateAt " +
 				"from " +
 					"(" +
 					"select * " +
 					"from member NATURAL JOIN post " +
-					"where majorCategoryId IN (" + arrayToString + ")" + " AND memberStatus = 'ACTIVE' AND memberSchoolId = " + schoolId +
-					") T " +
-				"where memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?";
+					"where memberStatus = 'ACTIVE' AND memberSchoolId = " + schoolId +
+					") T NATURAL JOIN mento " +
+				"where (mentoMajorFirst IN (" + arrayToString + ")" + " OR mentoMajorSecond IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?)";
 		String param = changeParam(req.getSearchText());
+		log.info(searchQuery);
 		Object[] searchParam = new Object[]{param, param, param};
 		return this.jdbcTemplate.query(searchQuery,
-				(rs, rowNum) -> new Post(
+				(rs, rowNum) -> new PostWithProfile(
 						rs.getInt("postId"),
 						rs.getInt("majorCategoryId"),
 						rs.getInt("memberId"),
+						rs.getString("memberNickName"),
+						rs.getString("mentoImage"),
 						rs.getString("postTitle"),
 						rs.getString("postContents"),
 						rs.getTimestamp("postCreateAt"),
@@ -83,5 +86,4 @@ public class MentorSearchRepository {
 				, searchImageParam
 		);
 	}
-	
 }

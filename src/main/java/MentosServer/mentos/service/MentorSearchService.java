@@ -1,7 +1,7 @@
 package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
-import MentosServer.mentos.model.domain.Post;
+import MentosServer.mentos.model.dto.PostWithProfile;
 import MentosServer.mentos.model.dto.GetMentorSearchReq;
 import MentosServer.mentos.model.dto.PostDto;
 import MentosServer.mentos.repository.MentorSearchRepository;
@@ -45,7 +45,7 @@ public class MentorSearchService {
 	// 검색 결과 반환
 	public ArrayList<PostDto> mentorSearch(GetMentorSearchReq req, String schoolId) throws BaseException{
 		try{
-			List<Post> posts = mentorSearchRepository.getPosts(req, schoolId);
+			List<PostWithProfile> posts = mentorSearchRepository.getPosts(req, schoolId);
 			// UpdateAt으로 정렬 실행
 			ArrayList<PostDto> postDtos = sortByUpdateAt(posts);
 			// postId를 가지고 관련 이미지들 찾아서 추가
@@ -72,11 +72,12 @@ public class MentorSearchService {
 	 * @param arr
 	 * @return
 	 */
-	public ArrayList<PostDto> sortByUpdateAt(List<Post> arr) {
+	public ArrayList<PostDto> sortByUpdateAt(List<PostWithProfile> arr) {
 		ArrayList<PostDto> ret = new ArrayList<PostDto>();
 		Collections.sort(arr);
-		for(Post p : arr){
-			ret.add(new PostDto(Integer.toString(p.getPostId()), Integer.toString(p.getMemberId()), p.getPostTitle(), p.getPostContents()));
+		for(PostWithProfile p : arr){
+			ret.add(new PostDto(Integer.toString(p.getPostId()), Integer.toString(p.getMajorCategoryId()), Integer.toString(p.getMemberId()),
+					p.getMentoImage(), p.getMemberNickName(), p.getPostTitle(), p.getPostContents()));
 		}
 		return ret;
 	}

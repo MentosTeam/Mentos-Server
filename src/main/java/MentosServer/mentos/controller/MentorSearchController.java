@@ -9,6 +9,7 @@ import MentosServer.mentos.utils.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,8 @@ public class MentorSearchController {
 		this.mentorSearchService = mentorSearchService;
 	}
 	
-	@GetMapping("/mentos/search")
-	public BaseResponse<GetMentorSearchRes> mentorSearch(@RequestBody GetMentorSearchReq req){
+	@GetMapping("/mentor/search")
+	public BaseResponse<GetMentorSearchRes> mentorSearch(@ModelAttribute GetMentorSearchReq req){
 		try {
 			// jwt에서 memberId 뽑아내기
 			String memberId = Integer.toString(jwtService.getMemberId());

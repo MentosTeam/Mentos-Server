@@ -1,4 +1,4 @@
-package MentosServer.mentos.model.domain;
+package MentosServer.mentos.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,13 +7,17 @@ import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
-public class Post implements Comparable<Post>{
+public class PostWithProfile implements Comparable<PostWithProfile>{
 	
 	private int postId;
 	
 	private int majorCategoryId;
 	
 	private int memberId;
+	
+	private String memberNickName;
+	
+	private String mentoImage;
 	
 	private String postTitle;
 	
@@ -29,7 +33,7 @@ public class Post implements Comparable<Post>{
 	 * @return
 	 */
 	@Override
-	public int compareTo(Post post) {
+	public int compareTo(PostWithProfile post) {
 		if(getPostUpdateAt().toLocalDateTime().isAfter(post.getPostUpdateAt().toLocalDateTime())) return 1;
 		else return 0;
 	}

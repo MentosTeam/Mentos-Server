@@ -7,7 +7,7 @@ import java.util.ArrayList;
 @Data
 public class GetMentorSearchReq {
 
-	private ArrayList<String> majorFlag;
+	private ArrayList<String> majorFlag = new ArrayList<>();
 	
-	private String searchText;
+	private String searchText = "";
 }
