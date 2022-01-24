@@ -97,10 +97,10 @@ public enum BaseResponseStatus {
      * 301 -  400 : Response 오류
      */
     //[POST] /members/setProfile
-    POST_DUPLICATED_PROFILE(false,3301,"멘티, 멘토 프로필이 모두 존재합니다."),
+    POST_DUPLICATED_PROFILE(false,3201,"멘티, 멘토 프로필이 모두 존재합니다."),
 
     //[POST] /mentoring/registration
-    POST_MENTORING_DUPLICATED_MENTORING(false,3302, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
+    POST_MENTORING_DUPLICATED_MENTORING(false,3202, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -115,15 +115,17 @@ public enum BaseResponseStatus {
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
     //[POST] members/setProfile
-    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패하였습니다."),
+    FAILED_TO_SETPROFILE(false,4201,"프로필 등록에 실패하였습니다."),
 
     //[POST] /mentoring/acceptance
-    FAILED_TO_ACCEPTMENTORING(false,4302,"멘토링 요청 수락에 실패하였습니다."),
-    FAILED_TO_REJECTMENTORING(false,4303,"멘토링 요청 거절에 실패하였습니다."),
+    FAILED_TO_ACCEPTMENTORING(false,4202,"멘토링 요청 수락에 실패하였습니다."),
+    FAILED_TO_REJECTMENTORING(false,4203,"멘토링 요청 거절에 실패하였습니다."),
 
     //[PATCH] /mentoring/stop
-    FAILED_TO_STOPMENTORING(false,4304,"멘토링 강제 종료에 실패하였습니다."),
+    FAILED_TO_STOPMENTORING(false,4204,"멘토링 강제 종료에 실패하였습니다."),
 
+    //[DELETE] /mentoring/cancel
+    FAILDE_TO_DELETEMENTORING(false,4203,"멘토링 요청 취소에 실패하였습니다."),
 
     // [GET] /schoolCertification
     MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");

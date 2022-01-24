@@ -63,9 +63,9 @@ public class MentoringRepository {
     }
 
     //멘티가 멘토링 강제 종료시 유효 멘토링 존재 여부 확인
-    public int checkMentoringByMenti(int mentoringId, int mentiId){
-        String query = "select exists (select mentoringId from MENTORING where mentoringId=? and mentoringMentiId=? and mentoringStatus=1)";
-        Object[] params = new Object[]{mentoringId, mentiId};
+    public int checkMentoringByMenti(int mentoringId, int mentiId, int status){
+        String query = "select exists (select mentoringId from MENTORING where mentoringId=? and mentoringMentiId=? and mentoringStatus=?)";
+        Object[] params = new Object[]{mentoringId, mentiId, status};
         return this.jdbcTemplate.queryForObject(query, int.class, params);
     }
 

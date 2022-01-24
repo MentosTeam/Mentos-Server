@@ -94,4 +94,21 @@ public class MentoringController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    /**
+     * 멘토링 요청 취소 API
+     * @param mentoringId
+     * @return String
+     */
+    @ResponseBody
+    @DeleteMapping("/cancel")
+    public BaseResponse<String> deleteMentoring(@RequestParam("mentoringId") int mentoringId){
+        try{
+            int mentiByJwt = jwtService.getMemberId();
+            mentoringService.deleteMentoring(mentoringId, mentiByJwt);
+            return new BaseResponse<>("멘토링 요청이 취소되었습니다.");
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

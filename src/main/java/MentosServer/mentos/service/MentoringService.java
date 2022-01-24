@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
 
@@ -43,6 +44,7 @@ public class MentoringService {
     }
 
     //멘토링 수락/거절
+    @Transactional(rollbackFor = Exception.class)
     public PostAcceptMentoringRes acceptMentoring(int mentoringId, int mentoId, Boolean acceptance) throws BaseException{
         if(mentoringRepository.checkMentoringByMento(mentoringId, mentoId) == 0){ //멘토링 요청 존재 확인
             throw new BaseException(POST_INVALID_MENTORING);
@@ -77,7 +79,7 @@ public class MentoringService {
 
     //멘토링 강제 종료
     public PatchStopMentoringRes stopMentoring(int mentoringId, int mentiId) throws BaseException{
-        if(mentoringRepository.checkMentoringByMenti(mentoringId, mentiId) == 0){
+        if(mentoringRepository.checkMentoringByMenti(mentoringId, mentiId, 1) == 0){
             throw new BaseException(PATCH_INVALID_MENTORING);
         }
 
@@ -88,6 +90,21 @@ public class MentoringService {
 
             PatchStopMentoringRes patchStopMentoringRes = new PatchStopMentoringRes(mentoringId, mentiId, "멘토링이 강제 종료 되었습니다.");
             return patchStopMentoringRes;
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //멘토링 요청 취소
+    public void deleteMentoring(int mentoringId, int mentiId) throws BaseException{
+        if(mentoringRepository.checkMentoringByMenti(mentoringId, mentiId, 0) == 0){
+            throw new BaseException(PATCH_INVALID_MENTORING);
+        }
+
+        try{
+            if(mentoringRepository.deleteMentoring(mentoringId) == 0){
+                throw new BaseException(FAILDE_TO_DELETEMENTORING);
+            }
         } catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
