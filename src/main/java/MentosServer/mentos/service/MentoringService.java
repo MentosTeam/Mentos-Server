@@ -2,10 +2,7 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.domain.Mentoring;
-import MentosServer.mentos.model.dto.PatchStopMentoringRes;
-import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
-import MentosServer.mentos.model.dto.PostMentoringReq;
-import MentosServer.mentos.model.dto.PostMentoringRes;
+import MentosServer.mentos.model.dto.*;
 import MentosServer.mentos.repository.MentoringRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,6 +102,19 @@ public class MentoringService {
             if(mentoringRepository.deleteMentoring(mentoringId) == 0){
                 throw new BaseException(FAILDE_TO_DELETEMENTORING);
             }
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //멘토&멘티 닉네임 조회
+    public GetNicknameRes getNickname(int mentoId, int mentiId) throws BaseException{
+        try{
+            GetNicknameRes getNicknameRes = new GetNicknameRes();
+            getNicknameRes.setMentoNickname(mentoringRepository.getNickname(mentoId));
+            getNicknameRes.setMentiNickname(mentoringRepository.getNickname(mentiId));
+
+            return getNicknameRes;
         } catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }

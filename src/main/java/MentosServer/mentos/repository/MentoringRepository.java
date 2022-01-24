@@ -101,4 +101,11 @@ public class MentoringRepository {
         Object[] params = new Object[]{mentoring.getMentoringCount(), mentoring.getMentoringMentos(), mentoringId};
         return this.jdbcTemplate.update(query, params);
     }
+
+    // 멘토,멘티 닉네임 가져오기
+    public String getNickname(int memberId){
+        String query = "select memberNickName from MEMBER where memberId = ?";
+        int param = memberId;
+        return this.jdbcTemplate.queryForObject(query, String.class, param);
+    }
 }

@@ -3,10 +3,7 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.config.BaseResponseStatus;
-import MentosServer.mentos.model.dto.PatchStopMentoringRes;
-import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
-import MentosServer.mentos.model.dto.PostMentoringReq;
-import MentosServer.mentos.model.dto.PostMentoringRes;
+import MentosServer.mentos.model.dto.*;
 import MentosServer.mentos.service.MentoringService;
 import MentosServer.mentos.utils.JwtService;
 import org.slf4j.Logger;
@@ -107,6 +104,26 @@ public class MentoringController {
             int mentiByJwt = jwtService.getMemberId();
             mentoringService.deleteMentoring(mentoringId, mentiByJwt);
             return new BaseResponse<>("멘토링 요청이 취소되었습니다.");
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    /**
+     * 멘토,멘티 닉네임 조회 API
+     * @param mentoId
+     * @return
+     */
+    @ResponseBody
+    @GetMapping("/registration/nickname")
+    public BaseResponse<GetNicknameRes> getNickname(@RequestParam("mentoId") int mentoId){
+        try{
+            int mentiByJwt = jwtService.getMemberId();
+            if(mentiByJwt == mentoId){ //멘토와 멘티 같은 유저인지 확인
+                return new BaseResponse<>(POST_MENTORING_SAME_MENTOMENTI);
+            }
+            GetNicknameRes getNicknameRes = mentoringService.getNickname(mentoId, mentiByJwt);
+            return new BaseResponse<>(getNicknameRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
