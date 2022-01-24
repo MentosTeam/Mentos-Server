@@ -1,6 +1,7 @@
 package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
+import MentosServer.mentos.model.domain.Mentoring;
 import MentosServer.mentos.model.dto.PatchStopMentoringRes;
 import MentosServer.mentos.model.dto.PostAcceptMentoringRes;
 import MentosServer.mentos.model.dto.PostMentoringReq;
@@ -49,16 +50,22 @@ public class MentoringService {
 
         try{
             PostAcceptMentoringRes postAcceptMentoringRes = new PostAcceptMentoringRes(mentoringId, mentoId, "");
+
             if(acceptance){
-                if(mentoringRepository.acceptMentoring(mentoringId) == 0){
-                    throw new BaseException(FAILED_TO_ACCEPTMENTORING);
+                Mentoring mentoring = mentoringRepository.getMentoring(mentoringId);
+                try{ //기존 멘토링이 진행 중인 경우, 새로 수락한 멘토링을 기존 멘토링과 합하고 새로 수락한 멘토링 요청 삭제
+                    int beforeMentoringId = mentoringRepository.checkProceedingMentoring(mentoring.getMentoringMentoId(), mentoring.getMentoringMentiId(), mentoring.getMajorCategoryId());
+
+                    mentoringRepository.addMentoring(mentoring, beforeMentoringId);
+                    mentoringRepository.deleteMentoring(mentoring.getMentoringId());
+                } catch (Exception e){ //해당 멘토와 멘토링 처음 진행하는 경우
+                    mentoringRepository.acceptMentoring(mentoringId);
                 }
+
                 postAcceptMentoringRes.setStatus("성공적으로 멘토링 요청을 수락했습니다.");
             }
             else {
-                if(mentoringRepository.rejectMentoring(mentoringId) == 0){
-                    throw new BaseException(FAILED_TO_REJECTMENTORING);
-                }
+                mentoringRepository.deleteMentoring(mentoringId);
                 postAcceptMentoringRes.setStatus("성공적으로 멘토링 요청을 거절했습니다.");
             }
 

@@ -65,7 +65,7 @@ public class MentoringController {
      * @return PostAcceptMentoringRes
      */
     @ResponseBody
-    @PostMapping("/acceptance")
+    @PatchMapping("/acceptance")
     public BaseResponse<PostAcceptMentoringRes> acceptMentoring(@RequestParam("mentoringId") int mentoringId, @RequestParam("accept") Boolean acceptance){
         try{
             int mentoIdByJwt = jwtService.getMemberId();
