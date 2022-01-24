@@ -17,14 +17,14 @@ import static MentosServer.mentos.utils.ValidationRegex.isRegexEmail;
 @Slf4j
 @RestController
 public class SchoolCertificationController {
-	
+
 	private final SchoolCertificationService schoolCertificationService;
-	
+
 	@Autowired
 	public SchoolCertificationController(SchoolCertificationService schoolCertificationService){
 		this.schoolCertificationService = schoolCertificationService;
 	}
-	
+
 	@GetMapping("/schoolCertification")
 	public BaseResponse<GetSchoolCertificationRes> schoolCertification(@RequestBody GetSchoolCertificationReq req){
 		// email에 값이 존재하는지, 빈 값으로 요청하지는 않았는지 검사합니다. 빈값으로 요청했다면 에러 메시지를 보냅니다.

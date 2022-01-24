@@ -61,6 +61,12 @@ public enum BaseResponseStatus {
     EMPTY_USER_SCHOOL_NAME(false,2407,"학교명을 입력해주세요"),
     EMPTY_USER_PASSWORD(false,2408,"비밀번호를 입력해주세요"),
     INVALID_USER_PASSWORD(false,2409,"비밀번호의 형식을 확인해주세요"),
+
+    // [POST]/board
+    EMPTY_MAJOR_CATEGORY(false,2410,"게시글 전공 카테고리를 선택해주세요"),
+    EMPTY_POST_TITLE(false,2411,"게시글 제목을 입력해주세요"),
+    EMPTY_POST_CONTENTS(false,2412,"게시글 내용을 입력해주세요"),
+
     /**
      * 3000 : Response 오류
      */
@@ -75,7 +81,11 @@ public enum BaseResponseStatus {
     DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
     DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
     VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
-
+    //[DELETE]/board
+    DELETE_POST_SUCCESS(true,3403,"게시글 삭제를 완료했습니다."),
+    INVALID_POST_MEMBER(false,3404,"게시글 작성자가 아닙니다"),
+    //[PATCH]/board
+    PATCH_POST_SUCCESS(true,3405,"게시글 수정을 완료했습니다."),
 
 
     /**
@@ -89,6 +99,9 @@ public enum BaseResponseStatus {
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
+
+    //S3 Delete 오류
+    S3_DELETE_ERROR(false,4401,"S3 이미지 삭제에 실패하였습니다."),
 
     /**
      * ROZY
