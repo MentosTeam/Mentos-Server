@@ -25,25 +25,17 @@ public class MentoringService {
 
     //멘토링 등록
     public PostMentoringRes createMentoring(PostMentoringReq postMentoringReq) throws BaseException {
-        if(checkMentoring(postMentoringReq) == 1){ // 멘토링 중복 신청 확인
+        if(mentoringRepository.checkMentoring(postMentoringReq) == 1){ // 멘토링 중복 신청 확인
             throw new BaseException(POST_MENTORING_DUPLICATED_MENTORING);
         }
 
         try{
             int mentoringId = mentoringRepository.createMentoring(postMentoringReq);
+
             PostMentoringRes postMentoringRes = new PostMentoringRes(mentoringId, postMentoringReq.getMentoId(), postMentoringReq.getMentiId());
             logger.info("멘토링 신청");
 
             return postMentoringRes;
-        } catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    //멘토링 중복 체크
-    public int checkMentoring(PostMentoringReq postMentoringReq) throws BaseException{
-        try{
-            return mentoringRepository.checkMentoring(postMentoringReq);
         } catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
