@@ -32,7 +32,6 @@ public class MentoringService {
             int mentoringId = mentoringRepository.createMentoring(postMentoringReq);
 
             PostMentoringRes postMentoringRes = new PostMentoringRes(mentoringId, postMentoringReq.getMentoId(), postMentoringReq.getMentiId());
-            logger.info("멘토링 신청");
 
             return postMentoringRes;
         } catch (Exception e){
