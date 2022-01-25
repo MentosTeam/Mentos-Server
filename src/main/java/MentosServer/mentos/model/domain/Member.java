@@ -1,4 +1,4 @@
-package MentosServer.mentos.domain.model;
+package MentosServer.mentos.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +18,8 @@ public class Member {
     private String memberEmail;
     private String memberPw;
     private int memberSchoolId;
-    private int memberMajorId;
+    private String memberMajor;
     private String memberSex;
-    private String memberImage;
     private int memberMentos;
     private String memberStatus;
     private Timestamp memberCreateAt;

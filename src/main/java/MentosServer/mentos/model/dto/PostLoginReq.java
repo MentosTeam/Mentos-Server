@@ -1,4 +1,4 @@
-package MentosServer.mentos.domain.model;
+package MentosServer.mentos.model.dto;
 
 import lombok.*;
 
