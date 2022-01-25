@@ -76,6 +76,12 @@ public enum BaseResponseStatus {
     EMPTY_USER_SCHOOL_NAME(false,2407,"학교명을 입력해주세요"),
     EMPTY_USER_PASSWORD(false,2408,"비밀번호를 입력해주세요"),
     INVALID_USER_PASSWORD(false,2409,"비밀번호의 형식을 확인해주세요"),
+
+    // [POST]/board
+    EMPTY_MAJOR_CATEGORY(false,2410,"게시글 전공 카테고리를 선택해주세요"),
+    EMPTY_POST_TITLE(false,2411,"게시글 제목을 입력해주세요"),
+    EMPTY_POST_CONTENTS(false,2412,"게시글 내용을 입력해주세요"),
+
     /**
      * 3000 : Response 오류
      */
@@ -90,17 +96,19 @@ public enum BaseResponseStatus {
     DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
     DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
     VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
-
+    //[DELETE]/board
+    DELETE_POST_SUCCESS(true,3403,"게시글 삭제를 완료했습니다."),
+    INVALID_POST_MEMBER(false,3404,"게시글 작성자가 아닙니다"),
+    //[PATCH]/board
+    PATCH_POST_SUCCESS(true,3405,"게시글 수정을 완료했습니다."),
 
     /**
      * ROZY
      * 301 -  400 : Response 오류
      */
-    //[POST] /members/setProfile
-    POST_DUPLICATED_PROFILE(false,3201,"멘티, 멘토 프로필이 모두 존재합니다."),
 
     //[POST] /mentoring/registration
-    POST_MENTORING_DUPLICATED_MENTORING(false,3202, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
+    POST_MENTORING_DUPLICATED_MENTORING(false,3302, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -114,18 +122,26 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
-    //[POST] members/setProfile
-    FAILED_TO_SETPROFILE(false,4201,"프로필 등록에 실패하였습니다."),
+
+    //S3 Delete 오류
+    S3_DELETE_ERROR(false,4401,"S3 이미지 삭제에 실패하였습니다."),
+
+    /**
+     * ROZY
+     * 301 -  400 : Response 오류
+     */
+    FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
+    POST_DUPLICATED_PROFILE(false,4302,"멘티, 멘토 프로필이 모두 존재합니다."),
 
     //[POST] /mentoring/acceptance
-    FAILED_TO_ACCEPTMENTORING(false,4202,"멘토링 요청 수락에 실패하였습니다."),
-    FAILED_TO_REJECTMENTORING(false,4203,"멘토링 요청 거절에 실패하였습니다."),
+    FAILED_TO_ACCEPTMENTORING(false,4303,"멘토링 요청 수락에 실패하였습니다."),
+    FAILED_TO_REJECTMENTORING(false,4304,"멘토링 요청 거절에 실패하였습니다."),
 
     //[PATCH] /mentoring/stop
-    FAILED_TO_STOPMENTORING(false,4204,"멘토링 강제 종료에 실패하였습니다."),
+    FAILED_TO_STOPMENTORING(false,4305,"멘토링 강제 종료에 실패하였습니다."),
 
     //[DELETE] /mentoring/cancel
-    FAILDE_TO_DELETEMENTORING(false,4203,"멘토링 요청 취소에 실패하였습니다."),
+    FAILDE_TO_DELETEMENTORING(false,4306,"멘토링 요청 취소에 실패하였습니다."),
 
     // [GET] /schoolCertification
     MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");

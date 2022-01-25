@@ -15,24 +15,24 @@ import static MentosServer.mentos.config.BaseResponseStatus.*;
 @Slf4j
 @Service
 public class SchoolCertificationService {
-	
-	
+
+
 	private SchoolCertificationRepository schoolCertificationRepository;
 	private MailService mailService;
-	
+
 	@Autowired
 	public void SchoolCertificationService(SchoolCertificationRepository schoolCertificationRepository, MailService mailService){
 		this.schoolCertificationRepository = schoolCertificationRepository;
 		this.mailService = mailService;
 	}
-	
+
 	public boolean checkEmail(GetSchoolCertificationReq req) {
 		if (schoolCertificationRepository.checkEmail(req.getEmail()) == 1) {
 			return false;
 		}
 		else return true;
 	}
-	
+
 	public void cmpSchoolEmail(GetSchoolCertificationReq req) throws BaseException{
 		try{
 			// 학교 이메일이 맞는지 확인
@@ -43,7 +43,7 @@ public class SchoolCertificationService {
 			throw new BaseException(DATABASE_ERROR);
 		}
 	}
-	
+
 	public String parseEmail(String email){
 		// email 뒷 부분만 파싱해서 반환
 		String ret = "";
@@ -59,7 +59,7 @@ public class SchoolCertificationService {
 		}
 		return ret;
 	}
-	
+
 	public String sendEmail(String email) throws BaseException {
 		try{
 			String randomNumber = createRandomNumber();
@@ -71,7 +71,7 @@ public class SchoolCertificationService {
 			throw new BaseException(MAIL_SEND_ERROR);
 		}
 	}
-	
+
 	public String createRandomNumber(){
 		// random certification number 생성
 		long seed = System.currentTimeMillis(); // 현재 시간을 seed로 (호출 시마다 seed 변경)

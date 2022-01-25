@@ -36,7 +36,6 @@ public class SignUpController {
      * @param signUpReq
      * @return signUpRes : memberId를 리턴
      */
-    @ResponseBody
     @PostMapping("/sign-up")
     public BaseResponse<SignUpRes> createMember(@Valid @RequestBody SignUpReq signUpReq, BindingResult br){
         //validation 추가
@@ -52,10 +51,10 @@ public class SignUpController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-    @ResponseBody
+
     @GetMapping("/nickNameChk")
     public BaseResponse checkNickName(@RequestParam String nickName){
-        if(nickName==null || nickName==""){
+        if(nickName==null || nickName.equals("")){
             return new BaseResponse<>(EMPTY_USER_NICKNAME);
         }
         if(!isRegexNickName(nickName)) {
