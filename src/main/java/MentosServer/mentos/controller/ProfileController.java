@@ -4,7 +4,9 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.model.dto.PostProfileReq;
+import MentosServer.mentos.model.dto.PostProfileRes;
 import MentosServer.mentos.service.ProfileService;
+import MentosServer.mentos.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +14,15 @@ import static MentosServer.mentos.config.BaseResponseStatus.*;
 import static MentosServer.mentos.utils.ValidationRegex.isRegexImgUrl;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/profile")
 public class ProfileController {
     private final ProfileService profileService;
+    private final JwtService jwtService;
 
     @Autowired
-    public ProfileController(ProfileService profileService){
+    public ProfileController(ProfileService profileService, JwtService jwtService){
         this.profileService = profileService;
+        this.jwtService = jwtService;
     }
 
     /**
@@ -29,8 +33,8 @@ public class ProfileController {
      * 2의 경우, role이 1이든 2이든 상관 없음.
      */
     @ResponseBody
-    @PostMapping("/members/setProfile")
-    public BaseResponse<String> createProfile(@RequestBody PostProfileReq postProfileReq){
+    @PostMapping("/setProfile")
+    public BaseResponse<PostProfileRes> createProfile(@RequestBody PostProfileReq postProfileReq){
         if(postProfileReq.getRole() != 1 && postProfileReq.getRole() != 2){ //역할 설정 여부 확인
             return new BaseResponse<>(POST_PROFILE_INVALID_ROLE);
         }
@@ -57,8 +61,11 @@ public class ProfileController {
         }
 
         try{
-            profileService.createProfile(postProfileReq);
-            return new BaseResponse<>("프로필이 성공적으로 등록되었습니다.");
+            if(jwtService.getMemberId() != postProfileReq.getMemberId()){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            PostProfileRes postProfileRes = profileService.createProfile(postProfileReq);
+            return new BaseResponse<>(postProfileRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }

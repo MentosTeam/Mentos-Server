@@ -43,13 +43,28 @@ public enum BaseResponseStatus {
      * ROZY
      * 201 - 300 : Requset 오류
      */
-    //[POST] /setProfile
+    //[POST] members/setProfile
     POST_PROFILE_INVALID_ROLE(false, 2201, "올바르지 않은 역할(멘토/멘티) 선택입니다."),
     POST_PROFILE_EMPTY_MEMBERID(false, 2202, "memberId가 입력되지 않았습니다."),
     POST_PROFILE_EMPTY_MAJORFIRST(false, 2203, "majorFirst가 선택되지 않았습니다."),
     POST_PROFILE_EMPTY_INTRODUCTION(false, 2204, "자기소개가 입력되지 않았습니다."),
     POST_PROFILE_SHORT_INTRODUCTION(false, 2205, "자기소개는 10글자 이상 입력해주세요."),
     POST_PROFILE_INVALID_IMAGEURL(false, 2206, "이미지 확장자(jpg | jpeg | png | bmp)를 확인해주세요."),
+
+    //[POST] /mentoring/registration
+    POST_MENTORING_INVALID_MENTOID(false, 2208, "유효하지 않은 mentoId 값입니다."),
+    POST_MENTORING_GERATER_MENTORINGCOUNT(false, 2209, "멘토링 횟수(mentoringCount)는 최대 10입니다."),
+    POST_MENTORING_LESS_MENTORINGCOUNT(false, 2210, "멘토링 횟수(mentoringCount)는 최소 1입니다."),
+    POST_MENTORING_INVALID_MAJORCATEGORYID(false, 2211, "유효하지 않은 멘토-쓰 종류(majorCategoryId)값 입니다."),
+    POST_MENTORING_INVALID_MENTOS(false, 2212, "멘토-쓰 개수(mentos)의 형식을 확인해주세요."),
+    POST_MENTORING_SAME_MENTOMENTI(false, 2213, "멘토(mentoId)와 멘티(mentiId)가 같습니다."),
+
+    //[POST] /mentoring/acceptance
+    POST_INVALID_MENTORING(false,2214, "유효하지 않은 멘토링 요청입니다."),
+
+    //[PATCH] /mentoring/stop
+    PATCH_INVALID_MENTORING(false,2215, "유효하지 않은 멘토링입니다."),
+
 
     // [POST] /sign-up
     EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
@@ -87,6 +102,13 @@ public enum BaseResponseStatus {
     //[PATCH]/board
     PATCH_POST_SUCCESS(true,3405,"게시글 수정을 완료했습니다."),
 
+    /**
+     * ROZY
+     * 301 -  400 : Response 오류
+     */
+
+    //[POST] /mentoring/registration
+    POST_MENTORING_DUPLICATED_MENTORING(false,3302, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
 
     /**
      * 4000 : Database, Server 오류
@@ -100,6 +122,7 @@ public enum BaseResponseStatus {
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
+
     //S3 Delete 오류
     S3_DELETE_ERROR(false,4401,"S3 이미지 삭제에 실패하였습니다."),
 
@@ -110,6 +133,15 @@ public enum BaseResponseStatus {
     FAILED_TO_SETPROFILE(false,4301,"프로필 등록에 실패했습니다."),
     POST_DUPLICATED_PROFILE(false,4302,"멘티, 멘토 프로필이 모두 존재합니다."),
 
+    //[POST] /mentoring/acceptance
+    FAILED_TO_ACCEPTMENTORING(false,4303,"멘토링 요청 수락에 실패하였습니다."),
+    FAILED_TO_REJECTMENTORING(false,4304,"멘토링 요청 거절에 실패하였습니다."),
+
+    //[PATCH] /mentoring/stop
+    FAILED_TO_STOPMENTORING(false,4305,"멘토링 강제 종료에 실패하였습니다."),
+
+    //[DELETE] /mentoring/cancel
+    FAILDE_TO_DELETEMENTORING(false,4306,"멘토링 요청 취소에 실패하였습니다."),
 
     // [GET] /schoolCertification
     MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");
