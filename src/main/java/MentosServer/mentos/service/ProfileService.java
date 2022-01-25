@@ -2,6 +2,7 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.PostProfileReq;
+import MentosServer.mentos.model.dto.PostProfileRes;
 import MentosServer.mentos.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,7 @@ public class ProfileService {
     }
 
     //프로필 등록
-    public void createProfile(PostProfileReq postProfileReq) throws BaseException {
-        int result = 0;
+    public PostProfileRes createProfile(PostProfileReq postProfileReq) throws BaseException {
         int exitMento, exitMenti;
 
         try{
@@ -33,19 +33,24 @@ public class ProfileService {
             throw new BaseException(POST_DUPLICATED_PROFILE);
         }
 
+        PostProfileRes postProfileRes = new PostProfileRes(postProfileReq.getMemberId(), "");
         try{
             if ((postProfileReq.getRole() == 1 && exitMento == 0) || ((exitMento != exitMenti) && exitMento == 0)) {//멘토 프로필 생성
-                result = profileRepository.createMentoProfile(postProfileReq);
+                if(profileRepository.createMentoProfile(postProfileReq) == 0){
+                    throw new BaseException(FAILED_TO_SETPROFILE);
+                }
+                postProfileRes.setProfile("멘토 프로필 생성");
             }
             else if ((postProfileReq.getRole() == 2 && exitMenti == 0) || ((exitMento != exitMenti) && exitMento == 1)) {//멘티 프로필 생성
-                result = profileRepository.createMentiProfile(postProfileReq);
+                if(profileRepository.createMentiProfile(postProfileReq) == 0){
+                    throw new BaseException(FAILED_TO_SETPROFILE);
+                }
+                postProfileRes.setProfile("멘티 프로필 생성");
             }
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
 
-        if(result == 0){
-            throw new BaseException(FAILED_TO_SETPROFILE);
-        }
+        return postProfileRes;
     }
 }

@@ -2,10 +2,7 @@ package MentosServer.mentos.model.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 import static MentosServer.mentos.config.BaseResponseStatus.EMPTY_USER_NAME;
 import static MentosServer.mentos.config.Constant.nameRegex;
@@ -26,7 +23,7 @@ public class SignUpReq {
     @NotBlank(message="EMPTY_USER_SEX")
     private String memberSex;
 
-    @NotNull(message="EMPTY_USER_STUDENT_ID")
+    @Positive(message="EMPTY_USER_STUDENT_ID")
     private int memberStudentId; //수정
 
     @NotBlank(message="EMPTY_USER_SCHOOL_NAME")
