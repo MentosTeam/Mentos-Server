@@ -18,15 +18,15 @@ public class ProfileRepository {
 
     //멘토 프로필 등록
     public int createMentoProfile(PostProfileReq postProfileReq){
-        String query = "insert into MENTO(memberId, mentoMajorFirst, mentoMajorSecond, mentoMajorThird, mentoIntro, mentoImageUrl) values(?,?,?,?,?,?)";
-        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getMajorThird(), postProfileReq.getIntroduction(), postProfileReq.getImageUrl()};
+        String query = "insert into MENTO(memberId, mentoMajorFirst, mentoMajorSecond, mentoIntro, mentoImage) values(?,?,?,?,?)";
+        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), postProfileReq.getImageUrl()};
         return this.jdbcTemplate.update(query, params);
     }
 
     //멘티 프로필 등록
     public int createMentiProfile(PostProfileReq postProfileReq){
-        String query = "insert into MENTI(memberId, mentiMajorFirst, mentiMajorSecond, mentiMajorThird, mentiIntro, mentiImageUrl) values(?,?,?,?,?,?)";
-        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getMajorThird(), postProfileReq.getIntroduction(), postProfileReq.getImageUrl()};
+        String query = "insert into MENTI(memberId, mentiMajorFirst, mentiMajorSecond, mentiIntro, mentiImage) values(?,?,?,?,?)";
+        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), postProfileReq.getImageUrl()};
         return this.jdbcTemplate.update(query, params);
     }
 
