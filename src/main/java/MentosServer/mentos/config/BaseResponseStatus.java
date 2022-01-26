@@ -21,7 +21,6 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
-    INVALID_ACCESS(false, 2004, "잘못된 접근입니다."),
 
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
@@ -65,9 +64,6 @@ public enum BaseResponseStatus {
 
     //[PATCH] /mentoring/stop
     PATCH_INVALID_MENTORING(false,2215, "유효하지 않은 멘토링입니다."),
-
-    //[POST] /mentoring/review
-    POST_REVIEW_EXISTS(false,2220,"리뷰가 이미 등록되어있습니다."),
 
 
     // [POST] /sign-up
@@ -149,10 +145,16 @@ public enum BaseResponseStatus {
     FAILDE_TO_DELETEMENTORING(false,4306,"멘토링 요청 취소에 실패하였습니다."),
 
     // [GET] /schoolCertification
-    MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");
+    MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다."),
+
+
+    //[POST] /mentoring/review
+    POST_REVIEW_EXISTS(false,6000,"리뷰가 이미 등록되어있습니다."),
+    INVALID_ACCESS(false, 6004, "잘못된 접근입니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
+
 
 
     private final boolean isSuccess;

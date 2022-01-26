@@ -7,7 +7,7 @@ import MentosServer.mentos.model.dto.mentoring.PostReviewReq;
 import MentosServer.mentos.model.dto.mentoring.PostReviewRes;
 import MentosServer.mentos.repository.LoginRepository;
 import MentosServer.mentos.repository.MentoringRepository;
-import MentosServer.mentos.repository.mentoring.ReviewRepository;
+import MentosServer.mentos.repository.ReviewRepository;
 import MentosServer.mentos.utils.AES128;
 import MentosServer.mentos.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ReviewService {
             //멘토링의 멘티와 리뷰의 멘티가 같지 않다면 에러 출력
         }
 
-        if(mentoringRepository.checkMentoringByMenti(mentoring.getMentoringId(), mentoring.getMentoringMentiId(), 1) == 0){
+        if(mentoringRepository.checkMentoringByMenti(mentoring.getMentoringId(), mentoring.getMentoringMentiId(), 2) == 0){
             throw new BaseException(PATCH_INVALID_MENTORING);
             //멘토링의 유효여부 확인
         }
