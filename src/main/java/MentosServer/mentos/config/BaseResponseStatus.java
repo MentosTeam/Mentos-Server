@@ -91,7 +91,6 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-    FAILED_TO_LOGIN_UNACTIVE(false, 3015, "탈퇴한 회원입니다."),
 
     // [POST] /items
 
@@ -149,8 +148,9 @@ public enum BaseResponseStatus {
 
 
     //[POST] /mentoring/review
-    POST_REVIEW_EXISTS(false,6000,"리뷰가 이미 등록되어있습니다."),
-    INVALID_ACCESS(false, 6004, "잘못된 접근입니다.");
+    INVALID_ACCESS(false, 6000, "잘못된 접근입니다."),
+    FAILED_TO_LOGIN_UNACTIVE(false, 6001, "탈퇴한 회원입니다."),
+    POST_REVIEW_EXISTS(false,6100,"리뷰가 이미 등록되어있습니다.");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
