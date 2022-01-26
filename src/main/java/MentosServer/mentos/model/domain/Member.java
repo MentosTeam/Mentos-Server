@@ -1,4 +1,4 @@
-package MentosServer.mentos.domain.model;
+package MentosServer.mentos.model.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

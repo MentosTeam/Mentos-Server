@@ -1,7 +1,7 @@
 package MentosServer.mentos.repository;
 
-import MentosServer.mentos.domain.model.Member;
-import MentosServer.mentos.domain.model.PostLoginReq;
+import MentosServer.mentos.model.domain.Member;
+import MentosServer.mentos.model.dto.PostLoginReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,9 +18,18 @@ public class LoginRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    // 이메일 확인
+    public int checkEmail(String email) {
+        String checkEmailQuery = "select exists(select memberEmail from member where memberEmail = ?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+        String checkEmailParams = email; // 해당(확인할) 이메일 값
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,
+                int.class,
+                checkEmailParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
     // 로그인
     public Member getPwd(PostLoginReq postLoginReq) {
-        String getPwdQuery = "select memberId, memberName, memberNickName, memberStudentId, memberEmail, memberPw, memberSchoolId, memberMajorId, memberSex, memberImage, MemberMentos, MemberStatus, memberCreateAt, memberUpdateAt from Member where memberEmail = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
+        String getPwdQuery = "select * from member where memberEmail = ?"; // 해당 email을 만족하는 User의 정보들을 조회한다.
         String getPwdParams = postLoginReq.getMemberEmail(); // 주입될 email값을 클라이언트의 요청에서 주어진 정보를 통해 가져온다.
 
         return this.jdbcTemplate.queryForObject(getPwdQuery,
@@ -32,9 +41,8 @@ public class LoginRepository {
                         rs.getString("memberEmail"),
                         rs.getString("memberPw"),
                         rs.getInt("memberSchoolId"),
-                        rs.getInt("memberMajorId"),
+                        rs.getString("memberMajor"),
                         rs.getString("memberSex"),
-                        rs.getString("memberImage"),
                         rs.getInt("memberMentos"),
                         rs.getString("memberStatus"),
                         rs.getTimestamp("memberCreateAt"),
