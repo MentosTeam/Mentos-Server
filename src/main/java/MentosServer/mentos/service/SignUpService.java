@@ -39,7 +39,6 @@ public class SignUpService {
         try {
             // 암호화: signUpReq에서 제공받은 비밀번호를 보안을 위해 암호화시켜 DB에 저장합니다.
             // ex) password123 -> dfhsjfkjdsnj4@!$!@chdsnjfwkenjfnsjfnjsd.fdsfaifsadjfjaf
-            logger.info("암호화 로직");
             pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(signUpReq.getMemberPw()); // 암호화코드
             signUpReq.setMemberPw(pwd);
         } catch (Exception ignored) { // 암호화가 실패하였을 경우 에러 발생
@@ -48,7 +47,6 @@ public class SignUpService {
         //실제 비즈니스 로직
         try {
             int memberId = signUpRepository.createMember(signUpReq);
-            logger.info("jwt발급");
             String memberJwt = jwtService.createJwt(memberId);
             return new SignUpRes(memberId,memberJwt);
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
