@@ -17,9 +17,8 @@ public class PasswordRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
     public int checkEmail(PostPasswordReq req) {
-        String checkEmailQuery = "select exists(select memberId from member where memberEmail =? and memberName=?)";
-        Object params[] = new Object[]{req.getMemberEmail(),req.getMemberName()};
-        return this.jdbcTemplate.queryForObject(checkEmailQuery,int.class,params); //존재하면 1 아니면 0
+        String checkEmailQuery = "select exists(select memberId from member where memberEmail =?)";
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,int.class,req.getMemberEmail()); //존재하면 1 아니면 0
     }
 
     // 비밀번호 설정

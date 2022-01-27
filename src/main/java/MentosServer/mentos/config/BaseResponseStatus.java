@@ -87,7 +87,7 @@ public enum BaseResponseStatus {
     EMPTY_POST_CONTENTS(false,2412,"게시글 내용을 입력해주세요"),
 
     //[POST]/pwChange
-    EMPTY_TMP_PASSWORD(false,2413,"임시 비밀번호를 입력해주세요"),
+    EMPTY_TMP_PASSWORD(false,2413,"현재 비밀번호를 입력해주세요"),
 
 
 
@@ -113,7 +113,7 @@ public enum BaseResponseStatus {
     PATCH_POST_SUCCESS(true,3405,"게시글 수정을 완료했습니다."),
     //[POST]/password
     SUCESS_SEND_PASSWORD(true,3406,"임시 비밀번호 전송에 성공했습니다."),
-    NOT_EXIST_EMAIL(false,3407,"존재하지 않는 이메일입니다."),
+    NOT_EXIST_EMAIL(false,3407,"존재하지 않는 회원입니다."),
     //[POST]/pwChange
     NOT_SAME_PASSWORD(false, 3408,"현재 비밀번호가 같지 않습니다."),
     SUCESS_CHANGE_PASSWORD(true,3409,"비밀번호 변경에 성공했습니다"),
