@@ -34,7 +34,7 @@ public class JwtService {
                 .setHeaderParam("type","jwt")
                 .claim("memberId",memberId)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*1))) //액세스 토큰 만료 시간 하루로 설정 1*(1000*60*60*24) 테스트 1분
+                .setExpiration(new Date(System.currentTimeMillis()+1*(1000*60*60*24))) //액세스 토큰 만료 시간 하루로 설정 1*(1000*60*60*24) 테스트 1분
                 .signWith(SignatureAlgorithm.HS256, Secret.JWT_SECRET_KEY)
                 .compact();
     }
