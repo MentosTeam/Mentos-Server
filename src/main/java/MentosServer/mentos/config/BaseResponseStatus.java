@@ -86,6 +86,10 @@ public enum BaseResponseStatus {
     EMPTY_POST_TITLE(false,2411,"게시글 제목을 입력해주세요"),
     EMPTY_POST_CONTENTS(false,2412,"게시글 내용을 입력해주세요"),
 
+    // jwt관련 Error
+    EXPIRED_JWT(false,2414,"만료된 JWT입니다."),
+    EMPTY_REFRESH_JWT(false,2415,"리프레시 토큰이 존재하지 않습니다."),
+    INVALID_REFRESH_TOKEN(false,2416,"유효하지 않은 리프레시 토큰입니다."),
     /**
      * 3000 : Response 오류
      */
@@ -106,6 +110,9 @@ public enum BaseResponseStatus {
     INVALID_POST_MEMBER(false,3404,"게시글 작성자가 아닙니다"),
     //[PATCH]/board
     PATCH_POST_SUCCESS(true,3405,"게시글 수정을 완료했습니다."),
+    //[GET]/jwt
+    SUCCESS_LOGOUT(true,3406,"로그아웃에 성공했습니다."),
+    FAILED_TO_LOGOUT(false,3407,"로그아웃에 실패했습니다"),
 
     /**
      * ROZY

@@ -51,7 +51,8 @@ public class LoginService {
             int memberId = loginRepository.getPwd(postLoginReq).getMemberId();
 
             String jwt = jwtService.createJwt(memberId);
-            return new PostLoginRes(memberId,jwt);
+            String refreshToken = jwtService.updateRefreshToken(memberId); //리프레시 토큰 교체
+            return new PostLoginRes(memberId,jwt,refreshToken);
 
 
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.

@@ -8,5 +8,6 @@ import lombok.Data;
 public class SignUpRes {
     private int memberId;
     private String memberJwt;
+    private String refreshJwt;
 
 }

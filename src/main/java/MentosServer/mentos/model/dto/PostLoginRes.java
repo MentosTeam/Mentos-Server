@@ -11,4 +11,5 @@ import lombok.Setter;
 public class PostLoginRes {
     private int memberId;
     private String jwt;
+    private String refreshJwt;
 }
