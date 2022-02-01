@@ -13,13 +13,11 @@ public class MainMentorDto {
 	
 	private String mentorImage;
 	
-	private String menteeStudentId; // 학번
+	private int mentorStudentId; // 글 쓴 멘토 Id
 	
-	private String firstMajorCategory;
+	private int postId; // 해당 글 포스트 id
 	
-	private String secondMajorCategory;
-	
-	private int majorCategoryId; // 글의 카테고리 ID
+	private int postCategoryId; // 글의 카테고리 ID
 	
 	private String postTitle;
 	

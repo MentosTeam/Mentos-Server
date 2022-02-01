@@ -7,12 +7,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class GetMentorMainRes {
-
-	private int mentos;
+public class MenteeCategory {
 	
-	private List<MenteeCategory> MenteeCategory;
+	private int menteeCategoryId;
 	
-	private List<MainMenteeDto> otherMentee;
-	
+	private List<MainMenteeDto> mentee;
 }

@@ -13,9 +13,11 @@ public class MainMenteeDto {
 	
 	private String menteeImage;
 	
-	private String menteeStudentId; // 학번
+	private String menteeYear; // 학번
 	
-	private String firstMajorCategory;
+	private int menteeStudentId; // 멘티 Id
 	
-	private String secondMajorCategory;
+	private int firstMajorCategory;
+	
+	private int secondMajorCategory;
 }

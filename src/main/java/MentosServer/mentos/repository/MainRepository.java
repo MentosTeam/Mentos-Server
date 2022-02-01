@@ -67,8 +67,9 @@ public class MainRepository {
 						rs.getString("memberMajor"),
 						rs.getString("mentiImage"),
 						Integer.toString(rs.getInt("memberSchoolId")),
-						Integer.toString(rs.getInt("mentiMajorFirst")),
-						Integer.toString(rs.getInt("mentiMajorSecond"))
+						rs.getInt("memberId"),
+						rs.getInt("mentiMajorFirst"),
+						rs.getInt("mentiMajorSecond")
 				),
 				searchParam
 		);
@@ -115,9 +116,8 @@ public class MainRepository {
 						rs.getString("memberNickName"),
 						rs.getString("memberMajor"),
 						rs.getString("mentoImage"),
-						Integer.toString(rs.getInt("memberSchoolId")),
-						Integer.toString(rs.getInt("mentoMajorFirst")),
-						Integer.toString(rs.getInt("mentoMajorSecond")),
+						rs.getInt("memberId"),
+						rs.getInt("postId"),
 						rs.getInt("majorCategoryId"),
 						rs.getString("postTitle"),
 						rs.getString("postContents"),

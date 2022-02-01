@@ -11,9 +11,7 @@ public class GetMenteeMainRes {
 	
 	private int mentos;
 	
-	private List<MainMentorDto> first;
+	private List<MentorCategory> MentorCategory;
 	
-	private List<MainMentorDto> second;
-	
-	private List<MainMentorDto> third;
+	private List<MainMentorDto> otherMentor;
 }

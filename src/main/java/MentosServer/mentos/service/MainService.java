@@ -27,13 +27,23 @@ public class MainService {
 		try{
 			MainDto mainDto = mainRepository.getMentorData(memberId);
 			List<MainMenteeDto> menteeList = mainRepository.getMenteeList(mainDto);
-			// 각 멘티들을 전공에 맞게 분할 (First = 멘토 1 전공, Second = 멘토 2전공, Third = 그 외 전공)
-			GetMentorMainRes ret = new GetMentorMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+			// 각 멘티들을 전공에 맞게 분할 (First = 멘토 1 전공, Second = 멘토 2전공, others = 그 외 전공)
+			GetMentorMainRes ret = new GetMentorMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>());
+			
+			MenteeCategory first = new MenteeCategory(mainDto.getMajorFirst(), new ArrayList<MainMenteeDto>());
+			MenteeCategory second = new MenteeCategory(mainDto.getMajorSecond(), new ArrayList<MainMenteeDto>());
+			
 			for(MainMenteeDto mentee : menteeList) {
-				if(mentee.getFirstMajorCategory().equals(Integer.toString(mainDto.getMajorFirst()))) ret.getFirst().add(mentee);
-				else if(mentee.getFirstMajorCategory().equals(Integer.toString(mainDto.getMajorSecond()))) ret.getSecond().add(mentee);
-				else ret.getThird().add(mentee);
+				if (mentee.getFirstMajorCategory() == mainDto.getMajorFirst())
+					first.getMentee().add(mentee);
+				else if (mentee.getFirstMajorCategory() == mainDto.getMajorSecond())
+					second.getMentee().add(mentee);
+				else ret.getOtherMentee().add(mentee);
 			}
+			
+			ret.getMenteeCategory().add(first);
+			ret.getMenteeCategory().add(second);
+			
 			return ret;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
 			throw new BaseException(DATABASE_ERROR);
@@ -44,13 +54,21 @@ public class MainService {
 		try{
 			MainDto mainDto = mainRepository.getMenteeData(memberId);
 			List<MainMentorDto> mentorList = mainRepository.getMentorList(mainDto);
-			// 각 멘토의 글들을 전공에 맞게 분할 (First = 멘티 1 전공, Second = 멘티 2전공, Third = 그 외 전공)
-			GetMenteeMainRes ret = new GetMenteeMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+			// 각 멘토의 글들을 전공에 맞게 분할 (First = 멘티 1 전공, Second = 멘티 2전공, Other = 그 외 전공)
+			GetMenteeMainRes ret = new GetMenteeMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>());
+
+			MentorCategory first = new MentorCategory(mainDto.getMajorFirst(), new ArrayList<MainMentorDto>());
+			MentorCategory second = new MentorCategory(mainDto.getMajorSecond(), new ArrayList<MainMentorDto>());
+			
 			for(MainMentorDto mentor : mentorList) {
-				if(mentor.getMajorCategoryId() == mainDto.getMajorFirst()) ret.getFirst().add(mentor);
-				else if(mentor.getMajorCategoryId() == mainDto.getMajorSecond()) ret.getSecond().add(mentor);
-				else ret.getThird().add(mentor);
+				if(mentor.getPostCategoryId() == mainDto.getMajorFirst()) first.getMentorPost().add(mentor);
+				else if(mentor.getPostCategoryId() == mainDto.getMajorSecond()) second.getMentorPost().add(mentor);
+				else ret.getOtherMentor().add(mentor);
 			}
+			
+			ret.getMentorCategory().add(first);
+			ret.getMentorCategory().add(second);
+			
 			return ret;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
 			throw new BaseException(DATABASE_ERROR);
