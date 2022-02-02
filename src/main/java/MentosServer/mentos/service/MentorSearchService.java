@@ -62,8 +62,10 @@ public class MentorSearchService {
 	 */
 	private void getImageUrlByPostId(ArrayList<PostDto> postDtos) {
 		for(PostDto post : postDtos) {
-			String postId = post.getPostId();
-			post.setImageUrls(mentorSearchRepository.getImageUrl(postId));
+			int postId = post.getPostId();
+			List<String> imageUrl = mentorSearchRepository.getImageUrl(postId);
+			if(imageUrl.isEmpty()) continue;
+			post.setImageUrl(imageUrl.get(0));
 		}
 	}
 	
@@ -76,8 +78,8 @@ public class MentorSearchService {
 		ArrayList<PostDto> ret = new ArrayList<PostDto>();
 		Collections.sort(arr);
 		for(PostWithProfile p : arr){
-			ret.add(new PostDto(Integer.toString(p.getPostId()), Integer.toString(p.getMajorCategoryId()), Integer.toString(p.getMemberId()),
-					p.getMentoImage(), p.getMemberNickName(), p.getPostTitle(), p.getPostContents()));
+			ret.add(new PostDto(p.getPostId(), p.getMajorCategoryId(), p.getMemberId(), p.getMemberMajor(),
+					p.getMemberNickName(), p.getPostTitle(), p.getPostContents()));
 		}
 		return ret;
 	}

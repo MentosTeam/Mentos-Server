@@ -2,18 +2,17 @@ package MentosServer.mentos.model.dto;
 
 import lombok.Data;
 
-import java.util.List;
 
 @Data
 public class PostDto {
 	
-	private String postId;
+	private int postId;
 	
-	private String majorCategoryId;
+	private int majorCategoryId;
 	
-	private String mentoId;
+	private int mentoId;
 	
-	private String mentoImage;
+	private String memberMajor;
 	
 	private String mentoNickName;
 	
@@ -21,14 +20,13 @@ public class PostDto {
 	
 	private String postContents;
 	
-	private List<String> imageUrls;
+	private String imageUrl;
 	
-	
-	public PostDto(String postId, String majorCategoryId, String mentoId, String mentoImage, String mentoNickName, String postTitle, String postContents) {
+	public PostDto(int postId, int majorCategoryId, int mentoId, String memberMajor, String mentoNickName, String postTitle, String postContents) {
 		this.postId = postId;
 		this.majorCategoryId = majorCategoryId;
 		this.mentoId = mentoId;
-		this.mentoImage = mentoImage;
+		this.memberMajor = memberMajor;
 		this.mentoNickName = mentoNickName;
 		this.postTitle = postTitle;
 		this.postContents = postContents;

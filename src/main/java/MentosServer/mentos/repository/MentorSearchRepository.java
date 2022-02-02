@@ -47,7 +47,7 @@ public class MentorSearchRepository {
 	public List<PostWithProfile> getPosts(GetMentorSearchReq req, String schoolId){
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
-				"select postId, majorCategoryId, memberId, memberNickName, mentoImage, postTitle, postContents, postCreateAt, postUpdateAt " +
+				"select postId, majorCategoryId, memberId, memberNickName, memberMajor, postTitle, postContents, postCreateAt, postUpdateAt " +
 				"from " +
 					"(" +
 					"select * " +
@@ -56,7 +56,6 @@ public class MentorSearchRepository {
 					") T NATURAL JOIN mento " +
 				"where (mentoMajorFirst IN (" + arrayToString + ")" + " OR mentoMajorSecond IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?)";
 		String param = changeParam(req.getSearchText());
-		log.info(searchQuery);
 		Object[] searchParam = new Object[]{param, param, param};
 		return this.jdbcTemplate.query(searchQuery,
 				(rs, rowNum) -> new PostWithProfile(
@@ -64,7 +63,7 @@ public class MentorSearchRepository {
 						rs.getInt("majorCategoryId"),
 						rs.getInt("memberId"),
 						rs.getString("memberNickName"),
-						rs.getString("mentoImage"),
+						rs.getString("memberMajor"),
 						rs.getString("postTitle"),
 						rs.getString("postContents"),
 						rs.getTimestamp("postCreateAt"),
@@ -78,12 +77,11 @@ public class MentorSearchRepository {
 		return "%" + text + "%";
 	}
 	
-	public List<String> getImageUrl(String postId){
+	public List<String> getImageUrl(int postId){
 		String searchImageQuery = "select imageUrl from Image where postId = ?";
-		String searchImageParam = postId;
+		String searchImageParam = Integer.toString(postId);
 		return this.jdbcTemplate.query(searchImageQuery,
-				(rs, rowNum) -> rs.getString("imageUrl")
-				, searchImageParam
-		);
+				(rs, rowNum) -> rs.getString("imageUrl"),
+				searchImageParam);
 	}
 }
