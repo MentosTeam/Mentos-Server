@@ -124,6 +124,7 @@ public enum BaseResponseStatus {
 
     //[POST] /mentoring/registration
     POST_MENTORING_DUPLICATED_MENTORING(false,3302, "해당 멘토에게 수락 요청 대기 중인 멘토링 요청이 있습니다."),
+    INVALID_MENTEEPROFILE(false, 3303, "해당 유저는 멘티 프로필이 없습니다."),
 
     /**
      * 4000 : Database, Server 오류
