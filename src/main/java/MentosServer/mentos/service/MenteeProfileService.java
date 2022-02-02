@@ -2,7 +2,7 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.GetMenteeProfileRes;
-import MentosServer.mentos.model.dto.ProfileDto;
+import MentosServer.mentos.model.dto.MenteeProfileDto;
 import MentosServer.mentos.repository.MenteeProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class MenteeProfileService {
             throw new BaseException(INVALID_MENTEEPROFILE);
         }
         try{
-            ProfileDto profileDto = menteeProfileRepository.getBasicInfoByMentee(memberId);
+            MenteeProfileDto profileDto = menteeProfileRepository.getBasicInfoByMentee(memberId);
             String schoolName = menteeProfileRepository.getSchoolName(profileDto.getSchoolId());
             int numOfMentoring = menteeProfileRepository.getNumOfMentoringByMentee(memberId);
 
