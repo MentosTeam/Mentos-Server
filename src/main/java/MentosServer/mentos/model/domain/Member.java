@@ -18,8 +18,9 @@ public class Member {
     private String memberEmail;
     private String memberPw;
     private int memberSchoolId;
-    private String memberMajor;
+    private int memberMajorId;
     private String memberSex;
+    private String memberImage;
     private int memberMentos;
     private String memberStatus;
     private Timestamp memberCreateAt;
