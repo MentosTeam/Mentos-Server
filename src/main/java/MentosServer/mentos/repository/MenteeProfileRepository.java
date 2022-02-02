@@ -1,7 +1,6 @@
 package MentosServer.mentos.repository;
 
-import MentosServer.mentos.model.dto.GetMenteeProfileRes;
-import MentosServer.mentos.model.dto.ProfileDto;
+import MentosServer.mentos.model.dto.MenteeProfileDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,11 +17,11 @@ public class MenteeProfileRepository {
     }
 
     //멘티 프로필 기본 정보 조회
-    public ProfileDto getBasicInfoByMentee(int memberId){
+    public MenteeProfileDto getBasicInfoByMentee(int memberId){
         String query = "select memberId, memberName, memberNickName, memberStudentId, memberSchoolId, memberMajor, memberSex, mentiMajorFirst, mentiMajorSecond, mentiImage, mentiIntro from MEMBER natural join MENTI where memberId = ?";
         int param = memberId;
         return this.jdbcTemplate.queryForObject(query,
-                (rs, rowNum) -> new ProfileDto(
+                (rs, rowNum) -> new MenteeProfileDto(
                         rs.getInt("memberId"),
                         rs.getString("memberName"),
                         rs.getString("memberNickName"),

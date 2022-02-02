@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class GetMenteeProfileRes {
-    private ProfileDto basicInformation;
+    private MenteeProfileDto basicInformation;
     private String schoolName;
     private int numOfMentoring;
 }
