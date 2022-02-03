@@ -26,7 +26,7 @@ public class MentorSearchController {
 		this.mentorSearchService = mentorSearchService;
 	}
 	
-	@GetMapping("/mentor/search")
+	@GetMapping("/mentee/search")
 	public BaseResponse<GetMentorSearchRes> mentorSearch(@ModelAttribute GetMentorSearchReq req){
 		try {
 			// jwt에서 memberId 뽑아내기

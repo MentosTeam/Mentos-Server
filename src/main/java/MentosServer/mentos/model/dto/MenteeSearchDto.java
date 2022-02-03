@@ -7,13 +7,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class MenteeSearchDto {
 	
-	private String mentiId;
+	private int mentiId;
 	
 	private String mentiNickName;
 	
-	private String mentiMajorFirst;
+	private int mentiMajorFirst;
 	
-	private String mentiMajorSecond;
+	private int mentiMajorSecond;
 	
 	private String mentiImage;
 	
