@@ -5,12 +5,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetMenteeProfileRes {
+public class GetSettingProfileRes {
     private String memberNickName;
     private int memberStudentId;
     private String memberMajor;
-    private int menteeMajorFirst;
-    private int menteeMajorSecond;
-    private String menteeImage;
-    private String menteeIntro;
+    private int memberMajorFirst;
+    private int memberMajorSecond;
+    private String memberImage;
+    private String memberIntro;
+
 }

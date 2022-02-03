@@ -27,10 +27,10 @@ public class SettingController {
 
     //멘토일 시 설정 클릭
     @GetMapping("/mento")
-    public BaseResponse<GetMentoProfileRes> getMentoProfile(){
+    public BaseResponse<GetSettingProfileRes> getMentoProfile(){
         try {
             int memberId = jwtService.getMemberId();
-            GetMentoProfileRes getMentoProfileRes = settingService.getMentoSettingProfile(memberId);
+            GetSettingProfileRes getMentoProfileRes = settingService.getMentoSettingProfile(memberId);
             return new BaseResponse<>(getMentoProfileRes);
         }catch(BaseException e){
             return new BaseResponse(e.getStatus());
@@ -38,10 +38,10 @@ public class SettingController {
     }
     //멘티일 시 설정 클릭
     @GetMapping("/mentee")
-    public BaseResponse<GetMenteeProfileRes> getMenteeProfile(){
+    public BaseResponse<GetSettingProfileRes> getMenteeProfile(){
         try {
             int memberId = jwtService.getMemberId();
-            GetMenteeProfileRes getMenteeProfileRes = settingService.getMenteeSettingProfile(memberId);
+            GetSettingProfileRes getMenteeProfileRes = settingService.getMenteeSettingProfile(memberId);
             return new BaseResponse<>(getMenteeProfileRes);
         }catch(BaseException e){
             return new BaseResponse(e.getStatus());
@@ -52,10 +52,10 @@ public class SettingController {
 
     //학교 전공, 학번 변경
     @PostMapping("/profile/school")
-    public BaseResponse changeSchoolInfo(@RequestParam(required = false) String major,@RequestParam(required = false,defaultValue = "0") int studentId){
+    public BaseResponse changeSchoolInfo(@RequestParam(required = false) String major){
         try{
             int memberId = jwtService.getMemberId();
-            settingService.changeSchoolInfo(memberId,major,studentId);
+            settingService.changeSchoolInfo(memberId,major);
             return new BaseResponse(SUCCESS);
         }catch(BaseException e){
             return new BaseResponse(e.getStatus());
@@ -115,30 +115,6 @@ public class SettingController {
             }
             else if(postIntroReq.getRole()==2){ //멘티
                 settingService.changeMenteeProfileIntro(memberId,postIntroReq);
-            }
-            else{
-                return new BaseResponse(POST_PROFILE_INVALID_ROLE);
-            }
-            return new BaseResponse(SUCCESS);
-        }catch(BaseException e){
-            return new BaseResponse(e.getStatus());
-        }
-    }
-    //멘토스 계열 변경
-    @PostMapping("/profile/mentosMajor")
-    public BaseResponse changeMentosMajor(@RequestBody PostMentosMajorReq mentosMajorReq,BindingResult br){
-//validation 추가
-        if(br.hasErrors()){
-            String errorName = br.getAllErrors().get(0).getDefaultMessage();
-            return new BaseResponse<>(BaseResponseStatus.of(errorName));
-        }
-        try{
-            int memberId = jwtService.getMemberId();
-            if(mentosMajorReq.getRole()==1){ //멘토
-                settingService.changeMentoMentosMajor(memberId,mentosMajorReq);
-            }
-            else if(mentosMajorReq.getRole()==2){ //멘티
-                settingService.changeMenteeMentosMajor(memberId,mentosMajorReq);
             }
             else{
                 return new BaseResponse(POST_PROFILE_INVALID_ROLE);

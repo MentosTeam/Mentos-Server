@@ -117,6 +117,9 @@ public enum BaseResponseStatus {
     //[POST]/pwChange
     NOT_SAME_PASSWORD(false, 3408,"현재 비밀번호가 같지 않습니다."),
     SUCESS_CHANGE_PASSWORD(true,3409,"비밀번호 변경에 성공했습니다"),
+
+    EMPTY_MENTO_PROFILE(false,3410,"멘토 프로필이 존재하지 않습니다."),
+    EMPTY_MENTEE_PROFILE(false,3411,"멘티 프로필이 존재하지 않습니다."),
     /**
      * ROZY
      * 301 -  400 : Response 오류

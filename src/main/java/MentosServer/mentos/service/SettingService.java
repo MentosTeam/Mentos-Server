@@ -3,18 +3,15 @@ package MentosServer.mentos.service;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.domain.Mentee;
 import MentosServer.mentos.model.domain.Mento;
-import MentosServer.mentos.model.domain.PostImage;
 import MentosServer.mentos.model.dto.*;
 import MentosServer.mentos.repository.SettingRepository;
 import MentosServer.mentos.utils.FileUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
-import static MentosServer.mentos.config.BaseResponseStatus.DATABASE_ERROR;
-import static MentosServer.mentos.config.BaseResponseStatus.DUPLICATED_NICKNAME;
+import static MentosServer.mentos.config.BaseResponseStatus.*;
 
 @Slf4j
 @Service
@@ -30,9 +27,9 @@ public class SettingService {
     }
 
     //전공 및 학번 변경
-    public void changeSchoolInfo(int memberId, String major, int studentId) throws BaseException {
+    public void changeSchoolInfo(int memberId, String major) throws BaseException {
         try {
-            settingRepository.changeSchoolInfo(memberId,major,studentId);
+            settingRepository.changeSchoolInfo(memberId,major);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -119,7 +116,7 @@ public class SettingService {
      */
     public void changeMenteeProfileIntro(int memberId, PostIntroReq postIntroReq) throws BaseException {
         try{
-            settingRepository.changeMenteeProfileIntro(memberId,postIntroReq.getIntro());
+            settingRepository.changeMenteeProfileIntro(memberId,postIntroReq);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -129,36 +126,21 @@ public class SettingService {
      */
     public void changeMentoProfileIntro(int memberId, PostIntroReq postIntroReq) throws BaseException {
         try{
-            settingRepository.changeMentoProfileIntro(memberId,postIntroReq.getIntro());
+            settingRepository.changeMentoProfileIntro(memberId,postIntroReq);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    /*
-    멘토스 계열 변경
-     */
-    public void changeMentoMentosMajor(int memberId, PostMentosMajorReq mentosMajorReq) throws BaseException {
-        try{
-            settingRepository.changeMentoMentosMajor(memberId,mentosMajorReq);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public void changeMenteeMentosMajor(int memberId, PostMentosMajorReq mentosMajorReq) throws BaseException {
-        try{
-            settingRepository.changeMenteeMentosMajor(memberId,mentosMajorReq);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
 
     //설정 시 필요한 멘토 정보 조회
-    public GetMentoProfileRes getMentoSettingProfile(int memberId) throws BaseException {
+    public GetSettingProfileRes getMentoSettingProfile(int memberId) throws BaseException {
+        Mento mento = settingRepository.getMentoProfile(memberId);
+        if(mento==null){
+            throw new BaseException(EMPTY_MENTO_PROFILE);
+        }
         try{
-            Mento mento = settingRepository.getMentoProfile(memberId);
-            GetMentoProfileRes getMentoProfileRes = new GetMentoProfileRes(mento.getMember().getMemberNickName(),
+            GetSettingProfileRes getMentoProfileRes = new GetSettingProfileRes(mento.getMember().getMemberNickName(),
                     mento.getMember().getMemberStudentId(),mento.getMember().getMemberMajor(),
                     mento.getMentoMajorFirst(), mento.getMentoMajorSecond(),
                     mento.getMentoImage(), mento.getMentoIntro());
@@ -169,10 +151,13 @@ public class SettingService {
         }
     }
     //설정 시 필요한 멘티 정보 조회
-    public GetMenteeProfileRes getMenteeSettingProfile(int memberId) throws BaseException {
+    public GetSettingProfileRes getMenteeSettingProfile(int memberId) throws BaseException {
+        Mentee mentee = settingRepository.getMenteeProfile(memberId);
+        if(mentee==null){
+            throw new BaseException(EMPTY_MENTEE_PROFILE);
+        }
         try{
-            Mentee mentee = settingRepository.getMenteeProfile(memberId);
-            GetMenteeProfileRes getMenteeProfileRes = new GetMenteeProfileRes(mentee.getMember().getMemberNickName(),
+            GetSettingProfileRes getMenteeProfileRes = new GetSettingProfileRes(mentee.getMember().getMemberNickName(),
                     mentee.getMember().getMemberStudentId(),mentee.getMember().getMemberMajor(),
                     mentee.getMenteeMajorFirst(), mentee.getMenteeMajorSecond(),
                     mentee.getMenteeImage(), mentee.getMenteeIntro());
