@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GetMyPageRes {
     private GetMentorProfileRes mentorProfile;
-    private GetMenteeProfileRes menteeProfileRes;
+    private GetMenteeProfileRes menteeProfile;
 }
