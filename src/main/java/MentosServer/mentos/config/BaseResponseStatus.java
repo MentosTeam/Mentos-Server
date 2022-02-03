@@ -127,6 +127,11 @@ public enum BaseResponseStatus {
     INVALID_MENTEEPROFILE(false, 3303, "해당 유저는 멘티 프로필이 없습니다."),
     INVALID_MENTORPROFILE(false,3304, "해당 유저는 멘토 프로필이 없습니다."),
 
+    //[PATCH] /setting/member-leave
+    INVALID_PASSWORD(false, 3305, "틀린 비밀번호입니다."),
+    FAILED_TO_MEMBERLEAVE(false, 3306, "회원탈퇴에 실패하였습니다."),
+
+
     /**
      * 4000 : Database, Server 오류
      */
