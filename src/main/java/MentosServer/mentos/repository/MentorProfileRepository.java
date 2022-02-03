@@ -65,7 +65,7 @@ public class MentorProfileRepository {
 
     //멘토 작성 post 조회
     public List<PostWithImageDto> getPostsByMemberId(int memberId){
-        String query = "select postId,memberId,majorCategoryId,postTitle,postContents, postCreateAt, postUpdateAt, imageUrl from POST left outer join IMAGE using (postId) where memberId = ?";
+        String query = "select postId,memberId,majorCategoryId,postTitle,postContents, imageUrl from POST left outer join IMAGE using (postId) where memberId = ?";
         int param = memberId;
         return this.jdbcTemplate.query(query,
                 (rs, rowNum) -> new PostWithImageDto(
@@ -74,8 +74,6 @@ public class MentorProfileRepository {
                         rs.getInt("majorCategoryId"),
                         rs.getString("postTitle"),
                         rs.getString("postContents"),
-                        rs.getTimestamp("postCreateAt"),
-                        rs.getTimestamp("postUpdateAt"),
                         rs.getString("imageUrl")
                 ),
                 param);
@@ -83,16 +81,14 @@ public class MentorProfileRepository {
 
     //멘토에 대한 review 조회
     public List<Review> getReviewsOnMentor(int memberId){
-        String query = "select * from REVIEW natural join MENTORING where mentoringMentoId = ?";
+        String query = "select reviewId, mentoringId, reviewText, reviewScore from REVIEW natural join MENTORING where mentoringMentoId = ?";
         int param = memberId;
         return this.jdbcTemplate.query(query,
                 (rs, rowNum) -> new Review(
                         rs.getInt("reviewId"),
                         rs.getInt("mentoringId"),
                         rs.getString("reviewText"),
-                        rs.getDouble("reviewScore"),
-                        rs.getTimestamp("reviewCreateAt"),
-                        rs.getTimestamp("reviewUpdateAt")
+                        rs.getDouble("reviewScore")
                 ),
                 param);
     }

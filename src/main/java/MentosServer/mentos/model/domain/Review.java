@@ -11,6 +11,4 @@ public class Review {
     private int mentoringId;
     private String reviewText;
     private double reviewScore;
-    private Timestamp reviewCreateAt;
-    private Timestamp reviewUpdateAt;
 }

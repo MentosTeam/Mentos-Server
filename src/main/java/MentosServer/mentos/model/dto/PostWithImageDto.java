@@ -20,9 +20,6 @@ public class PostWithImageDto {
     private String postTitle;
     @NotNull
     private String postContents;
-    @NotNull
-    private Timestamp postCreateAt;
-    @NotNull
-    private Timestamp postUpdateAt;
+
     private String ImageUrl;
 }
