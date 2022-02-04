@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @AllArgsConstructor
-
 public class Member {
     private int memberId;
     private String memberName;
