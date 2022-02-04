@@ -34,7 +34,7 @@ public class ProfileController {
      */
     @ResponseBody
     @PostMapping("/setProfile")
-    public BaseResponse<PostProfileRes> createProfile(@RequestBody PostProfileReq postProfileReq){
+    public BaseResponse<PostProfileRes> createProfile(@ModelAttribute PostProfileReq postProfileReq){
         if(postProfileReq.getRole() != 1 && postProfileReq.getRole() != 2){ //역할 설정 여부 확인
             return new BaseResponse<>(POST_PROFILE_INVALID_ROLE);
         }
@@ -52,12 +52,6 @@ public class ProfileController {
 
         if (postProfileReq.getIntroduction().length() < 10){ //자기소개 10글자 이상 입력 확인
             return new BaseResponse<>(POST_PROFILE_SHORT_INTRODUCTION);
-        }
-
-        if (postProfileReq.getImageUrl() != null && (!postProfileReq.getImageUrl().equals(""))) {
-            if (!isRegexImgUrl(postProfileReq.getImageUrl())) {//이미지 확장자 확인
-                return new BaseResponse<>(POST_PROFILE_INVALID_IMAGEURL);
-            }
         }
 
         try{

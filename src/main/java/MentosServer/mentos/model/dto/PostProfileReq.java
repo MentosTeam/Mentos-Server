@@ -1,6 +1,7 @@
 package MentosServer.mentos.model.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -14,5 +15,5 @@ public class PostProfileReq {
     private int majorSecond;
     @NonNull
     private String introduction;
-    private String imageUrl;
+    private MultipartFile imageFile;//이미지 파일
 }
