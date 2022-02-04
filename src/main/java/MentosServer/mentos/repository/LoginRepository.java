@@ -53,6 +53,25 @@ public class LoginRepository {
     }
 
 
+    // 멘토 프로필 확인
+    public int checkMentor(int memberId) {
+        String checkMentorQuery = "select exists(select memberId from mento where memberId = ?)"; // User Table에 해당 멤버 값을 갖는 유저 정보가 존재하는가?
+        int checkMentorParams = memberId; // 해당(확인할) 멤버 값
+        return this.jdbcTemplate.queryForObject(checkMentorQuery,
+                int.class,
+                checkMentorParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
+
+    // 멘티 프로필 확인
+    public int checkMentee(int memberId) {
+        String checkMenteeQuery = "select exists(select memberId from menti where memberId = ?)"; // User Table에 해당 멤버 값을 갖는 유저 정보가 존재하는가?
+        int checkMenteeParams = memberId; // 해당(확인할) 멤버 값
+        return this.jdbcTemplate.queryForObject(checkMenteeQuery,
+                int.class,
+                checkMenteeParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
+    }
+
 
 
 
