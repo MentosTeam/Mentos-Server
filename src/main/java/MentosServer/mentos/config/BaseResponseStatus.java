@@ -21,7 +21,6 @@ public enum BaseResponseStatus {
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
     INVALID_USER_JWT(false,2003,"권한이 없는 유저의 접근입니다."),
-    INVALID_ACCESS(false, 2004, "잘못된 접근입니다."),
 
     // users
     USERS_EMPTY_USER_ID(false, 2010, "유저 아이디 값을 확인해주세요."),
@@ -66,9 +65,6 @@ public enum BaseResponseStatus {
     //[PATCH] /mentoring/stop
     PATCH_INVALID_MENTORING(false,2215, "유효하지 않은 멘토링입니다."),
 
-    //[POST] /mentoring/review
-    POST_REVIEW_EXISTS(false,2220,"리뷰가 이미 등록되어있습니다."),
-
 
     // [POST] /sign-up
     EMPTY_USER_NAME(false,2401,"이름을 입력해주세요"),
@@ -100,10 +96,9 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
-    FAILED_TO_LOGIN_UNACTIVE(false, 3015, "탈퇴한 회원입니다."),
     
     // [POST] /items
-
+    DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
     DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
     VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
     //[DELETE]/board
@@ -159,11 +154,14 @@ public enum BaseResponseStatus {
     FAILDE_TO_DELETEMENTORING(false,4306,"멘토링 요청 취소에 실패하였습니다."),
 
     // [GET] /schoolCertification
-    MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다.");
+    MAIL_SEND_ERROR(false, 4015, "메일 전송에 실패하였습니다."),
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
-
+    //[POST] /mentoring/review
+    INVALID_ACCESS(false, 6000, "잘못된 접근입니다."),
+    FAILED_TO_LOGIN_UNACTIVE(false, 6001, "탈퇴한 회원입니다."),
+    POST_REVIEW_EXISTS(false,6100,"리뷰가 이미 등록되어있습니다.");
 
     private final boolean isSuccess;
     private final int code;
