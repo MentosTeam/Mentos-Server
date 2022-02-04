@@ -80,14 +80,14 @@ public enum BaseResponseStatus {
     EMPTY_USER_SCHOOL_NAME(false,2407,"학교명을 입력해주세요"),
     EMPTY_USER_PASSWORD(false,2408,"비밀번호를 입력해주세요"),
     INVALID_USER_PASSWORD(false,2409,"비밀번호의 형식을 확인해주세요"),
-
+    EMPTY_USER_MAJOR_NAME(false,2410,"전공명을 입력해주세요"),
     // [POST]/board
-    EMPTY_MAJOR_CATEGORY(false,2410,"게시글 전공 카테고리를 선택해주세요"),
-    EMPTY_POST_TITLE(false,2411,"게시글 제목을 입력해주세요"),
-    EMPTY_POST_CONTENTS(false,2412,"게시글 내용을 입력해주세요"),
+    EMPTY_MAJOR_CATEGORY(false,2411,"게시글 전공 카테고리를 선택해주세요"),
+    EMPTY_POST_TITLE(false,2412,"게시글 제목을 입력해주세요"),
+    EMPTY_POST_CONTENTS(false,2413,"게시글 내용을 입력해주세요"),
 
     //[POST]/pwChange
-    EMPTY_TMP_PASSWORD(false,2413,"현재 비밀번호를 입력해주세요"),
+    EMPTY_TMP_PASSWORD(false,2414,"현재 비밀번호를 입력해주세요"),
 
 
 

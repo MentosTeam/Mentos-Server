@@ -29,6 +29,9 @@ public class SignUpReq {
     @NotBlank(message="EMPTY_USER_SCHOOL_NAME")
     private String memberSchoolName;
 
+    @NotBlank(message="EMPTY_USER_MAJOR_NAME")
+    private String memberMajor;
+
     @NotBlank(message="POST_USERS_EMPTY_EMAIL")
     @Email(message="POST_USERS_INVALID_EMAIL")
     private String memberEmail;

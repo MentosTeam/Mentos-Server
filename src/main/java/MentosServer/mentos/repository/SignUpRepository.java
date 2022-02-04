@@ -18,8 +18,8 @@ public class SignUpRepository {
 
     public int createMember(SignUpReq signUpReq) {
         // 회원가입
-        String createUserQuery = "insert into member (memberName,memberNickName,memberStudentId,memberEmail,memberPw,memberSchoolId,memberSex) VALUES (?,?,?,?,?,(select schoolId from schoolCategory where schoolName=?),?)"; // 실행될 동적 쿼리문
-        Object[] createUserParams = new Object[]{signUpReq.getMemberName(),signUpReq.getMemberNickName(),signUpReq.getMemberStudentId(),signUpReq.getMemberEmail(),signUpReq.getMemberPw(),signUpReq.getMemberSchoolName(),signUpReq.getMemberSex()}; // 동적 쿼리의 ?부분에 주입될 값
+        String createUserQuery = "insert into member (memberName,memberNickName,memberStudentId,memberEmail,memberPw,memberSchoolId,memberMajor,memberSex) VALUES (?,?,?,?,?,(select schoolId from schoolCategory where schoolName=?),?,?)"; // 실행될 동적 쿼리문
+        Object[] createUserParams = new Object[]{signUpReq.getMemberName(),signUpReq.getMemberNickName(),signUpReq.getMemberStudentId(),signUpReq.getMemberEmail(),signUpReq.getMemberPw(),signUpReq.getMemberSchoolName(),signUpReq.getMemberMajor(),signUpReq.getMemberSex()}; // 동적 쿼리의 ?부분에 주입될 값
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
         //last_insert_id 대신 쓰는 쿼리문 찾기
