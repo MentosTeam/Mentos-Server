@@ -1,6 +1,9 @@
 package MentosServer.mentos.utils;
 
+import MentosServer.mentos.config.BaseException;
+import MentosServer.mentos.config.BaseResponseStatus;
 import MentosServer.mentos.utils.s3Component.UploadService;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+
+import static MentosServer.mentos.config.BaseResponseStatus.SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +26,7 @@ public class FileUploadService {
      * @param file
      * @return
      */
-    public String uploadS3Image(MultipartFile file){
+    public String uploadS3Image(MultipartFile file) throws BaseException {
         String fileName = createFileName(file.getOriginalFilename());
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentType(file.getContentType());
@@ -30,6 +35,8 @@ public class FileUploadService {
             s3Service.uploadFile(inputStream, objectMetadata, fileName);
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format("파일 변환 중 에러가 발생하였습니다 (%s)", file.getOriginalFilename()));
+        }catch (AmazonServiceException e) {
+            throw new BaseException(SERVER_ERROR);
         }
         return s3Service.getFileUrl(fileName);
     }

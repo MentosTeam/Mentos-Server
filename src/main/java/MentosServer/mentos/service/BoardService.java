@@ -71,7 +71,7 @@ public class BoardService {
      * @param imgFile
      * @return
      */
-    public PostImage imgToUrl(int postId, MultipartFile imgFile) {
+    public PostImage imgToUrl(int postId, MultipartFile imgFile) throws BaseException {
         String imageUrl = fileUploadService.uploadS3Image(imgFile);
 
         return new PostImage(postId,imageUrl);

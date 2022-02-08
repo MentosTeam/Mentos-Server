@@ -2,6 +2,7 @@ package MentosServer.mentos.repository;
 
 import MentosServer.mentos.model.dto.SignUpReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,18 @@ public class SignUpRepository {
         return this.jdbcTemplate.queryForObject(checkNickNameQuery,
                 int.class,
                 memberEmail);
+    }
+    //탈퇴했던 유저인지 확인
+    public int checkWithdrawlMember(String memberEmail){
+        String checkQuery = "select exists(select memberId from member where memberEmail = ?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+        return this.jdbcTemplate.queryForObject(checkQuery,
+                int.class,
+                memberEmail);
+    }
+
+    //재가입 위해서 데이터 삭제
+    public void deleteMember(String memberEmail){
+        String query = "delete from member where memberEmail=?";
+        this.jdbcTemplate.update(query,memberEmail);
     }
 }

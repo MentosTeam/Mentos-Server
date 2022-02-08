@@ -46,6 +46,9 @@ public class SignUpService {
         }
         //실제 비즈니스 로직
         try {
+            if(signUpRepository.checkWithdrawlMember(signUpReq.getMemberEmail())==1){
+                signUpRepository.deleteMember(signUpReq.getMemberEmail());
+            }
             int memberId = signUpRepository.createMember(signUpReq);
             String memberJwt = jwtService.createJwt(memberId);
             return new SignUpRes(memberId,memberJwt);
