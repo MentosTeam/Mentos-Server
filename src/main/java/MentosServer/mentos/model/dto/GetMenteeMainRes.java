@@ -13,5 +13,5 @@ public class GetMenteeMainRes {
 	
 	private List<MentorCategory> MentorCategory;
 	
-	private List<MainMentorDto> otherMentor;
+	private List<MainOtherMentorRes> otherMentor;
 }

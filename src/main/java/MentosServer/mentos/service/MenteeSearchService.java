@@ -62,7 +62,7 @@ public class MenteeSearchService {
 		ArrayList<MenteeSearchDto> ret = new ArrayList<MenteeSearchDto>();
 		Collections.sort(arr);
 		for(MenteeWithNickName m : arr){
-			ret.add(new MenteeSearchDto(m.getMemberId(), m.getMemberNickName(), m.getMentiMajorFirst(), m.getMentiMajorSecond(),
+			ret.add(new MenteeSearchDto(m.getMemberId(), m.getMemberNickName(), m.getMemberStudentId(), m.getMentiMajorFirst(), m.getMentiMajorSecond(),
 					m.getMentiImage(), m.getMentiIntro()));
 		}
 		return ret;

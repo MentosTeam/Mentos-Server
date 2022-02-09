@@ -57,13 +57,14 @@ public class MainService {
 			// 각 멘토의 글들을 전공에 맞게 분할 (First = 멘티 1 전공, Second = 멘티 2전공, Other = 그 외 전공)
 			GetMenteeMainRes ret = new GetMenteeMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>());
 
-			MentorCategory first = new MentorCategory(mainDto.getMajorFirst(), new ArrayList<MainMentorDto>());
-			MentorCategory second = new MentorCategory(mainDto.getMajorSecond(), new ArrayList<MainMentorDto>());
+			MentorCategory first = new MentorCategory(mainDto.getMajorFirst(), new ArrayList<MainMentorRes>());
+			MentorCategory second = new MentorCategory(mainDto.getMajorSecond(), new ArrayList<MainMentorRes>());
 			
 			for(MainMentorDto mentor : mentorList) {
-				if(mentor.getPostCategoryId() == mainDto.getMajorFirst()) first.getMentorPost().add(mentor);
-				else if(mentor.getPostCategoryId() == mainDto.getMajorSecond()) second.getMentorPost().add(mentor);
-				else ret.getOtherMentor().add(mentor);
+				if(mentor.getPostCategoryId() == mainDto.getMajorFirst()) first.getMentorPost().add(changeMentorRes(mentor));
+				else if(mentor.getPostCategoryId() == mainDto.getMajorSecond()) second.getMentorPost().add(changeMentorRes(mentor));
+				else ret.getOtherMentor().add(new MainOtherMentorRes(mentor.getNickName(), mentor.getMentorMajor(), mentor.getMentorImage(),
+							Integer.toString(mentor.getMentorYear()) + "학번", mentor.getMentorStudentId(), mentor.getFirstMajorCategory(), mentor.getSecondMajorCategory()));
 			}
 			
 			ret.getMentorCategory().add(first);
@@ -73,5 +74,10 @@ public class MainService {
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
 			throw new BaseException(DATABASE_ERROR);
 		}
+	}
+	
+	private MainMentorRes changeMentorRes(MainMentorDto mentor){
+		return new MainMentorRes(mentor.getNickName(), mentor.getMentorMajor(), mentor.getMentorImage(), mentor.getMentorStudentId(),
+				mentor.getPostId(), mentor.getPostCategoryId(), mentor.getPostTitle(), mentor.getPostContents(), mentor.getPostImgUrl());
 	}
 }
