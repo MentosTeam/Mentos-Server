@@ -1,6 +1,7 @@
 package MentosServer.mentos.utils.s3Component;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -10,7 +11,7 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 @Component
 public class AwsS3UploadService implements UploadService{
-    private final AmazonS3 amazonS3;
+    private final AmazonS3Client amazonS3;
     private final S3Component component;
 
     @Override

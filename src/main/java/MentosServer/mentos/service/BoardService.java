@@ -53,7 +53,7 @@ public class BoardService {
         Post post = new Post(postPostsReq.getMajorCategoryId(),memberIdByJwt,
                 postPostsReq.getPostTitle(),postPostsReq.getPostContents());;
         try{
-            if(postPostsReq.getImageFile()==null){ //이미지 첨부 안한 경우
+            if(postPostsReq.getImageFile()==null||postPostsReq.getImageFile().isEmpty()){ //이미지 첨부 안한 경우
                 return new PostPostsRes(boardRepository.createPost(post));
             }
             int postId = boardRepository.createPost(post); //글을 먼저 입력
