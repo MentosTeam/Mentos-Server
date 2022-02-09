@@ -38,9 +38,6 @@ public class ProfileController {
         if(postProfileReq.getRole() != 1 && postProfileReq.getRole() != 2){ //역할 설정 여부 확인
             return new BaseResponse<>(POST_PROFILE_INVALID_ROLE);
         }
-        if(postProfileReq.getMemberId() == 0){ //memberId 입력 확인
-            return new BaseResponse<>(POST_PROFILE_EMPTY_MEMBERID);
-        }
 
         if(postProfileReq.getMajorFirst() == 0){ //첫 번째 멘토쓰(major) 선택 여부 확인
             return new BaseResponse<>(POST_PROFILE_EMPTY_MAJORFIRST);
@@ -55,10 +52,7 @@ public class ProfileController {
         }
 
         try{
-            if(jwtService.getMemberId() != postProfileReq.getMemberId()){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
-            PostProfileRes postProfileRes = profileService.createProfile(postProfileReq);
+            PostProfileRes postProfileRes = profileService.createProfile(postProfileReq, jwtService.getMemberId());
             return new BaseResponse<>(postProfileRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
