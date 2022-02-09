@@ -11,5 +11,5 @@ public class MentorCategory {
 	
 	private int mentorCategoryId;
 	
-	private List<MainMentorDto> mentorPost;
+	private List<MainMentorRes> mentorPost;
 }

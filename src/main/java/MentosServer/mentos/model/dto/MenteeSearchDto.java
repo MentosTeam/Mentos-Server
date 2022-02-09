@@ -11,6 +11,8 @@ public class MenteeSearchDto {
 	
 	private String mentiNickName;
 	
+	private int memberStudentId;
+	
 	private int mentiMajorFirst;
 	
 	private int mentiMajorSecond;
