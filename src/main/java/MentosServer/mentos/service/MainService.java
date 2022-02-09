@@ -42,7 +42,7 @@ public class MainService {
 			}
 			
 			ret.getMenteeCategory().add(first);
-			ret.getMenteeCategory().add(second);
+			if(second.getMenteeCategoryId() != 0) ret.getMenteeCategory().add(second);
 			
 			return ret;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
@@ -67,7 +67,7 @@ public class MainService {
 			}
 			
 			ret.getMentorCategory().add(first);
-			ret.getMentorCategory().add(second);
+			if(second.getMentorCategoryId() != 0) ret.getMentorCategory().add(second);
 			
 			return ret;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
