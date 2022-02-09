@@ -17,16 +17,34 @@ public class ProfileRepository {
     }
 
     //멘토 프로필 등록
-    public int createMentoProfile(PostProfileReq postProfileReq, String imageUrl){
-        String query = "insert into MENTO(memberId, mentoMajorFirst, mentoMajorSecond, mentoIntro, mentoImage) values(?,?,?,?,?)";
-        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), imageUrl};
+    public int createMentoProfile(PostProfileReq postProfileReq, String imageUrl, int memberId){
+        String query;
+        Object[] params;
+
+        if(imageUrl != null){
+            query = "insert into MENTO(memberId, mentoMajorFirst, mentoMajorSecond, mentoIntro, mentoImage) values(?,?,?,?,?)";
+            params = new Object[]{memberId, postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), imageUrl};
+        }
+        else{
+            query = "insert into MENTO(memberId, mentoMajorFirst, mentoMajorSecond, mentoIntro) values(?,?,?,?)";
+            params = new Object[]{memberId, postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction()};
+        }
         return this.jdbcTemplate.update(query, params);
     }
 
     //멘티 프로필 등록
-    public int createMentiProfile(PostProfileReq postProfileReq, String imageUrl){
-        String query = "insert into MENTI(memberId, mentiMajorFirst, mentiMajorSecond, mentiIntro, mentiImage) values(?,?,?,?,?)";
-        Object[] params = new Object[]{postProfileReq.getMemberId(), postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), imageUrl};
+    public int createMentiProfile(PostProfileReq postProfileReq, String imageUrl, int memberId){
+        String query;
+        Object[] params;
+
+        if(imageUrl != null){
+            query = "insert into MENTI(memberId, mentiMajorFirst, mentiMajorSecond, mentiIntro, mentiImage) values(?,?,?,?,?)";
+            params = new Object[]{memberId, postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction(), imageUrl};
+        }
+        else{
+            query = "insert into MENTI(memberId, mentiMajorFirst, mentiMajorSecond, mentiIntro) values(?,?,?,?)";
+            params = new Object[]{memberId, postProfileReq.getMajorFirst(), postProfileReq.getMajorSecond(), postProfileReq.getIntroduction()};
+        }
         return this.jdbcTemplate.update(query, params);
     }
 
