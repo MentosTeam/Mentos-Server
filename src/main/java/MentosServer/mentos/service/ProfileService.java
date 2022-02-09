@@ -41,7 +41,7 @@ public class ProfileService {
         try{
             String imageUrl = null;
 
-            if(!postProfileReq.getImageFile().isEmpty() || postProfileReq.getImageFile() != null) {
+            if(postProfileReq.getImageFile() != null && !postProfileReq.getImageFile().isEmpty()) {
                 imageUrl = fileUploadService.uploadS3Image(postProfileReq.getImageFile());
             }
 
