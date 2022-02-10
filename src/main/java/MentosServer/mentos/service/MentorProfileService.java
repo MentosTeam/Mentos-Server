@@ -48,4 +48,13 @@ public class MentorProfileService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //내가 쓴 멘토쓰 글 찾기 목록
+    public List<PostWithImageDto> getMyPosts(int memberId) throws BaseException{
+        try{
+            return mentorProfileRepository.getPostsByMemberId(memberId);
+        } catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
