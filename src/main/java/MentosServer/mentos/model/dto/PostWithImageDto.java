@@ -10,16 +10,12 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 public class PostWithImageDto {
-    @NotNull
     private int postId;
-    @NotNull
     private int majorCategoryId;
-    @NotNull
-    private int memberId;
-    @NotNull
+    private int mentoId;
+    private String memberMajor;
+    private String mentoNickName;
     private String postTitle;
-    @NotNull
     private String postContents;
-
-    private String ImageUrl;
+    private String imageUrl;
 }

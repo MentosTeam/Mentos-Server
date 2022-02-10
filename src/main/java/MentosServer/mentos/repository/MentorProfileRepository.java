@@ -4,6 +4,7 @@ import MentosServer.mentos.model.domain.Post;
 import MentosServer.mentos.model.domain.Review;
 import MentosServer.mentos.model.dto.MentorProfileDto;
 import MentosServer.mentos.model.dto.MentosCountDto;
+import MentosServer.mentos.model.dto.PostDto;
 import MentosServer.mentos.model.dto.PostWithImageDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,13 +66,15 @@ public class MentorProfileRepository {
 
     //멘토 작성 post 조회
     public List<PostWithImageDto> getPostsByMemberId(int memberId){
-        String query = "select postId,memberId,majorCategoryId,postTitle,postContents, imageUrl from POST left outer join IMAGE using (postId) where memberId = ?";
+        String query = "select postId, majorCategoryId, memberId, memberMajor, memberNickName, postTitle, postContents, imageUrl from member NATURAL JOIN (post left outer join image using (postId)) where memberId = ?";
         int param = memberId;
         return this.jdbcTemplate.query(query,
                 (rs, rowNum) -> new PostWithImageDto(
                         rs.getInt("postId"),
-                        rs.getInt("memberId"),
                         rs.getInt("majorCategoryId"),
+                        rs.getInt("memberId"),
+                        rs.getString("memberMajor"),
+                        rs.getString("memberNickName"),
                         rs.getString("postTitle"),
                         rs.getString("postContents"),
                         rs.getString("imageUrl")
