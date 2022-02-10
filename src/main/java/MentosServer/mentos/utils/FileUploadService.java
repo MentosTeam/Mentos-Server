@@ -45,7 +45,7 @@ public class FileUploadService {
     }
     //기존 확장자명을 유지한 채, 유니크한 파일의 이름을 생성하는 로직
     private String createFileName(String originalFileName) {
-        return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
+        return "images/"+UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
     }
 
     //파일의 확장자명을 가져오는 로직
@@ -59,7 +59,7 @@ public class FileUploadService {
     // 파일을 삭제하는 메소드
     public void deleteS3Image(String fileUrl){
         String[] fileParsing = fileUrl.split("/");
-        s3Service.deleteFile(fileParsing[fileParsing.length-1]);
+        s3Service.deleteFile("images/"+fileParsing[fileParsing.length-1]);
     }
 
 }
