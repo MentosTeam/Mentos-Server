@@ -171,6 +171,7 @@ public enum BaseResponseStatus {
     //[POST] /mentoring/review
     INVALID_ACCESS(false, 6000, "잘못된 접근입니다."),
     FAILED_TO_LOGIN_UNACTIVE(false, 6001, "탈퇴한 회원입니다."),
+    INVALID_PATH_VARIABLE(false, 6002, "없는 경로입니다."),
     POST_REVIEW_EXISTS(false,6100,"리뷰가 이미 등록되어있습니다.");
 
     private final boolean isSuccess;
