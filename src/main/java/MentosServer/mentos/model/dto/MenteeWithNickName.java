@@ -21,7 +21,7 @@ public class MenteeWithNickName implements Comparable<MenteeWithNickName>{
 	
 	private String mentiImage;
 	
-	private String mentiIntro;
+	private String memberMajor;
 	
 	private Timestamp mentiCreateAt;
 	
