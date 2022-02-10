@@ -2,6 +2,7 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
+import MentosServer.mentos.model.dto.GetMentoringStatus;
 import MentosServer.mentos.model.dto.MentoringStatusRes;
 import MentosServer.mentos.repository.LoginRepository;
 import MentosServer.mentos.repository.MentoringStatusRepository;
@@ -29,14 +30,19 @@ public class MentoringStatusService {
         this.jwtService = jwtService;
     }
 
-    public List<MentoringStatusRes> getMentoringList(int memberId, String profile) throws BaseException {
+    public GetMentoringStatus getMentoringList(int memberId, String profile) throws BaseException {
         try {
             if(Objects.equals(profile, "mentor")){
-            List<MentoringStatusRes> getMentoringList = mentoringStatusRepository.getMentorMentoringList(memberId);
-            return getMentoringList;}
+            List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMentorMentoringNowList(memberId);
+            List<MentoringStatusRes> getMentoringEndList = mentoringStatusRepository.getMentorMentoringEndList(memberId);
+            GetMentoringStatus getMentorMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList);
+            return getMentorMentoring;}
             else if(Objects.equals(profile, "mentee")){
-                List<MentoringStatusRes> getMentoringList = mentoringStatusRepository.getMenteeMentoringList(memberId);
-                return getMentoringList;}
+                List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMenteeMentoringNowList(memberId);
+                List<MentoringStatusRes> getMentoringEndList = mentoringStatusRepository.getMenteeMentoringEndList(memberId);
+                GetMentoringStatus getMenteeMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList);
+
+                return getMenteeMentoring;}
             else{
                 throw new BaseException(DATABASE_ERROR);
             }

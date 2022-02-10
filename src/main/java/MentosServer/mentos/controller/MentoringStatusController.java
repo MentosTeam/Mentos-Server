@@ -2,6 +2,7 @@ package MentosServer.mentos.controller;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
+import MentosServer.mentos.model.dto.GetMentoringStatus;
 import MentosServer.mentos.model.dto.MentoringStatusRes;
 import MentosServer.mentos.model.dto.PostLoginReq;
 import MentosServer.mentos.model.dto.PostLoginRes;
@@ -36,12 +37,12 @@ public class MentoringStatusController {
 
 
     /**
-     * 로그인 API
-     * [POST] /members/logIn
+     * 메토링 API
+     * [GET] /members/mentoring/{memberId}/{profile}
      */
     @ResponseBody
     @GetMapping("/mentoring/{memberId}/{profile}")
-    public BaseResponse<List<MentoringStatusRes>> mentoringStatus(@PathVariable("memberId") int memberId, @PathVariable("profile") String profile) {
+    public BaseResponse<GetMentoringStatus> mentoringStatus(@PathVariable("memberId") int memberId, @PathVariable("profile") String profile) {
 
         try {
             int userIdxByJwt = jwtService.getMemberId();
@@ -50,16 +51,14 @@ public class MentoringStatusController {
             }
             if(Objects.equals(profile, "mentor")){
 
-                List<MentoringStatusRes> getStatusRes = mentoringStatusService.getMentoringList(memberId, "mentor");
+                GetMentoringStatus getStatusRes = mentoringStatusService.getMentoringList(memberId, "mentor");
                 return new BaseResponse<>(getStatusRes);
             }
-            else if(Objects.equals(profile, "mentee")){
-                List<MentoringStatusRes> getStatusRes = mentoringStatusService.getMentoringList(memberId, "mentee");
+            else {
+                GetMentoringStatus getStatusRes = mentoringStatusService.getMentoringList(memberId, "mentee");
                 return new BaseResponse<>(getStatusRes);
             }
-            else{
-                return new BaseResponse<>(INVALID_PATH_VARIABLE);
-            }
+
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
