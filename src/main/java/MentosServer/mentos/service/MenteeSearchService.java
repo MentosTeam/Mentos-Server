@@ -62,8 +62,8 @@ public class MenteeSearchService {
 		ArrayList<MenteeSearchDto> ret = new ArrayList<MenteeSearchDto>();
 		Collections.sort(arr);
 		for(MenteeWithNickName m : arr){
-			ret.add(new MenteeSearchDto(m.getMemberId(), m.getMemberNickName(), m.getMemberStudentId(), m.getMentiMajorFirst(), m.getMentiMajorSecond(),
-					m.getMentiImage(), m.getMentiIntro()));
+			ret.add(new MenteeSearchDto(m.getMemberId(), m.getMemberNickName(), Integer.toString(m.getMemberStudentId()) + "학번", m.getMentiMajorFirst(), m.getMentiMajorSecond(),
+					m.getMentiImage(), m.getMemberMajor()));
 		}
 		return ret;
 	}

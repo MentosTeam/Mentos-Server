@@ -37,7 +37,7 @@ public class MenteeSearchRepository {
 	public List<MenteeWithNickName> getMentee(GetMenteeSearchReq req, String schoolId){
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
-				"SELECT memberId, memberStudentId, mentiMajorFirst, mentiMajorSecond, memberNickName, mentiImage, mentiIntro, mentiCreateAt, mentiUpdateAt" +
+				"SELECT memberId, memberStudentId, mentiMajorFirst, mentiMajorSecond, memberNickName, mentiImage, memberMajor, mentiCreateAt, mentiUpdateAt" +
 						" FROM menti NATURAL JOIN member" +
 						" WHERE (mentiMajorFirst IN (" + arrayToString + ") OR mentiMajorSecond IN (" + arrayToString + ")) AND memberStatus = 'ACTIVE' AND memberSchoolId = "+schoolId +
 						" AND (memberName LIKE ? OR memberNickName LIKE ? OR mentiIntro LIKE ?)";
@@ -51,7 +51,7 @@ public class MenteeSearchRepository {
 						rs.getInt("mentiMajorSecond"),
 						rs.getString("memberNickName"),
 						rs.getString("mentiImage"),
-						rs.getString("mentiIntro"),
+						rs.getString("memberMajor"),
 						rs.getTimestamp("mentiCreateAt"),
 						rs.getTimestamp("mentiUpdateAt")
 				),
