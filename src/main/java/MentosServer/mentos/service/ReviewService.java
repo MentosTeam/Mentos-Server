@@ -41,18 +41,21 @@ public class ReviewService {
             //멘토링의 멘티와 리뷰의 멘티가 같지 않다면 에러 출력
         }
 
-        if(mentoringRepository.checkMentoringByMenti(mentoring.getMentoringId(), mentoring.getMentoringMentiId(), 1) == 0){
-            throw new BaseException(PATCH_INVALID_MENTORING);
-            //멘토링의 유효여부 확인
-        }
 
         if(reviewRepository.checkReview(mentoring.getMentoringId())==1){
             throw new BaseException(POST_REVIEW_EXISTS);
             //리뷰가 이미 등록되어 있다면 에러 출력
         }
 
+        if(mentoring.getMentoringStatus()!=2){
+            throw new BaseException(PATCH_INVALID_MENTORING);
+        }
+        //종료된 멘토링이 아니라면 에러출력
+
         try {
-            int reviewId = reviewRepository.createReview(postReviewReq);
+            int reviewId = reviewRepository.createReview(postReviewReq);//리뷰 등록
+            reviewRepository.sumScore(mentoring.getMentoringId(), postReviewReq.getReviewScore());//멘토 평점 등록
+            reviewRepository.updateMentos(memberId, mentoring.getMentoringMentos());//멘티 멘토스 반환
             return new PostReviewRes(reviewId, postReviewReq.getReviewScore());
 
         } catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
