@@ -41,6 +41,27 @@ public class ReviewRepository {
         return this.jdbcTemplate.queryForObject(lastInserIdQuery, int.class); // 해당 쿼리문의 결과 마지막으로 삽인된 유저의 userIdx번호를 반환한다.
     }
 
+    // 멘토 평점 추가
+    public int sumScore(int mentoringId, double mentoScore) {
+
+        String MentorSQL ="select mentoringMentoId from mentoring where mentoringId = ?";
+        int mentorId = this.jdbcTemplate.queryForObject(MentorSQL,int.class, mentoringId);
+
+
+        String updateScoreQuery = "update mento set mentoScore = mentoScore + ? where memberId = ?"; // 실행될 동적 쿼리문
+        //Object[] createReviewParams = new Object[]{mentoScore, memberId}; // 동적 쿼리의 ?부분에 주입될 값
+        return this.jdbcTemplate.update(updateScoreQuery, mentoScore, mentorId);
+    }
+
+    // 멘티 멘토스 받기
+    public int updateMentos(int memberId,int mentoringMentos) {
+        String updateMentosQuery = "update member set memberMentos = memberMentos + ? where memberId = ?"; // 실행될 동적 쿼리문
+        //Object[] createMentosParams = new Object[]{mentoringMentos, memberId}; // 동적 쿼리의 ?부분에 주입될 값
+        return this.jdbcTemplate.update(updateMentosQuery, mentoringMentos, memberId);
+    }
+
+
+
 
 
 }

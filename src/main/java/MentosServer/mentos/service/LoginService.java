@@ -51,7 +51,11 @@ public class LoginService {
             int memberId = loginRepository.getPwd(postLoginReq).getMemberId();
 
             String jwt = jwtService.createJwt(memberId);
-            return new PostLoginRes(memberId,jwt);
+            int mentor = loginRepository.checkMentor(memberId);
+            int mentee = loginRepository.checkMentee(memberId);
+            //멘토,멘티 프로필 유무 반환
+            //존재하면1, 없으면0
+            return new PostLoginRes(memberId,jwt, mentor, mentee);
 
 
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.

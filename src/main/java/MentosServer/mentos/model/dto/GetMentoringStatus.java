@@ -15,4 +15,5 @@ public class GetMentoringStatus {
     private List<EndMentoringRes> endMentoring;
     private List<MentoringStatusRes> waitMentoring;
 
+
 }

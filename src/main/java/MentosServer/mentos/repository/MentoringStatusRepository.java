@@ -1,5 +1,6 @@
 package MentosServer.mentos.repository;
 
+
 import MentosServer.mentos.model.dto.EndMentoringRes;
 import MentosServer.mentos.model.dto.MentoringStatusRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ public class MentoringStatusRepository {
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
-
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
@@ -34,7 +34,9 @@ public class MentoringStatusRepository {
         String mentoringMenteeName = this.jdbcTemplate.queryForObject(MenteeSQL,String.class, MenteeId);
 
 
+
         String getMentoringQuery = "select mentoringId, mentoringCount, majorCategoryId, mentoringMentos from mentoring where mentoringMentoId = ? and mentoringStatus = 1"; // 해당 멤버를 만족하는 멘토링을 조회하는 쿼리문
+
         int getMemberIdParams = memberId;
 
 
@@ -44,7 +46,6 @@ public class MentoringStatusRepository {
                         rs.getInt("mentoringCount"),
                         rs.getInt("majorCategoryId"),
                         rs.getInt("mentoringMentos"),
-
                         mentoringMentorName,
                         mentoringMenteeName
                         ),
@@ -52,6 +53,7 @@ public class MentoringStatusRepository {
     }
 
     // 해당 멘토의 멘토링 정보 조회
+
     public List<EndMentoringRes> getMentorMentoringEndList(int memberId) {
         String MentorSQL ="select memberName from member where memberId = ?";
         String mentoringMentorName = this.jdbcTemplate.queryForObject(MentorSQL,String.class, memberId);
@@ -94,7 +96,9 @@ public class MentoringStatusRepository {
         String mentoringMenteeName = this.jdbcTemplate.queryForObject(MenteeSQL,String.class, MenteeId);
 
 
+
         String getMentoringQuery = "select mentoringId, mentoringCount, majorCategoryId, mentoringMentos from mentoring where mentoringMentoId = ? and mentoringStatus = 0"; // 해당 멤버를 만족하는 멘토링을 조회하는 쿼리문
+
         int getMemberIdParams = memberId;
 
 
@@ -122,7 +126,9 @@ public class MentoringStatusRepository {
         String MentorSQL ="select memberName from member where memberId = ?";
         String mentoringMentorName = this.jdbcTemplate.queryForObject(MentorSQL,String.class, MentorId);
 
+
         String getMentoringQuery = "select mentoringId, mentoringCount, majorCategoryId, mentoringMentos from mentoring where mentoringMentiId =? and mentoringStatus=1"; // 해당 멤버를 만족하는 멘토링을 조회하는 쿼리문
+
         int getMemberIdParams = memberId;
         return this.jdbcTemplate.query(getMentoringQuery,
                 (rs, rowNum) -> new MentoringStatusRes(
@@ -137,6 +143,7 @@ public class MentoringStatusRepository {
     }
 
     // 해당 멘티의 멘토링 정보 조회
+
     public List<EndMentoringRes> getMenteeMentoringEndList(int memberId) {
         String MenteeSQL ="select memberName from member where memberId = ?";
         String mentoringMenteeName = this.jdbcTemplate.queryForObject(MenteeSQL,String.class, memberId);
@@ -179,6 +186,7 @@ public class MentoringStatusRepository {
         String mentoringMentorName = this.jdbcTemplate.queryForObject(MentorSQL,String.class, MentorId);
 
         String getMentoringQuery = "select mentoringId, mentoringCount, majorCategoryId, mentoringMentos from mentoring where mentoringMentiId =? and mentoringStatus=0"; // 해당 멤버를 만족하는 멘토링을 조회하는 쿼리문
+
         int getMemberIdParams = memberId;
         return this.jdbcTemplate.query(getMentoringQuery,
                 (rs, rowNum) -> new MentoringStatusRes(
@@ -191,7 +199,6 @@ public class MentoringStatusRepository {
                 ), // RowMapper(위의 링크 참조): 원하는 결과값 형태로 받기
                 getMemberIdParams);
     }
-
 
 
 }
