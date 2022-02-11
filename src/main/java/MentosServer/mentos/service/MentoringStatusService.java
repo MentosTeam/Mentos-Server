@@ -49,6 +49,7 @@ public class MentoringStatusService {
 
                 GetMentoringStatus getMenteeMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList, getMentoringWaitList);
 
+
                 return getMenteeMentoring;}
             else{
                 throw new BaseException(DATABASE_ERROR);

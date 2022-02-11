@@ -5,19 +5,13 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class MainMentorDto {
+public class MainMentorRes {
 	
 	private String nickName;
 	
 	private String mentorMajor; // 입력한 전공
 	
 	private String mentorImage;
-	
-	private int mentorYear; // 학번
-	
-	private int firstMajorCategory;
-	
-	private int secondMajorCategory;
 	
 	private int mentorStudentId; // 글 쓴 멘토 Id
 	

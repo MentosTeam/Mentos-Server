@@ -41,13 +41,11 @@ public class MentoringStatusController {
      * [GET] /members/mentoring/{memberId}/{profile}
      */
     @ResponseBody
-
     @GetMapping("/mentoring/{profile}")
     public BaseResponse<GetMentoringStatus> mentoringStatus(@PathVariable("profile") String profile) {
 
         try {
             int memberId = jwtService.getMemberId();
-
 
             if(Objects.equals(profile, "mentor")){
 

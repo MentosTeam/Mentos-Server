@@ -7,6 +7,7 @@ import MentosServer.mentos.repository.ProfileRepository;
 import MentosServer.mentos.utils.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
 
@@ -22,12 +23,12 @@ public class ProfileService {
     }
 
     //프로필 등록
-    public PostProfileRes createProfile(PostProfileReq postProfileReq) throws BaseException {
+    public PostProfileRes createProfile(PostProfileReq postProfileReq, int memberId) throws BaseException {
         int exitMento, exitMenti;
 
         try{
-            exitMento = profileRepository.checkMentoProfile(postProfileReq.getMemberId()); //멘토 프로필 존재 여부
-            exitMenti = profileRepository.checkMentiProfile(postProfileReq.getMemberId()); //멘티 프로필 존재 여부
+            exitMento = profileRepository.checkMentoProfile(memberId); //멘토 프로필 존재 여부
+            exitMenti = profileRepository.checkMentiProfile(memberId); //멘티 프로필 존재 여부
         }catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -36,28 +37,24 @@ public class ProfileService {
             throw new BaseException(POST_DUPLICATED_PROFILE);
         }
 
-        PostProfileRes postProfileRes = new PostProfileRes(postProfileReq.getMemberId(), "");
+        PostProfileRes postProfileRes = new PostProfileRes(memberId, "");
         try{
             String imageUrl = null;
 
-            if ((postProfileReq.getRole() == 1 && exitMento == 0) || ((exitMento != exitMenti) && exitMento == 0)) {//멘토 프로필 생성
-                if(postProfileReq.getImageFile() != null) {
-                    imageUrl = fileUploadService.uploadS3Image(postProfileReq.getImageFile());
-                }
+            if(postProfileReq.getImageFile() != null && !postProfileReq.getImageFile().isEmpty()) {
+                imageUrl = fileUploadService.uploadS3Image(postProfileReq.getImageFile());
+            }
 
-                if(profileRepository.createMentoProfile(postProfileReq, imageUrl) == 0){
-                    throw new BaseException(FAILED_TO_SETPROFILE);
-                }
+            if ((postProfileReq.getRole() == 1 && exitMento == 0) || ((exitMento != exitMenti) && exitMento == 0)) {//멘토 프로필 생성
+
+                profileRepository.createMentoProfile(postProfileReq, imageUrl, memberId);
+
                 postProfileRes.setProfile("멘토 프로필 생성");
             }
             else if ((postProfileReq.getRole() == 2 && exitMenti == 0) || ((exitMento != exitMenti) && exitMento == 1)) {//멘티 프로필 생성
-                if(postProfileReq.getImageFile() != null) {
-                    imageUrl = fileUploadService.uploadS3Image(postProfileReq.getImageFile());
-                }
 
-                if(profileRepository.createMentiProfile(postProfileReq, imageUrl) == 0){
-                    throw new BaseException(FAILED_TO_SETPROFILE);
-                }
+                profileRepository.createMentiProfile(postProfileReq, imageUrl, memberId);
+
                 postProfileRes.setProfile("멘티 프로필 생성");
             }
         } catch (Exception e) {

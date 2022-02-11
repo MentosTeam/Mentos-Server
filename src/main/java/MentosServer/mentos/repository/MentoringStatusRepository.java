@@ -1,7 +1,6 @@
 package MentosServer.mentos.repository;
-
-
 import MentosServer.mentos.model.dto.EndMentoringRes;
+
 import MentosServer.mentos.model.dto.MentoringStatusRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,7 +13,6 @@ import java.util.List;
 public class MentoringStatusRepository {
 
     private JdbcTemplate jdbcTemplate;
-
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -55,6 +53,7 @@ public class MentoringStatusRepository {
     // 해당 멘토의 멘토링 정보 조회
 
     public List<EndMentoringRes> getMentorMentoringEndList(int memberId) {
+
         String MentorSQL ="select memberName from member where memberId = ?";
         String mentoringMentorName = this.jdbcTemplate.queryForObject(MentorSQL,String.class, memberId);
 
@@ -143,8 +142,8 @@ public class MentoringStatusRepository {
     }
 
     // 해당 멘티의 멘토링 정보 조회
-
     public List<EndMentoringRes> getMenteeMentoringEndList(int memberId) {
+
         String MenteeSQL ="select memberName from member where memberId = ?";
         String mentoringMenteeName = this.jdbcTemplate.queryForObject(MenteeSQL,String.class, memberId);
 
@@ -153,7 +152,6 @@ public class MentoringStatusRepository {
 
         String MentorSQL ="select memberName from member where memberId = ?";
         String mentoringMentorName = this.jdbcTemplate.queryForObject(MentorSQL,String.class, MentorId);
-
 
 
         String getMentoringQuery = "select Mentoring.mentoringId, mentoringCount, majorCategoryId, mentoringMentos, count(review.mentoringId) AS reviewCheck from MENTORING INNER JOIN review ON review.mentoringId=Mentoring.mentoringId where mentoringMentiId = ? and mentoringStatus = 2";

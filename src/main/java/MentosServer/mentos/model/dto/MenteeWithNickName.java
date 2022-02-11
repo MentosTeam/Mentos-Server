@@ -11,6 +11,8 @@ public class MenteeWithNickName implements Comparable<MenteeWithNickName>{
 	
 	private int memberId;
 	
+	private int memberStudentId;
+	
 	private int mentiMajorFirst;
 	
 	private int mentiMajorSecond;
@@ -19,7 +21,7 @@ public class MenteeWithNickName implements Comparable<MenteeWithNickName>{
 	
 	private String mentiImage;
 	
-	private String mentiIntro;
+	private String memberMajor;
 	
 	private Timestamp mentiCreateAt;
 	

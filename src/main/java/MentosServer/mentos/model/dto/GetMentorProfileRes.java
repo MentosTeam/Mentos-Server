@@ -12,7 +12,7 @@ public class GetMentorProfileRes {
     private MentorProfileDto basicInformation;
     private String schoolName;
     private int numOfMentoring;
-    private List<PostWithImageDto> posts;
+    private List<PostWithImageDto> postArr;
     private List<Review> reviews;
     private List<MentosCountDto> numOfMentos;
 }
