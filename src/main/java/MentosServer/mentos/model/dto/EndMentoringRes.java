@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 @Getter
 @Setter
 @AllArgsConstructor
-public class MentoringStatusRes {
+public class EndMentoringRes {
     private int mentoringId;
     private int mentoringCount;
     private int majorCategoryId;
     private int mentoringMentos;
+    private int reviewCheck;
     private String mentoringMentorName;
     private String mentoringMenteeName;
+
 }
