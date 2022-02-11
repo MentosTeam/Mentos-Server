@@ -54,7 +54,7 @@ public class MentorSearchRepository {
 					"from member NATURAL JOIN post " +
 					"where memberStatus = 'ACTIVE' AND memberSchoolId = " + schoolId +
 					") T NATURAL JOIN mento " +
-				"where (mentoMajorFirst IN (" + arrayToString + ")" + " OR mentoMajorSecond IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?)";
+				"where (majorCategoryId IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?)";
 		String param = changeParam(req.getSearchText());
 		Object[] searchParam = new Object[]{param, param, param};
 		return this.jdbcTemplate.query(searchQuery,
