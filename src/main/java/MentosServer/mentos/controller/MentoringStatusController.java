@@ -41,14 +41,14 @@ public class MentoringStatusController {
      * [GET] /members/mentoring/{memberId}/{profile}
      */
     @ResponseBody
-    @GetMapping("/mentoring/{memberId}/{profile}")
-    public BaseResponse<GetMentoringStatus> mentoringStatus(@PathVariable("memberId") int memberId, @PathVariable("profile") String profile) {
+
+    @GetMapping("/mentoring/{profile}")
+    public BaseResponse<GetMentoringStatus> mentoringStatus(@PathVariable("profile") String profile) {
 
         try {
-            int userIdxByJwt = jwtService.getMemberId();
-            if(memberId != userIdxByJwt){
-                return new BaseResponse<>(INVALID_USER_JWT);
-            }
+            int memberId = jwtService.getMemberId();
+
+
             if(Objects.equals(profile, "mentor")){
 
                 GetMentoringStatus getStatusRes = mentoringStatusService.getMentoringList(memberId, "mentor");

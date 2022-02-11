@@ -2,6 +2,9 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
+
+import MentosServer.mentos.model.dto.EndMentoringRes;
+
 import MentosServer.mentos.model.dto.GetMentoringStatus;
 import MentosServer.mentos.model.dto.MentoringStatusRes;
 import MentosServer.mentos.repository.LoginRepository;
@@ -34,13 +37,17 @@ public class MentoringStatusService {
         try {
             if(Objects.equals(profile, "mentor")){
             List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMentorMentoringNowList(memberId);
-            List<MentoringStatusRes> getMentoringEndList = mentoringStatusRepository.getMentorMentoringEndList(memberId);
-            GetMentoringStatus getMentorMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList);
+            List<EndMentoringRes> getMentoringEndList = mentoringStatusRepository.getMentorMentoringEndList(memberId);
+                List<MentoringStatusRes> getMentoringWaitList = mentoringStatusRepository.getMentorMentoringWaitList(memberId);
+
+                GetMentoringStatus getMentorMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList, getMentoringWaitList);
             return getMentorMentoring;}
             else if(Objects.equals(profile, "mentee")){
                 List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMenteeMentoringNowList(memberId);
-                List<MentoringStatusRes> getMentoringEndList = mentoringStatusRepository.getMenteeMentoringEndList(memberId);
-                GetMentoringStatus getMenteeMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList);
+                List<EndMentoringRes> getMentoringEndList = mentoringStatusRepository.getMenteeMentoringEndList(memberId);
+                List<MentoringStatusRes> getMentoringWaitList = mentoringStatusRepository.getMenteeMentoringWaitList(memberId);
+
+                GetMentoringStatus getMenteeMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList, getMentoringWaitList);
 
                 return getMenteeMentoring;}
             else{
