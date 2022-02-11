@@ -66,7 +66,7 @@ public class MainRepository {
 						rs.getString("memberNickName"),
 						rs.getString("memberMajor"),
 						rs.getString("mentiImage"),
-						Integer.toString(rs.getInt("memberSchoolId")),
+						Integer.toString(rs.getInt("memberStudentId")),
 						rs.getInt("memberId"),
 						rs.getInt("mentiMajorFirst"),
 						rs.getInt("mentiMajorSecond")

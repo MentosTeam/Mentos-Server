@@ -34,6 +34,7 @@ public class MainService {
 			MenteeCategory second = new MenteeCategory(mainDto.getMajorSecond(), new ArrayList<MainMenteeDto>());
 			
 			for(MainMenteeDto mentee : menteeList) {
+				mentee.setMenteeYear(mentee.getMenteeYear() + "학번");
 				if (mentee.getFirstMajorCategory() == mainDto.getMajorFirst())
 					first.getMentee().add(mentee);
 				else if (mentee.getFirstMajorCategory() == mainDto.getMajorSecond())
