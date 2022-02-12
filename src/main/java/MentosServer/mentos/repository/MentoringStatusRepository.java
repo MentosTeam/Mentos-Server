@@ -151,8 +151,8 @@ public class MentoringStatusRepository {
     public List<EndMentoringRes> getMenteeMentoringEndList(int memberId) {
     try {
         String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                "m.memberName as menteeName,\n" +
-                "(select memberName from member where memberId=mt.mentoringmentoId) as mentorName,\n" +
+                "m.memberNickName as menteeName,\n" +
+                "(select memberNickName from member where memberId=mt.mentoringmentoId) as mentorName,\n" +
                 "count(reviewId) as reviewCheck\n" +
                 "from mentoring as mt \n" +
                 "inner join member as m on mt.mentoringMentiId=m.memberId\n" +
