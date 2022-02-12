@@ -3,12 +3,14 @@ package MentosServer.mentos.repository;
 import MentosServer.mentos.model.dto.MainDto;
 import MentosServer.mentos.model.dto.MainMenteeDto;
 import MentosServer.mentos.model.dto.MainMentorDto;
+import MentosServer.mentos.model.dto.MainOtherMentorRes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -55,10 +57,10 @@ public class MainRepository {
 		String majorSecond = Integer.toString(mainDto.getMajorSecond());
 		
 		String query = "(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? order by mentiUpdateAt DESC LIMIT 3) " +
-						"UNION " +
-						"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? order by mentiUpdateAt DESC LIMIT 3) " +
-						"UNION " +
-						"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst != ? and mentiMajorFirst != ? order by mentiUpdateAt DESC LIMIT 3)";
+				"UNION " +
+				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? order by mentiUpdateAt DESC LIMIT 3) " +
+				"UNION " +
+				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst != ? and mentiMajorFirst != ? order by mentiUpdateAt DESC LIMIT 3)";
 		Object[] searchParam = new Object[]{schoolId, majorFirst, schoolId, majorSecond, schoolId, majorFirst, majorSecond};
 		
 		return this.jdbcTemplate.query(query,
@@ -106,11 +108,8 @@ public class MainRepository {
 		String majorSecond = Integer.toString(mainDto.getMajorSecond());
 		String query = "(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? order by mentoUpdateAt DESC LIMIT 3) " +
 				"UNION " +
-				"(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? order by mentoUpdateAt DESC LIMIT 3) " +
-				"UNION " +
-				"(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId != ? and majorCategoryId != ? order by mentoUpdateAt DESC LIMIT 3)";
-		Object[] searchParam = new Object[]{schoolId, majorFirst, schoolId, majorSecond, schoolId, majorFirst, majorSecond};
-		
+				"(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? order by mentoUpdateAt DESC LIMIT 3) ";
+		Object[] searchParam = new Object[]{schoolId, majorFirst, schoolId, majorSecond};
 		return this.jdbcTemplate.query(query,
 				(rs, rowNum) -> new MainMentorDto(
 						rs.getString("memberNickName"),
@@ -127,6 +126,29 @@ public class MainRepository {
 						rs.getString("imageUrl")
 				),
 				searchParam
+		);
+	}
+	
+	/**
+	 * 멘티가 선택한 전공 외의 멘토들의 프로필만 제공하는 함수
+	 * @param arr
+	 * @return
+	 */
+	public List<MainOtherMentorRes> getOtherMentor(ArrayList<String> arr){
+		String arrToStr = String.join(",", arr);
+		String query = "select * from mento natural join member " +
+				"where mentoMajorFirst not in (" + arrToStr + ")  and mentoMajorSecond not in (" + arrToStr +") LIMIT 3";
+		return this.jdbcTemplate.query(
+				query,
+				(rs, rowNum) -> new MainOtherMentorRes(
+						rs.getString("memberNickName"),
+						rs.getString("memberMajor"),
+						rs.getString("mentoImage"),
+						Integer.toString(rs.getInt("memberStudentId")) + "학번",
+						rs.getInt("memberId"),
+						rs.getInt("mentoMajorFirst"),
+						rs.getInt("mentoMajorSecond")
+				)
 		);
 	}
 	
