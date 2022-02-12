@@ -191,7 +191,7 @@ public class MentoringStatusRepository {
                 "(select memberNickName from member where memberId=mt.mentoringmentoId) as mentorName\n" +
                 "from mentoring as mt \n" +
                 "inner join member as m on mt.mentoringMentiId=m.memberId\n" +
-                "where mt.mentoringMentiId=? and mentoringStatus=0 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
+                "where mt.mentoringMentiId=? and mentoringStatus=0 and mt.mentoringMentoId in (select memberId from member where memberStatus='active')\n" +
                 "group by mt.mentoringId \n"+
                 "order by mt.mentoringCreateAt desc";
 
