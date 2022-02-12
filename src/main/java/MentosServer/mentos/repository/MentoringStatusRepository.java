@@ -26,15 +26,16 @@ public class MentoringStatusRepository {
     public List<NowMentoringRes> getMentorMentoringNowList(int memberId) {
         try{
             String query="select mt.mentoringId as mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                    "m.memberName as mentorName,\n" +
-                    "(select memberName from member where memberId=mt.mentoringmentoId) as menteeName,\n" +
+                    "m.memberNickName as mentorName,\n" +
+                    "(select memberNickName from member where memberId=mt.mentoringmentiId) as menteeName,\n" +
                     "count(reportId) as currentCount \n" +
                     "from mentoring as mt \n" +
                     "inner join member as m on mt.mentoringMentoId=m.memberId \n" +
                     "left join report as r on mt.mentoringId=r.mentoringId \n" +
-                    "where mt.mentoringMentoId=? and mt.mentoringStatus=1 \n" +
+                    "where mt.mentoringMentoId=? and mt.mentoringStatus=1 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                     "group by mt.mentoringId\n"+
                     "order by mt.mentoringCreateAt desc";
+            System.out.println("현재");
 
             int getMemberIdParams = memberId;
             return this.jdbcTemplate.query(query,
@@ -58,17 +59,17 @@ public class MentoringStatusRepository {
     public List<EndMentoringRes> getMentorMentoringEndList(int memberId) {
 
         try {
-            String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                    "m.memberName as mentorName,\n" +
-                    "(select memberName from member where memberId=mt.mentoringmentoId) as menteeName,\n" +
+            String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,mentoringStatus,\n" +
+                    "m.memberNickName as mentorName,\n" +
+                    "(select memberNickName from member where memberId=mt.mentoringmentiId) as menteeName,\n" +
                     "count(reviewId) as reviewCheck\n" +
                     "from mentoring as mt \n" +
                     "inner join member as m on mt.mentoringMentoId=m.memberId\n" +
                     "left join review as r on mt.mentoringId=r.mentoringId\n" +
-                    "where mt.mentoringMentoId=? and mentoringStatus=2 \n" +
-                    "group by mt.mentoringId\n"+
+                    "where mt.mentoringMentoId=? and mentoringStatus=2 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
+                    "group by mt.mentoringId\n" +
                     "order by mt.mentoringCreateAt desc";
-
+            System.out.println("완료");
             int getMemberIdParams = memberId;
             return this.jdbcTemplate.query(getMentoringQuery,
                     (rs, rowNum) -> new EndMentoringRes(
@@ -90,15 +91,15 @@ public class MentoringStatusRepository {
     // 해당 멘토의 신청 대기 멘토링 정보 조회
     public List<MentoringStatusRes> getMentorMentoringWaitList(int memberId) {
         try {
-            String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                    "m.memberName as mentorName,\n" +
-                    "(select memberName from member where memberId=mt.mentoringmentiId) as menteeName\n" +
+            String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,mentoringStatus,\n" +
+                    "m.memberNickName as mentorName,\n" +
+                    "(select memberNickName from member where memberId=mt.mentoringmentiId) as menteeName\n" +
                     "from mentoring as mt \n" +
                     "inner join member as m on mt.mentoringMentoId=m.memberId\n" +
-                    "where mt.mentoringmentoId=? and mentoringStatus=0\n" +
+                    "where mt.mentoringMentoId=? and mentoringStatus=0 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                     "group by mt.mentoringId\n" +
                     "order by mt.mentoringCreateAt desc";
-
+            System.out.println("미래");
             int getMemberIdParams = memberId;
 
 
@@ -122,15 +123,16 @@ public class MentoringStatusRepository {
     public List<NowMentoringRes> getMenteeMentoringNowList(int memberId) {
         try{
         String query="select mt.mentoringId as mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                "m.memberName as menteeName,\n" +
-                "(select memberName from member where memberId=mt.mentoringmentoId) as mentorName,\n" +
+                "m.memberNickName as menteeName,\n" +
+                "(select memberNickName from member where memberId=mt.mentoringmentoId) as mentorName,\n" +
                 "count(reportId) as currentCount \n" +
                 "from mentoring as mt \n" +
                 "inner join member as m on mt.mentoringMentiId=m.memberId \n" +
                 "left join report as r on mt.mentoringId=r.mentoringId \n" +
-                "where mt.mentoringMentiId=? and mt.mentoringStatus=1 \n" +
+                "where mt.mentoringMentiId=? and mt.mentoringStatus=1 and mt.mentoringMentoId in (select memberId from member where memberStatus='active')\n" +
                 "group by mt.mentoringId\n"+
                 "order by mt.mentoringCreateAt desc";
+            System.out.println("멘티 현재");
 
         int getMemberIdParams = memberId;
         return this.jdbcTemplate.query(query,
@@ -159,13 +161,14 @@ public class MentoringStatusRepository {
                 "from mentoring as mt \n" +
                 "inner join member as m on mt.mentoringMentiId=m.memberId\n" +
                 "left join review as r on mt.mentoringId=r.mentoringId\n" +
-                "where mt.mentoringMentiId=? and mentoringStatus=2\n" +
-                "group by mt.mentoringId\n"+
+                "where mt.mentoringMentiId=? and mentoringStatus=2 and mt.mentoringMentoId in (select memberId from member where memberStatus='active')\n" +
+                "group by mt.mentoringId\n" +
                 "order by mt.mentoringCreateAt desc";
         int getMemberIdParams = memberId;
+        System.out.println(memberId);
         return this.jdbcTemplate.query(getMentoringQuery,
             (rs, rowNum) -> new EndMentoringRes(
-                    rs.getInt("mentoringId"),
+                    rs.getInt("mt.mentoringId"),
                     rs.getInt("mentoringCount"),
                     rs.getInt("majorCategoryId"),
                     rs.getInt("mentoringMentos"),
@@ -184,18 +187,18 @@ public class MentoringStatusRepository {
     public List<MentoringStatusRes> getMenteeMentoringWaitList(int memberId) {
         try{
         String getMentoringQuery = "select mt.mentoringId,mentoringCount,majorCategoryId,mentoringMentos,\n" +
-                "m.memberName as menteeName,\n" +
-                "(select memberName from member where memberId=mt.mentoringmentoId) as mentorName\n" +
+                "m.memberNickName as menteeName,\n" +
+                "(select memberNickName from member where memberId=mt.mentoringmentoId) as mentorName\n" +
                 "from mentoring as mt \n" +
                 "inner join member as m on mt.mentoringMentiId=m.memberId\n" +
-                "where mt.mentoringMentiId=? and mentoringStatus=0\n" +
+                "where mt.mentoringMentiId=? and mentoringStatus=0 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                 "group by mt.mentoringId \n"+
                 "order by mt.mentoringCreateAt desc";
 
         int getMemberIdParams = memberId;
         return this.jdbcTemplate.query(getMentoringQuery,
                 (rs, rowNum) -> new MentoringStatusRes(
-                        rs.getInt("mentoringId"),
+                        rs.getInt("mt.mentoringId"),
                         rs.getInt("mentoringCount"),
                         rs.getInt("majorCategoryId"),
                         rs.getInt("mentoringMentos"),
