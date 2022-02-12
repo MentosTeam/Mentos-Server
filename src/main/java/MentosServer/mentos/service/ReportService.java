@@ -7,12 +7,14 @@ import MentosServer.mentos.model.dto.ReportList;
 import MentosServer.mentos.repository.ReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static MentosServer.mentos.config.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
+@Transactional
 public class ReportService {
 
 	private final ReportRepository reportRepository;
@@ -28,9 +30,10 @@ public class ReportService {
 			String report = req.getReport();
 			// 글 등록
 			reportRepository.postReport(mentoringId, report);
-			// Mentoring Count 감소시키기
-			int finFlag = reportRepository.subMentoringCnt(mentoringId);
-			if(finFlag == 0) { // 마지막 멘토링이라면 종료로 바꾸기
+			// Mentoring Count 확인 (Report 개수로)
+			int finFlag = reportRepository.getMentoringCnt(mentoringId);
+			int finCnt = reportRepository.getFinCnt(mentoringId);
+			if(finFlag == finCnt) { // 마지막 멘토링이라면 종료로 바꾸기
 				reportRepository.stopMentoring(mentoringId);
 				return 2;
 			}
