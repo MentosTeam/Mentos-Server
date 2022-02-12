@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class GetMentoringStatus {
-    private List<MentoringStatusRes> nowMentoring;
+    private List<NowMentoringRes> nowMentoring;
     private List<EndMentoringRes> endMentoring;
     private List<MentoringStatusRes> waitMentoring;
 

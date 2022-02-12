@@ -1,13 +1,12 @@
 package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
-import MentosServer.mentos.config.BaseResponse;
 
 import MentosServer.mentos.model.dto.EndMentoringRes;
 
 import MentosServer.mentos.model.dto.GetMentoringStatus;
+import MentosServer.mentos.model.dto.NowMentoringRes;
 import MentosServer.mentos.model.dto.MentoringStatusRes;
-import MentosServer.mentos.repository.LoginRepository;
 import MentosServer.mentos.repository.MentoringStatusRepository;
 import MentosServer.mentos.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static MentosServer.mentos.config.BaseResponseStatus.DATABASE_ERROR;
-import static MentosServer.mentos.config.BaseResponseStatus.INVALID_PATH_VARIABLE;
 
 @Service
 public class MentoringStatusService {
@@ -36,16 +34,22 @@ public class MentoringStatusService {
     public GetMentoringStatus getMentoringList(int memberId, String profile) throws BaseException {
         try {
             if(Objects.equals(profile, "mentor")){
-            List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMentorMentoringNowList(memberId);
+            List<NowMentoringRes> getMentoringNowList = mentoringStatusRepository.getMentorMentoringNowList(memberId);
             List<EndMentoringRes> getMentoringEndList = mentoringStatusRepository.getMentorMentoringEndList(memberId);
                 List<MentoringStatusRes> getMentoringWaitList = mentoringStatusRepository.getMentorMentoringWaitList(memberId);
 
                 GetMentoringStatus getMentorMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList, getMentoringWaitList);
             return getMentorMentoring;}
             else if(Objects.equals(profile, "mentee")){
-                List<MentoringStatusRes> getMentoringNowList = mentoringStatusRepository.getMenteeMentoringNowList(memberId);
+                List<NowMentoringRes> getMentoringNowList = mentoringStatusRepository.getMenteeMentoringNowList(memberId);
+                for(NowMentoringRes now:getMentoringNowList){
+                    System.out.println(now.getMentoringId());
+                }
                 List<EndMentoringRes> getMentoringEndList = mentoringStatusRepository.getMenteeMentoringEndList(memberId);
                 List<MentoringStatusRes> getMentoringWaitList = mentoringStatusRepository.getMenteeMentoringWaitList(memberId);
+                for(MentoringStatusRes now:getMentoringWaitList){
+                    System.out.println(now.getMentoringId());
+                }
 
                 GetMentoringStatus getMenteeMentoring = new GetMentoringStatus(getMentoringNowList, getMentoringEndList, getMentoringWaitList);
 

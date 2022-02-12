@@ -38,7 +38,7 @@ public class MentoringStatusController {
 
     /**
      * 메토링 API
-     * [GET] /members/mentoring/{memberId}/{profile}
+     * [GET] /members/mentoring//{profile}
      */
     @ResponseBody
     @GetMapping("/mentoring/{profile}")
