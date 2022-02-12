@@ -35,7 +35,6 @@ public class MentoringStatusRepository {
                     "where mt.mentoringMentoId=? and mt.mentoringStatus=1 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                     "group by mt.mentoringId\n"+
                     "order by mt.mentoringCreateAt desc";
-            System.out.println("현재");
 
             int getMemberIdParams = memberId;
             return this.jdbcTemplate.query(query,
@@ -69,7 +68,6 @@ public class MentoringStatusRepository {
                     "where mt.mentoringMentoId=? and mentoringStatus=2 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                     "group by mt.mentoringId\n" +
                     "order by mt.mentoringCreateAt desc";
-            System.out.println("완료");
             int getMemberIdParams = memberId;
             return this.jdbcTemplate.query(getMentoringQuery,
                     (rs, rowNum) -> new EndMentoringRes(
@@ -99,7 +97,6 @@ public class MentoringStatusRepository {
                     "where mt.mentoringMentoId=? and mentoringStatus=0 and mt.mentoringMentiId in (select memberId from member where memberStatus='active')\n" +
                     "group by mt.mentoringId\n" +
                     "order by mt.mentoringCreateAt desc";
-            System.out.println("미래");
             int getMemberIdParams = memberId;
 
 
@@ -132,7 +129,6 @@ public class MentoringStatusRepository {
                 "where mt.mentoringMentiId=? and mt.mentoringStatus=1 and mt.mentoringMentoId in (select memberId from member where memberStatus='active')\n" +
                 "group by mt.mentoringId\n"+
                 "order by mt.mentoringCreateAt desc";
-            System.out.println("멘티 현재");
 
         int getMemberIdParams = memberId;
         return this.jdbcTemplate.query(query,
@@ -165,7 +161,6 @@ public class MentoringStatusRepository {
                 "group by mt.mentoringId\n" +
                 "order by mt.mentoringCreateAt desc";
         int getMemberIdParams = memberId;
-        System.out.println(memberId);
         return this.jdbcTemplate.query(getMentoringQuery,
             (rs, rowNum) -> new EndMentoringRes(
                     rs.getInt("mt.mentoringId"),
