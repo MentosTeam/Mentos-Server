@@ -24,22 +24,22 @@ public class ReportRepository {
 		this.jdbcTemplate.update(query, params);
 	}
 	
-	/**
-	 * Mentoring Count가 1이 아닐때만 감소
-	 * 1이면 마지막 멘토링이므로 수행 안함 -> 0 반환
-	 * @param mentoringId
-	 * @return
-	 */
-	public int subMentoringCnt(int mentoringId) {
-		String query = "UPDATE mentoring SET mentoringCount = mentoringCount - 1 WHERE mentoringCount != 1 AND mentoringId = ?";
+	public int getMentoringCnt(int mentoringId) {
+		String query = "SELECT Count(*) FROM Report WHERE mentoringId = ?";
 		int param = mentoringId;
-		return this.jdbcTemplate.update(query, param);
+		return this.jdbcTemplate.queryForObject(query, Integer.class, param);
 	}
 	
 	public void stopMentoring(int mentoringId) {
 		String query = "UPDATE mentoring SET mentoringStatus = 2 WHERE mentoringId = ?";
 		int param = mentoringId;
 		this.jdbcTemplate.update(query, param);
+	}
+	
+	public int getFinCnt(int mentoringId) {
+		String query = "SELECT mentoringCount FROM mentoring WHERE mentoringId = ?";
+		int param = mentoringId;
+		return this.jdbcTemplate.queryForObject(query, Integer.class, param);
 	}
 	
 	public List<ReportList> getReport(int mentoringId) {
