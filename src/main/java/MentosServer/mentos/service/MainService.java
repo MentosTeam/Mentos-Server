@@ -63,10 +63,14 @@ public class MainService {
 			
 			for(MainMentorDto mentor : mentorList) {
 				if(mentor.getPostCategoryId() == mainDto.getMajorFirst()) first.getMentorPost().add(changeMentorRes(mentor));
-				else if(mentor.getPostCategoryId() == mainDto.getMajorSecond()) second.getMentorPost().add(changeMentorRes(mentor));
-				else ret.getOtherMentor().add(new MainOtherMentorRes(mentor.getNickName(), mentor.getMentorMajor(), mentor.getMentorImage(),
-							Integer.toString(mentor.getMentorYear()) + "학번", mentor.getMentorStudentId(), mentor.getFirstMajorCategory(), mentor.getSecondMajorCategory()));
+				else second.getMentorPost().add(changeMentorRes(mentor));
 			}
+			
+			// other Mentor 반환 로직
+			ArrayList<String> categoryArr= new ArrayList<>();
+			categoryArr.add(Integer.toString(mainDto.getMajorFirst()));
+			categoryArr.add(Integer.toString(mainDto.getMajorSecond()));
+			ret.setOtherMentor(mainRepository.getOtherMentor(categoryArr));
 			
 			ret.getMentorCategory().add(first);
 			if(second.getMentorCategoryId() != 0) ret.getMentorCategory().add(second);
