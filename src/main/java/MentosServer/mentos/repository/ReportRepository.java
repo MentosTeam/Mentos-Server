@@ -53,4 +53,9 @@ public class ReportRepository {
 				),
 				mentoringId);
 	}
+
+	public int getMentoringMentee(int mentoringId) {
+		String query = "select mentoringMentiId from mentoring where mentoringId=?";
+		return this.jdbcTemplate.queryForObject(query,int.class,mentoringId);
+	}
 }
