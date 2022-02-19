@@ -14,11 +14,13 @@ import static MentosServer.mentos.config.BaseResponseStatus.*;
 @Service
 public class MemberLeaveService {
     private final MemberLeaveRepository memberLeaveRepository;
+    private final FcmTokenService fcmTokenService;
     private final JwtService jwtService;
 
     @Autowired
-    public MemberLeaveService(MemberLeaveRepository memberLeaveRepository, JwtService jwtService){
+    public MemberLeaveService(MemberLeaveRepository memberLeaveRepository, FcmTokenService fcmTokenService, JwtService jwtService){
         this.memberLeaveRepository = memberLeaveRepository;
+        this.fcmTokenService = fcmTokenService;
         this.jwtService = jwtService;
     }
 
@@ -39,6 +41,7 @@ public class MemberLeaveService {
         }
 
         if(patchMemberLeaveReq.getPassword().equals(pwd)){
+            fcmTokenService.deleteUserAllDeviceToken(memberId); //모든 디바이스 토큰 삭제
             if(memberLeaveRepository.modifyMemberStatus(memberId) == 0){
                 throw new BaseException(FAILED_TO_MEMBERLEAVE);
             }
