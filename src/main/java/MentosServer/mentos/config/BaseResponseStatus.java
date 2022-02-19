@@ -97,8 +97,9 @@ public enum BaseResponseStatus {
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
     
-    // [POST] /items
-    DUPLICATED_ITEM_NAME(false, 3015, "중복된 아이템 이름입니다."),
+    // [POST] /complain
+    EMAIL_MAKE_ERROR(false, 3015, "메일을 생성하는데 실패하였습니다."),
+    
     DUPLICATED_NICKNAME(false, 3401, "중복된 닉네임입니다."),
     VALID_USER_NICKNAME(true,3402,"사용가능한 닉네임입니다."),
     //[DELETE]/board
