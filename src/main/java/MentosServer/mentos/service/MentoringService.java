@@ -59,7 +59,7 @@ public class MentoringService {
             throw new BaseException(DATABASE_ERROR);
         }
         //푸시 알림 보내기
-        log.info("MentoringService.sendMessage 호출");
+        //log.info("MentoringService.sendMessage 호출");
         sendMessage(postMentoringReq.getMentoId(), title, body, 1);//멘토에게
         return postMentoringRes;
     }
