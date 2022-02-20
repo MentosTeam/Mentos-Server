@@ -22,7 +22,9 @@ public class FcmTokenServiceImpl implements FcmTokenService {
     @Override
     public int insertNewUserDeviceToken(int memberId, String fcmToken) throws BaseException {
         try{
-            System.out.println("여기");
+            if(fcmTokenRespository.existDeviceToken(memberId,fcmToken)==1){ //이미 있으면
+                return 0;
+            }
             return fcmTokenRespository.insertNewUserDeviceToken(memberId,fcmToken);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);

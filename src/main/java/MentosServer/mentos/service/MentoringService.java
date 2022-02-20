@@ -65,7 +65,6 @@ public class MentoringService {
     }
 
     //멘토링 수락/거절
-    @Transactional(rollbackFor = Exception.class)
     public PostAcceptMentoringRes acceptMentoring(int mentoringId, int mentoId, Boolean acceptance) throws BaseException{
         if(mentoringRepository.checkMentoringByMento(mentoringId, mentoId) == 0){ //멘토링 요청 존재 확인
             throw new BaseException(POST_INVALID_MENTORING);
@@ -103,7 +102,12 @@ public class MentoringService {
             sendMessage(mentoring.getMentoringMentiId(),title,body,2); //멘티에게
             return postAcceptMentoringRes;
         } catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
+            if(e instanceof BaseException){
+                throw (BaseException) e;
+            }
+            else {
+                throw new BaseException(DATABASE_ERROR);
+            }
         }
     }
 

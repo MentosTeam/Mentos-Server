@@ -46,4 +46,10 @@ public class FcmTokenRespository {
         String query = "update userdevice set deleteFlag=1 where memberId=?";
         return jdbcTemplate.update(query,memberId);
     }
+
+    public int existDeviceToken(int memberId, String fcmToken) {
+        String query = "select exists(select * from userdevice where memberId=? and deviceToken=?)";
+        Object[] params = new Object[]{memberId,fcmToken};
+        return jdbcTemplate.queryForObject(query,int.class,params);
+    }
 }
