@@ -116,8 +116,8 @@ public enum BaseResponseStatus {
 
     EMPTY_MENTO_PROFILE(false,3410,"멘토 프로필이 존재하지 않습니다."),
     EMPTY_MENTEE_PROFILE(false,3411,"멘티 프로필이 존재하지 않습니다."),
-    EMPTY_MEMBER_DEVICE_TOKEN(false,3412,"디바이스 토큰이 존재하지 않습니다."),
-    FCM_SEND_ERROR(false,3413,"FCM 전송에 실패하였습니다"),
+    EMPTY_MEMBER_DEVICE_TOKEN(true,3412,"디바이스 토큰이 존재하지 않습니다."),
+    FCM_SEND_ERROR(true,3413,"FCM 전송에 실패하였습니다"),
     /**
      * ROZY
      * 301 -  400 : Response 오류

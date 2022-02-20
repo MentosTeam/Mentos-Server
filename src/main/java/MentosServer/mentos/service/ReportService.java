@@ -49,7 +49,12 @@ public class ReportService {
 			}
 			return 1;
 		} catch (Exception exception) { // DB에 이상이 있는 경우 에러 메시지를 보냅니다.
-			throw new BaseException(DATABASE_ERROR);
+			if(exception instanceof BaseException){
+				throw (BaseException) exception;
+			}
+			else {
+				throw new BaseException(DATABASE_ERROR);
+			}
 		}
 	}
 	
