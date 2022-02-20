@@ -15,7 +15,7 @@ public class FcmMessage {
     @AllArgsConstructor
     @Getter
     public static class Message {
-        private String to;
+        private String token;
         private Data data;
     }
 
@@ -25,6 +25,6 @@ public class FcmMessage {
     public static class Data {
         private String title;
         private String body;
-        private int receiverFlag;
+        private String receiverFlag;
     }
 }
