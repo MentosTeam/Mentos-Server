@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.http.HttpHeaders;
 import org.springframework.core.io.ClassPathResource;
@@ -18,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static MentosServer.mentos.config.BaseResponseStatus.FCM_SEND_ERROR;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
@@ -27,6 +29,7 @@ public class FirebaseCloudMessageService {
 
     public void sendMessageTo(List<String> targetToken, String title, String body, int flag) throws BaseException {
         AtomicBoolean fcmPushSuccess = new AtomicBoolean(true);
+        //log.info("sendMessageTo method");
         targetToken.forEach(i-> {
             try {
             String message = makeMessage(i, title, body, flag);
@@ -42,11 +45,10 @@ public class FirebaseCloudMessageService {
                         .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
                         .build();
 
-
                 Response response = client.newCall(request).execute();
 
-                System.out.println(response.body().string());
-            }catch (IOException e) {
+                //log.info(response.body().string());
+            } catch (IOException e) {
                 fcmPushSuccess.set(false);
             }
         });
@@ -57,11 +59,11 @@ public class FirebaseCloudMessageService {
     private String makeMessage(String targetToken, String title, String body,int flag) throws JsonParseException, JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
-                        .to(targetToken)
+                        .token(targetToken)
                         .data(FcmMessage.Data.builder()
                                 .title(title)
                                 .body(body)
-                                .receiverFlag(flag)
+                                .receiverFlag(Integer.toString(flag))
                                 .build()
                         ).build()).validateOnly(false).build();
 
