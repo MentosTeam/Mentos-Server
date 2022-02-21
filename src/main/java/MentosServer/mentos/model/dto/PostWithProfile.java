@@ -19,6 +19,8 @@ public class PostWithProfile implements Comparable<PostWithProfile>{
 	
 	private String memberMajor;
 	
+	private String mentoImage;
+	
 	private String postTitle;
 	
 	private String postContents;
