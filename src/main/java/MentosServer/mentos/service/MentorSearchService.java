@@ -79,7 +79,7 @@ public class MentorSearchService {
 		Collections.sort(arr);
 		for(PostWithProfile p : arr){
 			ret.add(new PostDto(p.getPostId(), p.getMajorCategoryId(), p.getMemberId(), p.getMemberMajor(),
-					p.getMemberNickName(), p.getPostTitle(), p.getPostContents()));
+					p.getMemberNickName(), p.getMentoImage(), p.getPostTitle(), p.getPostContents()));
 		}
 		return ret;
 	}

@@ -47,7 +47,7 @@ public class MentorSearchRepository {
 	public List<PostWithProfile> getPosts(GetMentorSearchReq req, String schoolId){
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
-				"select postId, majorCategoryId, memberId, memberNickName, memberMajor, postTitle, postContents, postCreateAt, postUpdateAt " +
+				"select postId, majorCategoryId, memberId, memberNickName, memberMajor, mentoImage, postTitle, postContents, postCreateAt, postUpdateAt " +
 				"from " +
 					"(" +
 					"select * " +
@@ -64,6 +64,7 @@ public class MentorSearchRepository {
 						rs.getInt("memberId"),
 						rs.getString("memberNickName"),
 						rs.getString("memberMajor"),
+						rs.getString("mentoImage"),
 						rs.getString("postTitle"),
 						rs.getString("postContents"),
 						rs.getTimestamp("postCreateAt"),
