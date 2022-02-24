@@ -57,10 +57,8 @@ public class NoticeRepository {
             Object[] params = new Object[]{memberId, statusFlag};
             return this.jdbcTemplate.query(query, (rs, rowNum) -> new GetNotificationRes(
                     rs.getInt("notificationId"),
-                    rs.getInt("memberId"),
-                    rs.getInt("statusFlag"),
                     rs.getString("content"),
-                    rs.getTimestamp("updateAt")
+                    rs.getTimestamp("createAt")
                     )
                     , params);
         }catch (EmptyResultDataAccessException e){
