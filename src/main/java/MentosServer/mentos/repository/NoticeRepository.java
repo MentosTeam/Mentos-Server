@@ -53,14 +53,14 @@ public class NoticeRepository {
 
     public List<GetNotificationRes> getNotification(int memberId, int statusFlag){
         try {
-            String query = "select *, date_format(updateAt,\"%Y-%m-%d\") as aa from notification where memberId=? and statusFlag=? order by notificationId desc";
+            String query = "select * from notification where memberId=? and statusFlag=? order by notificationId desc";
             Object[] params = new Object[]{memberId, statusFlag};
             return this.jdbcTemplate.query(query, (rs, rowNum) -> new GetNotificationRes(
                     rs.getInt("notificationId"),
                     rs.getInt("memberId"),
                     rs.getInt("statusFlag"),
                     rs.getString("content"),
-                    rs.getString("aa")
+                    rs.getTimestamp("updateAt")
                     )
                     , params);
         }catch (EmptyResultDataAccessException e){

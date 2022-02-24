@@ -13,5 +13,5 @@ public class GetNotificationRes {
     private int memberId;
     private int statusFlag;
     private String content;
-    private String updateAt;
+    private Timestamp updateAt;
 }
