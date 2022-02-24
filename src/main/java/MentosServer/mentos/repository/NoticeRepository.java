@@ -1,7 +1,9 @@
 package MentosServer.mentos.repository;
 
+import MentosServer.mentos.model.dto.GetNotificationRes;
 import MentosServer.mentos.model.dto.GetNoticeRes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +43,30 @@ public class NoticeRepository {
                         rs.getString("content"),
                         rs.getTimestamp("createAt")),
                 getNoticeParams); // 한 개의 회원정보를 얻기 위한 jdbcTemplate 함수(Query, 객체 매핑 정보, Params)의 결과 반환
+    }
+
+    public int setNotification(int memberId, int statusFlag, String content){
+        String query ="insert into notification(memberId,statusFlag,content) values(?,?,?)";
+        Object[] params = new Object[]{memberId,statusFlag,content};
+        return this.jdbcTemplate.update(query,params);
+    }
+
+    public List<GetNotificationRes> getNotification(int memberId, int statusFlag){
+        try {
+            String query = "select *, date_format(updateAt,\"%Y-%m-%d\") as aa from notification where memberId=? and statusFlag=?";
+            Object[] params = new Object[]{memberId, statusFlag};
+            return this.jdbcTemplate.query(query, (rs, rowNum) -> new GetNotificationRes(
+                    rs.getInt("notificationId"),
+                    rs.getInt("memberId"),
+                    rs.getInt("statusFlag"),
+                    rs.getString("content"),
+                    rs.getString("aa")
+                    )
+                    , params);
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
     }
 
 }

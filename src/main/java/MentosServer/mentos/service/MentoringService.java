@@ -4,18 +4,13 @@ import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.domain.Mentoring;
 import MentosServer.mentos.model.dto.*;
 import MentosServer.mentos.repository.MentoringRepository;
+import MentosServer.mentos.repository.NoticeRepository;
 import MentosServer.mentos.utils.fcm.FirebaseCloudMessageService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
 
@@ -25,12 +20,14 @@ public class MentoringService {
     private final FcmTokenService fcmTokenService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final MentoringRepository mentoringRepository;
+    private final NoticeRepository noticeRepository;
 
     @Autowired
-    public MentoringService(FcmTokenService fcmTokenService, FirebaseCloudMessageService firebaseCloudMessageService, MentoringRepository mentoringRepository) {
+    public MentoringService(FcmTokenService fcmTokenService, FirebaseCloudMessageService firebaseCloudMessageService, MentoringRepository mentoringRepository, NoticeRepository noticeRepository) {
         this.fcmTokenService = fcmTokenService;
         this.firebaseCloudMessageService = firebaseCloudMessageService;
         this.mentoringRepository = mentoringRepository;
+        this.noticeRepository = noticeRepository;
     }
     public void sendMessage(int memberId,String title, String body,int senderFlag) throws BaseException {
         // 푸시 알림 보내기
@@ -52,8 +49,9 @@ public class MentoringService {
         String body = "멘토링 현황에서 수락 여부를 알려주세요-!";
         PostMentoringRes postMentoringRes;
         try {
-            int mentoringId = mentoringRepository.createMentoring(postMentoringReq);
-
+            System.out.println("MentoringService.createMentoring");
+            int mentoringId = mentoringRepository.createMentoring(postMentoringReq); //멘토링 생성
+            int notificationId = noticeRepository.setNotification(postMentoringReq.getMentoId(),1,title+"\n"+body); //멘토 알림 DB 저장
             postMentoringRes = new PostMentoringRes(mentoringId, postMentoringReq.getMentoId(), postMentoringReq.getMentiId());
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
@@ -99,6 +97,7 @@ public class MentoringService {
                 body="괜찮아요 \uD83D\uDE0A \n" +
                         "멘토-쓰 찾기에서 나에게 맞는 멘토를 다시 찾아보아요.";
             }
+            noticeRepository.setNotification(mentoring.getMentoringMentiId(),2,title+"\n"+body); //멘티 알림 DB 저장
             sendMessage(mentoring.getMentoringMentiId(),title,body,2); //멘티에게
             return postAcceptMentoringRes;
         } catch (Exception e){

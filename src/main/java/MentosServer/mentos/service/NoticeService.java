@@ -2,6 +2,7 @@ package MentosServer.mentos.service;
 
 
 import MentosServer.mentos.config.BaseException;
+import MentosServer.mentos.model.dto.GetNotificationRes;
 import MentosServer.mentos.model.dto.GetNoticeRes;
 import MentosServer.mentos.repository.NoticeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,13 @@ public class NoticeService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    public List<GetNotificationRes> notificationList(int memberId, int statusFlag) throws BaseException {
+        try {
+            List<GetNotificationRes> getNotificationRes = noticeRepository.getNotification(memberId,statusFlag);
+            return getNotificationRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }

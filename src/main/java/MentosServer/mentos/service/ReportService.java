@@ -3,15 +3,14 @@ package MentosServer.mentos.service;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.PostReportReq;
 import MentosServer.mentos.model.dto.ReportList;
+import MentosServer.mentos.repository.NoticeRepository;
 import MentosServer.mentos.repository.ReportRepository;
 import MentosServer.mentos.utils.fcm.FirebaseCloudMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
 
@@ -21,12 +20,14 @@ public class ReportService {
 	private final FcmTokenService fcmTokenService;
 	private final FirebaseCloudMessageService firebaseCloudMessageService;
 	private final ReportRepository reportRepository;
+	private final NoticeRepository noticeRepository;
 	
 	@Autowired
-	public ReportService(FcmTokenService fcmTokenService, FirebaseCloudMessageService firebaseCloudMessageService, ReportRepository reportRepository) {
+	public ReportService(FcmTokenService fcmTokenService, FirebaseCloudMessageService firebaseCloudMessageService, ReportRepository reportRepository, NoticeRepository noticeRepository) {
 		this.fcmTokenService = fcmTokenService;
 		this.firebaseCloudMessageService = firebaseCloudMessageService;
 		this.reportRepository = reportRepository;
+		this.noticeRepository = noticeRepository;
 	}
 
 	
@@ -44,6 +45,8 @@ public class ReportService {
 				//멘티Id가져오기
 				int menteeId = reportRepository.getMentoringMentee(mentoringId);
 				List<String> menteeToken = fcmTokenService.selectUserDeviceTokenByIdx(menteeId);//멘티의 디바이스 토큰 정보 가져오기
+				noticeRepository.setNotification(menteeId,2,"멘토링이 종료되었습니다-!\n" +
+						"⭐️멘토링 별점 및 후기 남기기 잊지마세요✏️"); //멘티 알림 DB 저장
 				firebaseCloudMessageService.sendMessageTo(menteeToken,"멘토링이 종료되었습니다-!","⭐️멘토링 별점 및 후기 남기기 잊지마세요✏️",2);//멘티에게 전송
 				return 2;
 			}
@@ -69,7 +72,6 @@ public class ReportService {
 			throw new BaseException(DATABASE_ERROR);
 		}
 	}
-	
 	
 	public String returnDateOnly(String str){
 		String ret = "";

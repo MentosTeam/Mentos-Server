@@ -3,6 +3,7 @@ package MentosServer.mentos.controller;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.model.dto.GetNoticeRes;
+import MentosServer.mentos.model.dto.GetNotificationRes;
 import MentosServer.mentos.model.dto.PostLoginReq;
 import MentosServer.mentos.model.dto.PostLoginRes;
 import MentosServer.mentos.service.LoginService;
@@ -33,15 +34,10 @@ public class NoticeController {
         this.jwtService = jwtService;
     }
 
-
-
-
-
     /**
      * 공지조회 API
      * [POST] /notice
      */
-    @ResponseBody
     @GetMapping("/notice")
     public BaseResponse<List<GetNoticeRes>> noticeList() {
         try {
@@ -52,4 +48,14 @@ public class NoticeController {
         }
     }
 
+    @GetMapping("/notification")
+    public BaseResponse<List<GetNotificationRes>> getNotificationList(@RequestParam int statusFlag) throws BaseException {
+        int memberId = jwtService.getMemberId();
+        try {
+            List<GetNotificationRes> getNotificationRes = noticeService.notificationList(memberId,statusFlag);
+            return new BaseResponse<>(getNotificationRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 }
