@@ -49,7 +49,6 @@ public class MentoringService {
         String body = "멘토링 현황에서 수락 여부를 알려주세요-!";
         PostMentoringRes postMentoringRes;
         try {
-            System.out.println("MentoringService.createMentoring");
             int mentoringId = mentoringRepository.createMentoring(postMentoringReq); //멘토링 생성
             int notificationId = noticeRepository.setNotification(postMentoringReq.getMentoId(),1,title+"\n"+body); //멘토 알림 DB 저장
             postMentoringRes = new PostMentoringRes(mentoringId, postMentoringReq.getMentoId(), postMentoringReq.getMentiId());
