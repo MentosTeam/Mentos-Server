@@ -8,4 +8,6 @@ import lombok.Data;
 public class PostProfileRes {
     private int memberId;
     private String profile;
+    private String nickname;
+    private String profileImgUrl;
 }
