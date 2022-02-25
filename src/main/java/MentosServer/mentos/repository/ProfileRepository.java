@@ -61,4 +61,10 @@ public class ProfileRepository {
         int param = memberId;
         return this.jdbcTemplate.queryForObject(query, int.class, param);
     }
+
+    //프로필 생성한 닉네임 반환
+    public String getNickname(int memberId){
+        String query = "select memberNickName from MEMBER where memberId = ?";
+        return this.jdbcTemplate.queryForObject(query, String.class, memberId);
+    }
 }

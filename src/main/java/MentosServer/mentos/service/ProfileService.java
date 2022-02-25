@@ -25,6 +25,7 @@ public class ProfileService {
     //프로필 등록
     public PostProfileRes createProfile(PostProfileReq postProfileReq, int memberId) throws BaseException {
         int exitMento, exitMenti;
+        String imageUrl = null;
 
         try{
             exitMento = profileRepository.checkMentoProfile(memberId); //멘토 프로필 존재 여부
@@ -37,10 +38,8 @@ public class ProfileService {
             throw new BaseException(POST_DUPLICATED_PROFILE);
         }
 
-        PostProfileRes postProfileRes = new PostProfileRes(memberId, "");
+        PostProfileRes postProfileRes = new PostProfileRes(memberId, "", "", "");
         try{
-            String imageUrl = null;
-
             if(postProfileReq.getImageFile() != null && !postProfileReq.getImageFile().isEmpty()) {
                 imageUrl = fileUploadService.uploadS3Image(postProfileReq.getImageFile());
             }
@@ -60,6 +59,11 @@ public class ProfileService {
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
+
+        postProfileRes.setProfileImgUrl(imageUrl);
+
+        String nickname = profileRepository.getNickname(memberId);
+        postProfileRes.setNickname(nickname);
 
         return postProfileRes;
     }
