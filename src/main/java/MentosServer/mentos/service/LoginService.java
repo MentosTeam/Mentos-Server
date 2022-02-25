@@ -53,9 +53,23 @@ public class LoginService {
             String jwt = jwtService.createJwt(memberId);
             int mentor = loginRepository.checkMentor(memberId);
             int mentee = loginRepository.checkMentee(memberId);
+            String mentorImage;
+            String menteeImage;
+            if( mentor ==0){
+                mentorImage = "";
+            }
+            else{
+                mentorImage = loginRepository.getMentorImage(memberId);
+            }
+            if (mentee ==0){
+                menteeImage = "";
+            }
+            else{
+                menteeImage = loginRepository.getMenteeImage(memberId);
+            }
             //멘토,멘티 프로필 유무 반환
             //존재하면1, 없으면0
-            return new PostLoginRes(memberId,jwt, mentor, mentee);
+            return new PostLoginRes(memberId, jwt, mentor, mentee, member.getMemberNickName(), mentorImage, menteeImage);
 
 
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.

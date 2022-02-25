@@ -13,4 +13,7 @@ public class PostLoginRes {
     private String jwt;
     private int mentor;
     private int mentee;
+    private String memberNickName;
+    private String mentorImage;
+    private String menteeImage;
 }

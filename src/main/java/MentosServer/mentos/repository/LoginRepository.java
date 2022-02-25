@@ -72,6 +72,18 @@ public class LoginRepository {
                 checkMenteeParams); // checkEmailQuery, checkEmailParams를 통해 가져온 값(intgud)을 반환한다. -> 쿼리문의 결과(존재하지 않음(False,0),존재함(True, 1))를 int형(0,1)으로 반환됩니다.
     }
 
+    public String getMentorImage(int memberId){
+        String MentorSQL ="select mentoImage from mento where memberId = ?";
+        return this.jdbcTemplate.queryForObject(MentorSQL,String.class, memberId);
+
+    }
+
+    public String getMenteeImage (int memberId){
+        String MenteeSQL ="select mentiImage from menti where memberId = ?";
+        return this.jdbcTemplate.queryForObject(MenteeSQL,String.class, memberId);
+
+    }
+
 
 
 
