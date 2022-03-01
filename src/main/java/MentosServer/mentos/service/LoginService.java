@@ -71,7 +71,7 @@ public class LoginService {
             }
             //멘토,멘티 프로필 유무 반환
             //존재하면1, 없으면0
-            return new PostLoginRes(memberId, jwt, mentor, mentee, member.getMemberNickName(), mentorImage, menteeImage,flag[0],flag[1]);
+            return new PostLoginRes(memberId, jwt, mentor, mentee, member.getMemberNickName(), mentorImage, menteeImage,flag[0],flag[1],flag[1]);
 
 
         } else { // 비밀번호가 다르다면 에러메세지를 출력한다.
