@@ -70,7 +70,7 @@ public class MainService {
 			ArrayList<String> categoryArr= new ArrayList<>();
 			categoryArr.add(Integer.toString(mainDto.getMajorFirst()));
 			categoryArr.add(Integer.toString(mainDto.getMajorSecond()));
-			ret.setOtherMentor(mainRepository.getOtherMentor(categoryArr));
+			ret.setOtherMentor(mainRepository.getOtherMentor(Integer.valueOf(mainDto.getSchoolId()), categoryArr));
 			
 			ret.getMentorCategory().add(first);
 			if(second.getMentorCategoryId() != 0) ret.getMentorCategory().add(second);

@@ -134,10 +134,10 @@ public class MainRepository {
 	 * @param arr
 	 * @return
 	 */
-	public List<MainOtherMentorRes> getOtherMentor(ArrayList<String> arr){
+	public List<MainOtherMentorRes> getOtherMentor(int schoolId, ArrayList<String> arr){
 		String arrToStr = String.join(",", arr);
 		String query = "select * from mento natural join member " +
-				"where mentoMajorFirst not in (" + arrToStr + ")  and mentoMajorSecond not in (" + arrToStr +") LIMIT 3";
+				"where memberSchoolId = ? and mentoMajorFirst not in (" + arrToStr + ")  and mentoMajorSecond not in (" + arrToStr +") LIMIT 3";
 		return this.jdbcTemplate.query(
 				query,
 				(rs, rowNum) -> new MainOtherMentorRes(
@@ -148,7 +148,7 @@ public class MainRepository {
 						rs.getInt("memberId"),
 						rs.getInt("mentoMajorFirst"),
 						rs.getInt("mentoMajorSecond")
-				)
+				), schoolId
 		);
 	}
 	
