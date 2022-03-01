@@ -125,4 +125,28 @@ public class SettingController {
         }
     }
 
+    //성별 공개 여부 변경
+    @PostMapping("profile/gender")
+    public BaseResponse changeGenderFlag() throws BaseException {
+        try{
+            int memberId = jwtService.getMemberId();
+            settingService.changeGender(memberId);
+            return new BaseResponse(SUCCESS);
+        }catch (BaseException e){
+            return new BaseResponse(e.getStatus());
+        }
+    }
+
+    //푸시 알림 on/off
+    @PostMapping("profile/notification")
+    public BaseResponse changeNotification() throws BaseException {
+        try{
+            int memberId = jwtService.getMemberId();
+            settingService.changeNotification(memberId);
+            return new BaseResponse(SUCCESS);
+        }catch(BaseException e){
+            return new BaseResponse(e.getStatus());
+        }
+    }
+
 }

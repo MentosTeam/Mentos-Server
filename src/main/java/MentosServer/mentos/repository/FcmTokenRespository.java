@@ -25,7 +25,7 @@ public class FcmTokenRespository {
 
     public List<String> selectUserDeviceTokenByIdx(int userIdx) {
         List<String> tokenList = new ArrayList<>();
-        String query ="select deviceToken from userdevice where memberId=? and deleteFlag=0";
+        String query ="select deviceToken from userdevice natural join member as m where memberId=? and deleteFlag=0 and memberNotificationFlag=1";
         jdbcTemplate.query(query,(rs,rowNum)->tokenList.add(rs.getString("deviceToken")),userIdx);
         return tokenList;
     }

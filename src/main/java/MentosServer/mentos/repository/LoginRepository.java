@@ -85,9 +85,14 @@ public class LoginRepository {
     }
 
 
-
-
-
-
-
+    public int[] checkMemberFlag(int memberId) {
+        String query = "select memberSexFlag, memberNotificationFlag from member where memberId=?";
+        return this.jdbcTemplate.queryForObject(query,
+                (rs,rowNum) ->new int[]{
+                        rs.getInt("memberSexFlag"),
+                        rs.getInt("memberNotificationFlag")
+                },
+                memberId
+         );
+    }
 }
