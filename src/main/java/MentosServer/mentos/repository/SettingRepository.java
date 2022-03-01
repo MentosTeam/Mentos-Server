@@ -145,4 +145,14 @@ public class SettingRepository {
             return null;
         }
     }
+
+    public void changeGender(int memberId) {
+        String query = "update member set memberSexFlag= IF (memberSexFlag = 1, 0, 1) where memberId=?";
+        this.jdbcTemplate.update(query,memberId);
+    }
+
+    public void changeNotification(int memberId) {
+        String query = "update member set memberSexFlag= IF (memberNotificationFlag = 1, 0, 1) where memberId=?";
+        this.jdbcTemplate.update(query,memberId);
+    }
 }

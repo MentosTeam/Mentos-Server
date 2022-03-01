@@ -167,4 +167,20 @@ public class SettingService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void changeGender(int memberId) throws BaseException {
+        try{
+            settingRepository.changeGender(memberId);
+        }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void changeNotification(int memberId) throws BaseException {
+        try{
+            settingRepository.changeNotification(memberId);
+        }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
