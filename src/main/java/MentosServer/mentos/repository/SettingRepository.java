@@ -152,7 +152,7 @@ public class SettingRepository {
     }
 
     public void changeNotification(int memberId) {
-        String query = "update member set memberSexFlag= IF (memberNotificationFlag = 1, 0, 1) where memberId=?";
+        String query = "update member set memberNotificationFlag = IF (memberNotificationFlag = 1, 0, 1) where memberId=?";
         this.jdbcTemplate.update(query,memberId);
     }
 }
