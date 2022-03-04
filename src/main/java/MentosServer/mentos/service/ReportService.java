@@ -1,6 +1,7 @@
 package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
+import MentosServer.mentos.model.domain.Mentoring;
 import MentosServer.mentos.model.dto.PostReportReq;
 import MentosServer.mentos.model.dto.ReportList;
 import MentosServer.mentos.repository.NoticeRepository;
@@ -13,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
+import static MentosServer.mentos.config.Constant.endMentoringBody;
+import static MentosServer.mentos.config.Constant.endMentoringTitle;
 
 @Service
 @Transactional
-public class ReportService {
+public class ReportService implements SendFcm{
 	private final FcmTokenService fcmTokenService;
 	private final FirebaseCloudMessageService firebaseCloudMessageService;
 	private final ReportRepository reportRepository;
@@ -30,7 +33,23 @@ public class ReportService {
 		this.noticeRepository = noticeRepository;
 	}
 
-	
+	@Override
+	public void sendMessage(int mentoringId,String title, String body,int receiverFlag) throws BaseException {
+		// 푸시 알림 보내기
+
+		//멘티Id가져오기
+		int memberId = reportRepository.getMentoringMentee(mentoringId);
+		//알림 저장하기
+		noticeRepository.setNotification(memberId,2,title +"/n"+body); //멘티 알림 DB 저장
+		//디바이스 토큰 가져오기
+		List<String> memberToken = fcmTokenService.selectUserDeviceTokenByIdx(memberId);
+		if (memberToken.isEmpty()) {
+			throw new BaseException(EMPTY_MEMBER_DEVICE_TOKEN);
+		}
+		firebaseCloudMessageService.sendMessageTo(memberToken,title,body,receiverFlag);
+	}
+
+	@Transactional(rollbackFor = {Exception.class,BaseException.class})
 	public int postReport(PostReportReq req) throws BaseException {
 		try{
 			int mentoringId = req.getMentoringId();
@@ -42,12 +61,8 @@ public class ReportService {
 			int finCnt = reportRepository.getFinCnt(mentoringId);
 			if(finFlag == finCnt) { // 마지막 멘토링이라면 종료로 바꾸기
 				reportRepository.stopMentoring(mentoringId);
-				//멘티Id가져오기
-				int menteeId = reportRepository.getMentoringMentee(mentoringId);
-				List<String> menteeToken = fcmTokenService.selectUserDeviceTokenByIdx(menteeId);//멘티의 디바이스 토큰 정보 가져오기
-				noticeRepository.setNotification(menteeId,2,"멘토링이 종료되었습니다-!\n" +
-						"⭐️멘토링 별점 및 후기 남기기 잊지마세요✏️"); //멘티 알림 DB 저장
-				firebaseCloudMessageService.sendMessageTo(menteeToken,"멘토링이 종료되었습니다-!","⭐️멘토링 별점 및 후기 남기기 잊지마세요✏️",2);//멘티에게 전송
+				reportRepository.minusMenteeMentos(mentoringId); //멘티 멘토스 감소
+				reportRepository.addMentorMentos(mentoringId); //멘토 멘토스 증가
 				return 2;
 			}
 			return 1;
