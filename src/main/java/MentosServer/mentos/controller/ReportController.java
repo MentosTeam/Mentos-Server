@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static MentosServer.mentos.config.Constant.endMentoringBody;
+import static MentosServer.mentos.config.Constant.endMentoringTitle;
+
 @RestController
 public class ReportController {
 
@@ -29,7 +32,11 @@ public class ReportController {
 	@PostMapping("/report")
 	public BaseResponse<Integer> postReport(@RequestBody PostReportReq req){
 		try {
-			return new BaseResponse<>(reportService.postReport(req));
+			int flag= reportService.postReport(req);
+			if(flag==2){
+				reportService.sendMessage(req.getMentoringId(),endMentoringTitle,endMentoringBody,2);//멘티에게 보내기
+			}
+			return new BaseResponse<>(flag);
 		} catch (BaseException exception) {
 			return new BaseResponse<>((exception.getStatus()));
 		}

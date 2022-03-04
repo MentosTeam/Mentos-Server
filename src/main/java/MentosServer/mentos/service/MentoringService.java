@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static MentosServer.mentos.config.BaseResponseStatus.*;
+import static MentosServer.mentos.config.Constant.*;
 
 @Slf4j
 @Service
-public class MentoringService {
+public class MentoringService implements SendFcm{
     private final FcmTokenService fcmTokenService;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
     private final MentoringRepository mentoringRepository;
@@ -29,15 +30,26 @@ public class MentoringService {
         this.mentoringRepository = mentoringRepository;
         this.noticeRepository = noticeRepository;
     }
-    public void sendMessage(int memberId,String title, String body,int senderFlag) throws BaseException {
+    @Override
+    public void sendMessage(int mentoringId,String title, String body,int receiverFlag) throws BaseException {
         // 푸시 알림 보내기
         //log.info("리스트 얻어오기");
+        Mentoring mentoring = mentoringRepository.getMentoring(mentoringId);
+        int memberId;
+        if(receiverFlag==1){
+            memberId=mentoring.getMentoringMentoId();
+            noticeRepository.setNotification(mentoring.getMentoringMentoId(),1,title+"\n"+body); //멘토 알림 DB 저장
+        }else{
+            memberId=mentoring.getMentoringMentiId();
+            noticeRepository.setNotification(mentoring.getMentoringMentiId(),2,title+"\n"+body); //멘티 알림 DB 저장
+        }
+        System.out.println("memberId = " + memberId);
         List<String> memberToken = fcmTokenService.selectUserDeviceTokenByIdx(memberId);
         if (memberToken.isEmpty()) {
             log.error("Cannot found member device token");
             throw new BaseException(EMPTY_MEMBER_DEVICE_TOKEN);
         }
-        firebaseCloudMessageService.sendMessageTo(memberToken,title,body,senderFlag);
+        firebaseCloudMessageService.sendMessageTo(memberToken,title,body,receiverFlag);
     }
 
     //멘토링 등록
@@ -45,19 +57,16 @@ public class MentoringService {
         if (mentoringRepository.checkMentoring(postMentoringReq) == 1) { // 멘토링 중복 신청 확인
             throw new BaseException(POST_MENTORING_DUPLICATED_MENTORING);
         }
-        String title = "멘토링 요청이 도착했어요 \uD83C\uDF89";
-        String body = "멘토링 현황에서 수락 여부를 알려주세요-!";
+
         PostMentoringRes postMentoringRes;
         try {
             int mentoringId = mentoringRepository.createMentoring(postMentoringReq); //멘토링 생성
-            int notificationId = noticeRepository.setNotification(postMentoringReq.getMentoId(),1,title+"\n"+body); //멘토 알림 DB 저장
             postMentoringRes = new PostMentoringRes(mentoringId, postMentoringReq.getMentoId(), postMentoringReq.getMentiId());
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
         //푸시 알림 보내기
         //log.info("MentoringService.sendMessage 호출");
-        sendMessage(postMentoringReq.getMentoId(), title, body, 1);//멘토에게
         return postMentoringRes;
     }
 
@@ -67,8 +76,6 @@ public class MentoringService {
             throw new BaseException(POST_INVALID_MENTORING);
         }
 
-        String title="";
-        String body="";
         try{
             PostAcceptMentoringRes postAcceptMentoringRes = new PostAcceptMentoringRes(mentoringId, mentoId, "");
             Mentoring mentoring = mentoringRepository.getMentoring(mentoringId);
@@ -83,21 +90,12 @@ public class MentoringService {
                 }
 
                 postAcceptMentoringRes.setStatus("성공적으로 멘토링 요청을 수락했습니다.");
-                title="\uD83C\uDF89 멘토가 멘토링을 수락했어요 \uD83C\uDF89 ";
-                body="멘토링이 시작되었습니다-!\n" +
-                        "\n" +
-                        "오늘도 멘토-쓰를 통해\n" +
-                        "한 층 더 발전된 하루를 만들기 바랍니다!";
+
             }
             else {
                 mentoringRepository.deleteMentoring(mentoringId);
                 postAcceptMentoringRes.setStatus("성공적으로 멘토링 요청을 거절했습니다.");
-                title="멘토가 멘토링 요청을 수락하지 않았어요";
-                body="괜찮아요 \uD83D\uDE0A \n" +
-                        "멘토-쓰 찾기에서 나에게 맞는 멘토를 다시 찾아보아요.";
             }
-            noticeRepository.setNotification(mentoring.getMentoringMentiId(),2,title+"\n"+body); //멘티 알림 DB 저장
-            sendMessage(mentoring.getMentoringMentiId(),title,body,2); //멘티에게
             return postAcceptMentoringRes;
         } catch (Exception e){
             if(e instanceof BaseException){

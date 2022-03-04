@@ -58,4 +58,20 @@ public class ReportRepository {
 		String query = "select mentoringMentiId from mentoring where mentoringId=?";
 		return this.jdbcTemplate.queryForObject(query,int.class,mentoringId);
 	}
+
+	public void minusMenteeMentos(int mentoringId) {
+		String query = "update member set memberMentos= memberMentos - (select mentoringMentos from mentoring where mentoringId=?)\n" +
+				"where memberId = (select mentoringMentiId from mentoring where mentoringId=?)";
+		Object[] params = new Object[]{mentoringId,mentoringId};
+
+		this.jdbcTemplate.update(query,params);
+	}
+
+	public void addMentorMentos(int mentoringId) {
+		String query = "update member set memberMentos= memberMentos + (select mentoringMentos from mentoring where mentoringId=?)\n" +
+				"where memberId = (select mentoringMentoId from mentoring where mentoringId=?)";
+		Object[] params = new Object[]{mentoringId,mentoringId};
+
+		this.jdbcTemplate.update(query,params);
+	}
 }

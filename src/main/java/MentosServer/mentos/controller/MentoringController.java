@@ -5,6 +5,7 @@ import MentosServer.mentos.config.BaseResponse;
 import MentosServer.mentos.config.BaseResponseStatus;
 import MentosServer.mentos.model.dto.*;
 import MentosServer.mentos.service.MentoringService;
+import MentosServer.mentos.service.NoticeService;
 import MentosServer.mentos.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static MentosServer.mentos.config.BaseResponseStatus.POST_MENTORING_SAME_MENTOMENTI;
+import static MentosServer.mentos.config.Constant.*;
 
 @RestController
 @RequestMapping("/mentoring")
@@ -41,7 +43,6 @@ public class MentoringController {
             String errorName = br.getAllErrors().get(0).getDefaultMessage();
             return new BaseResponse<>(BaseResponseStatus.of(errorName));
         }
-
         try{
             int memberIdByJwt = jwtService.getMemberId();
             if(memberIdByJwt == postMentoringReq.getMentoId()){ //멘토와 멘티 같은 유저인지 확인
@@ -50,6 +51,8 @@ public class MentoringController {
 
             postMentoringReq.setMentiId(memberIdByJwt);
             PostMentoringRes postMentoringRes = mentoringService.createMentoring(postMentoringReq);
+            //알림 보내기
+            mentoringService.sendMessage(postMentoringRes.getMentoringId(), createTitle, createBody, 1);//멘토에게
             return new BaseResponse<>(postMentoringRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
@@ -63,11 +66,17 @@ public class MentoringController {
      */
     @ResponseBody
     @PatchMapping("/acceptance")
-    public BaseResponse<PostAcceptMentoringRes> acceptMentoring(@RequestParam("mentoringId") int mentoringId, @RequestParam("accept") Boolean acceptance){
+    public BaseResponse<PostAcceptMentoringRes> acceptMentoring(@RequestParam("mentoringId") int mentoringId, @RequestParam("accept") Boolean acceptance) throws BaseException {
         try{
             int mentoIdByJwt = jwtService.getMemberId();
             PostAcceptMentoringRes postAcceptMentoringRes = mentoringService.acceptMentoring(mentoringId, mentoIdByJwt, acceptance);
-
+            if(postAcceptMentoringRes.getStatus().equals("성공적으로 멘토링 요청을 수락했습니다.")){
+                mentoringService.sendMessage(postAcceptMentoringRes.getMentoringId(),acceptTitle,
+                     acceptBody,2 );
+            }else{
+                mentoringService.sendMessage(postAcceptMentoringRes.getMentoringId(),rejectTitle,
+                        rejectBody,2 );
+            }
             return new BaseResponse<>(postAcceptMentoringRes);
         } catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
