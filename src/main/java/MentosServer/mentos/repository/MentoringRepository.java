@@ -57,7 +57,7 @@ public class MentoringRepository {
 
     //멘토링 요청 거절
     public int deleteMentoring(int mentoringId){
-        String query = "delete from MENTORING where mentoringId=?";
+        String query = "update mentoring set mentoringStatus=-1 where mentoringId=?";
         int param = mentoringId;
         return this.jdbcTemplate.update(query, param);
     }
