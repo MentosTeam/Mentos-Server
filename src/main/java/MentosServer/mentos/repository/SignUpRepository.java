@@ -43,7 +43,7 @@ public class SignUpRepository {
     }
     //탈퇴했던 유저인지 확인
     public int checkWithdrawlMember(String memberEmail){
-        String checkQuery = "select exists(select memberId from member where memberEmail = ?)"; // User Table에 해당 email 값을 갖는 유저 정보가 존재하는가?
+        String checkQuery = "select exists(select memberId from member where memberEmail = ? and memberStatus!='active')"; // User Table에 해당 email 값을 갖는 탈퇴 유저 정보가 존재하는가?
         return this.jdbcTemplate.queryForObject(checkQuery,
                 int.class,
                 memberEmail);

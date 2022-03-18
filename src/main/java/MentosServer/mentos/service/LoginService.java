@@ -43,8 +43,11 @@ public class LoginService {
             throw new BaseException(PASSWORD_DECRYPTION_ERROR);
         }
 
-        if(!member.getMemberStatus().equals("active")){
+        String status = member.getMemberStatus();
+        if(status.equals("inactive")||status.equals("INACTIVE")){
             throw new BaseException(FAILED_TO_LOGIN_UNACTIVE);
+        }else if(status.equals("suspended")){
+            throw new BaseException(FAILED_TO_LOGIN_SUSPENDED);
         }
 
         if (postLoginReq.getMemberPw().equals(password)) { //비말번호가 일치한다면 memberId를 가져온다.
