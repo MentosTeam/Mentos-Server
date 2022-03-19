@@ -34,13 +34,22 @@ public class MenteeSearchRepository {
 		return Integer.toString(this.jdbcTemplate.queryForObject(getSchoolQuery, Integer.class, getSchoolParam));
 	}
 	
-	public List<MenteeWithNickName> getMentee(GetMenteeSearchReq req, String schoolId){
+	public List<String> getBlockUsers(String memberId){
+		String query = "select distinct(blockMemberId) from blockmember where memberId = ?";
+		return this.jdbcTemplate.query(query,
+				(rs, rowNum) -> Integer.toString(rs.getInt("blockMemberId")),
+				memberId);
+	}
+	
+	public List<MenteeWithNickName> getMentee(String memberId, GetMenteeSearchReq req, String schoolId){
+		String blockUsers = String.join(",", getBlockUsers(memberId));
+		if(blockUsers.equals("")) blockUsers = "0";
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
 				"SELECT memberId, memberStudentId, mentiMajorFirst, mentiMajorSecond, memberNickName, mentiImage, memberMajor, mentiCreateAt, mentiUpdateAt" +
 						" FROM menti NATURAL JOIN member" +
 						" WHERE (mentiMajorFirst IN (" + arrayToString + ") OR mentiMajorSecond IN (" + arrayToString + ")) AND memberStatus = 'ACTIVE' AND memberSchoolId = "+schoolId +
-						" AND (memberName LIKE ? OR memberNickName LIKE ? OR mentiIntro LIKE ?)";
+						" AND (memberName LIKE ? OR memberNickName LIKE ? OR mentiIntro LIKE ?) AND memberId NOT IN (" + blockUsers + ")";
 		String param = changeParam(req.getSearchText());
 		Object[] searchParam = new Object[]{param, param, param};
 		return this.jdbcTemplate.query(searchQuery,

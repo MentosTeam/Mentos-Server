@@ -43,9 +43,9 @@ public class MentorSearchService {
 	}
 	
 	// 검색 결과 반환
-	public ArrayList<PostDto> mentorSearch(GetMentorSearchReq req, String schoolId) throws BaseException{
+	public ArrayList<PostDto> mentorSearch(GetMentorSearchReq req, String memberId, String schoolId) throws BaseException{
 		try{
-			List<PostWithProfile> posts = mentorSearchRepository.getPosts(req, schoolId);
+			List<PostWithProfile> posts = mentorSearchRepository.getPosts(req, memberId, schoolId);
 			// UpdateAt으로 정렬 실행
 			ArrayList<PostDto> postDtos = sortByUpdateAt(posts);
 			// postId를 가지고 관련 이미지들 찾아서 추가

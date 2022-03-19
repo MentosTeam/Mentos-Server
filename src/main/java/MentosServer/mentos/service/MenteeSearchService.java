@@ -43,9 +43,9 @@ public class MenteeSearchService {
 	}
 	
 	// 검색 결과 반환
-	public ArrayList<MenteeSearchDto> menteeSearch(GetMenteeSearchReq req, String schoolId) throws BaseException{
+	public ArrayList<MenteeSearchDto> menteeSearch(String memberId, GetMenteeSearchReq req, String schoolId) throws BaseException{
 		try{
-			List<MenteeWithNickName> mentees = menteeSearchRepository.getMentee(req, schoolId);
+			List<MenteeWithNickName> mentees = menteeSearchRepository.getMentee(memberId, req, schoolId);
 			// UpdateAt으로 정렬 실행
 			ArrayList<MenteeSearchDto> menteeDto = sortByUpdateAt(mentees);
 			return menteeDto;

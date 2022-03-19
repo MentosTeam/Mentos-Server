@@ -2,6 +2,8 @@ package MentosServer.mentos.service;
 
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.GetComplainReq;
+import MentosServer.mentos.repository.ComplainRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static MentosServer.mentos.config.BaseResponseStatus.EMAIL_MAKE_ERROR;
@@ -9,8 +11,18 @@ import static MentosServer.mentos.config.BaseResponseStatus.EMAIL_MAKE_ERROR;
 @Service
 public class ComplainService {
 	
+	private final ComplainRepository complainRepository;
+	
+	@Autowired
+	public ComplainService(ComplainRepository complainRepository) {
+		this.complainRepository = complainRepository;
+	}
+	
 	public String makeMailText(int memberId, GetComplainReq req) throws BaseException{
 		try{
+			// db에 신고 내역 저장하기 (차단)
+			complainRepository.saveComplain(req, memberId);
+			
 			String str = "";
 			int flag = req.getFlag();
 			if(flag == 1) str = "멘토쓰 글";

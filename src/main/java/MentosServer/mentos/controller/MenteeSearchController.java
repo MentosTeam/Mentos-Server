@@ -40,7 +40,7 @@ public class MenteeSearchController {
 			// memberId로 mento의 학교 가져오기
 			String schoolId = menteeSearchService.getSchoolById(memberId);
 			// 검색하기
-			GetMenteeSearchRes res = new GetMenteeSearchRes(menteeSearchService.menteeSearch(req, schoolId));
+			GetMenteeSearchRes res = new GetMenteeSearchRes(menteeSearchService.menteeSearch(memberId, req, schoolId));
 			return new BaseResponse<>(res);
 		} catch (BaseException exception) {
 			return new BaseResponse<>((exception.getStatus()));

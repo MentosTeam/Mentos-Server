@@ -25,6 +25,30 @@ public class MainRepository {
 	}
 	
 	/**
+	 * 차단(신고)한 글 ID 가져오기
+	 * @param memberId
+	 * @return
+	 */
+	public List<String> getBlockPosts(String memberId){
+		String query = "select distinct(postId) from blockpost where memberId = ?";
+		return this.jdbcTemplate.query(query,
+				(rs, rowNum) -> Integer.toString(rs.getInt("postId")),
+				memberId);
+	}
+	
+	/**
+	 * 차단(신고)한 멤버 ID 가져오기
+	 * @param memberId
+	 * @return
+	 */
+	public List<String> getBlockUsers(String memberId){
+		String query = "select distinct(blockMemberId) from blockmember where memberId = ?";
+		return this.jdbcTemplate.query(query,
+				(rs, rowNum) -> Integer.toString(rs.getInt("blockMemberId")),
+				memberId);
+	}
+	
+	/**
 	 * 멘토의 학교 ID, 선택한 전공들 반환
 	 * @param memberId
 	 * @return
@@ -51,16 +75,19 @@ public class MainRepository {
 	 * @param mainDto
 	 * @return
 	 */
-	public List<MainMenteeDto> getMenteeList(MainDto mainDto){ // union
+	public List<MainMenteeDto> getMenteeList(MainDto mainDto, String memberId){ // union
+		String blockUsers = String.join(",", getBlockUsers(memberId));
+		if(blockUsers.equals("")) blockUsers = "0";
+		
 		String schoolId = mainDto.getSchoolId();
 		String majorFirst = Integer.toString(mainDto.getMajorFirst());
 		String majorSecond = Integer.toString(mainDto.getMajorSecond());
 		
-		String query = "(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? order by mentiUpdateAt DESC LIMIT 3) " +
+		String query = "(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? and memberId NOT IN (" + blockUsers + ") order by mentiUpdateAt DESC LIMIT 3) " +
 				"UNION " +
-				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? order by mentiUpdateAt DESC LIMIT 3) " +
+				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst = ? and memberId NOT IN (" + blockUsers + ") order by mentiUpdateAt DESC LIMIT 3) " +
 				"UNION " +
-				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst != ? and mentiMajorFirst != ? order by mentiUpdateAt DESC LIMIT 3)";
+				"(select * from menti natural join member where memberSchoolId = ? and mentiMajorFirst != ? and mentiMajorFirst != ? and memberId NOT IN (" + blockUsers + ") order by mentiUpdateAt DESC LIMIT 3)";
 		Object[] searchParam = new Object[]{schoolId, majorFirst, schoolId, majorSecond, schoolId, majorFirst, majorSecond};
 		
 		return this.jdbcTemplate.query(query,
@@ -83,7 +110,7 @@ public class MainRepository {
 	 * @return
 	 */
 	public MainDto getMenteeData(String memberId){
-		// Mento table에 접근해서 가져와야함
+		// Menti table에 접근해서 가져와야함
 		String query = "select memberSchoolId, memberMentos, mentiMajorFirst, mentiMajorSecond from menti natural join member where memberId = ?";
 		String param = memberId;
 		return this.jdbcTemplate.queryForObject(query,
@@ -102,13 +129,16 @@ public class MainRepository {
 	 * @param mainDto
 	 * @return
 	 */
-	public List<MainMentorDto> getMentorList(MainDto mainDto){ // union
+	public List<MainMentorDto> getMentorList(MainDto mainDto, String memberId){ // union
+		String blockPosts = String.join(",", getBlockPosts(memberId));
+		if(blockPosts.equals("")) blockPosts = "0";
+		
 		String schoolId = mainDto.getSchoolId();
 		String majorFirst = Integer.toString(mainDto.getMajorFirst());
 		String majorSecond = Integer.toString(mainDto.getMajorSecond());
-		String query = "(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? order by mentoUpdateAt DESC LIMIT 3) " +
+		String query = "(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? and p.postId NOT IN (" + blockPosts + ") order by mentoUpdateAt DESC LIMIT 3) " +
 				"UNION " +
-				"(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? order by mentoUpdateAt DESC LIMIT 3) ";
+				"(select * from (member natural join mento) natural join (post p left outer join image i on p.postId = i.postId) where memberSchoolId = ? and majorCategoryId = ? and p.postId NOT IN (" + blockPosts + ") order by mentoUpdateAt DESC LIMIT 3) ";
 		Object[] searchParam = new Object[]{schoolId, majorFirst, schoolId, majorSecond};
 		return this.jdbcTemplate.query(query,
 				(rs, rowNum) -> new MainMentorDto(
@@ -134,10 +164,13 @@ public class MainRepository {
 	 * @param arr
 	 * @return
 	 */
-	public List<MainOtherMentorRes> getOtherMentor(int schoolId, ArrayList<String> arr){
+	public List<MainOtherMentorRes> getOtherMentor(String memberId, int schoolId, ArrayList<String> arr){
+		String blockUsers = String.join(",", getBlockUsers(memberId));
+		if(blockUsers.equals("")) blockUsers = "0";
+		
 		String arrToStr = String.join(",", arr);
 		String query = "select * from mento natural join member " +
-				"where memberSchoolId = ? and mentoMajorFirst not in (" + arrToStr + ")  and mentoMajorSecond not in (" + arrToStr +") LIMIT 3";
+				"where memberSchoolId = ? and mentoMajorFirst not in (" + arrToStr + ")  and mentoMajorSecond not in (" + arrToStr +") and memberId NOT IN (" + blockUsers + ") LIMIT 3";
 		return this.jdbcTemplate.query(
 				query,
 				(rs, rowNum) -> new MainOtherMentorRes(
