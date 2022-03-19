@@ -26,7 +26,7 @@ public class MainService {
 	public GetMentorMainRes getMenteeList(String memberId) throws BaseException{
 		try{
 			MainDto mainDto = mainRepository.getMentorData(memberId);
-			List<MainMenteeDto> menteeList = mainRepository.getMenteeList(mainDto);
+			List<MainMenteeDto> menteeList = mainRepository.getMenteeList(mainDto, memberId);
 			// 각 멘티들을 전공에 맞게 분할 (First = 멘토 1 전공, Second = 멘토 2전공, others = 그 외 전공)
 			GetMentorMainRes ret = new GetMentorMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>());
 			
@@ -54,7 +54,7 @@ public class MainService {
 	public GetMenteeMainRes getMentorList(String memberId) throws BaseException {
 		try{
 			MainDto mainDto = mainRepository.getMenteeData(memberId);
-			List<MainMentorDto> mentorList = mainRepository.getMentorList(mainDto);
+			List<MainMentorDto> mentorList = mainRepository.getMentorList(mainDto, memberId);
 			// 각 멘토의 글들을 전공에 맞게 분할 (First = 멘티 1 전공, Second = 멘티 2전공, Other = 그 외 전공)
 			GetMenteeMainRes ret = new GetMenteeMainRes(mainDto.getMentos(), new ArrayList<>(), new ArrayList<>());
 
@@ -70,7 +70,7 @@ public class MainService {
 			ArrayList<String> categoryArr= new ArrayList<>();
 			categoryArr.add(Integer.toString(mainDto.getMajorFirst()));
 			categoryArr.add(Integer.toString(mainDto.getMajorSecond()));
-			ret.setOtherMentor(mainRepository.getOtherMentor(Integer.valueOf(mainDto.getSchoolId()), categoryArr));
+			ret.setOtherMentor(mainRepository.getOtherMentor(memberId, Integer.valueOf(mainDto.getSchoolId()), categoryArr));
 			
 			ret.getMentorCategory().add(first);
 			if(second.getMentorCategoryId() != 0) ret.getMentorCategory().add(second);

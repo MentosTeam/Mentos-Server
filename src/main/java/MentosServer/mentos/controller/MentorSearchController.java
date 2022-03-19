@@ -40,7 +40,7 @@ public class MentorSearchController {
 			// memberId로 menti의 학교 가져오기
 			String schoolId = mentorSearchService.getSchoolById(memberId);
 			// 검색하기
-			GetMentorSearchRes res = new GetMentorSearchRes(mentorSearchService.mentorSearch(req, schoolId));
+			GetMentorSearchRes res = new GetMentorSearchRes(mentorSearchService.mentorSearch(req, memberId, schoolId));
 			return new BaseResponse<>(res);
 		} catch (BaseException exception) {
 			return new BaseResponse<>((exception.getStatus()));

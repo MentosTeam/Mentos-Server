@@ -35,6 +35,13 @@ public class MentorSearchRepository {
 		return Integer.toString(this.jdbcTemplate.queryForObject(getSchoolQuery, Integer.class, getSchoolParam));
 	}
 	
+	public List<String> getBlockPosts(String memberId){
+		String query = "select distinct(postId) from blockpost where memberId = ?";
+		return this.jdbcTemplate.query(query,
+				(rs, rowNum) -> Integer.toString(rs.getInt("postId")),
+				memberId);
+	}
+	
 	/**
 	 * Post 테이블과 Member 테이블을 Join
 	 * majorCategoryId가 일치하는 Tuple만 뽑아오기
@@ -44,7 +51,9 @@ public class MentorSearchRepository {
 	 * @param req
 	 * @return
 	 */
-	public List<PostWithProfile> getPosts(GetMentorSearchReq req, String schoolId){
+	public List<PostWithProfile> getPosts(GetMentorSearchReq req, String memberId, String schoolId){
+		String blockPosts = String.join(",", getBlockPosts(memberId));
+		if(blockPosts.equals("")) blockPosts = "0";
 		String arrayToString = String.join(",", req.getMajorFlag());
 		String searchQuery =
 				"select postId, majorCategoryId, memberId, memberNickName, memberMajor, mentoImage, postTitle, postContents, postCreateAt, postUpdateAt " +
@@ -54,7 +63,8 @@ public class MentorSearchRepository {
 					"from member NATURAL JOIN post " +
 					"where memberStatus = 'ACTIVE' AND memberSchoolId = " + schoolId +
 					") T NATURAL JOIN mento " +
-				"where (majorCategoryId IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?)";
+				"where (majorCategoryId IN (" + arrayToString + ")) AND " + "(memberNickName LIKE ? OR postTitle LIKE ? OR postContents LIKE ?) " +
+						"AND postId NOT IN (" + blockPosts + ")";
 		String param = changeParam(req.getSearchText());
 		Object[] searchParam = new Object[]{param, param, param};
 		return this.jdbcTemplate.query(searchQuery,
