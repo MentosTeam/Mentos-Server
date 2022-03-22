@@ -25,10 +25,6 @@ jobs:
         run: chmod +x gradlew
         shell: bash
 
-      - name: Build with Gradle
-        run: ./gradlew build
-        shell: bash
-
       - name: Make zip file
         run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
