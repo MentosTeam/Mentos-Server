@@ -84,7 +84,7 @@ public class MentorProfileRepository {
 
     //멘토에 대한 review 조회
     public List<Review> getReviewsOnMentor(int memberId){
-        String query = "select reviewId, mentoringId, reviewText, reviewScore from REVIEW natural join MENTORING where mentoringMentoId = ?";
+        String query = "select reviewId, mentoringId, reviewText, reviewScore from REVIEW natural join MENTORING T where T.mentoringMentoId = ? and T.mentoringMentiId NOT IN (select distinct blockMemberId from blockmember where T.mentoringMentoId = memberId)";
         int param = memberId;
         return this.jdbcTemplate.query(query,
                 (rs, rowNum) -> new Review(
