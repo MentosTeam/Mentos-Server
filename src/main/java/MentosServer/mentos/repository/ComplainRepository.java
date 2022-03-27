@@ -28,7 +28,7 @@ public class ComplainRepository {
 	}
 	
 	public void saveComplain(GetComplainReq req, int memberId){
-		if(req.getFlag() == 1){
+		if(req.getFlag() == 2){
 			insertBlockMember(memberId, req.getNumber());
 		}
 		else {
