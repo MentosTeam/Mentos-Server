@@ -44,4 +44,4 @@ JAR_NAME=$(ls $REPOSITORY/ | grep 'mentos' | tail -n 1)
 
 echo "> JAR NAME :$JAR_NAME"
 
-nohup java -jar $REPOSITORY/$JAR_NAME &
+nohup java -jar $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
