@@ -3,11 +3,13 @@ package MentosServer.mentos.service;
 import MentosServer.mentos.config.BaseException;
 import MentosServer.mentos.model.dto.GetComplainReq;
 import MentosServer.mentos.repository.ComplainRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static MentosServer.mentos.config.BaseResponseStatus.EMAIL_MAKE_ERROR;
 
+@Slf4j
 @Service
 public class ComplainService {
 	
@@ -20,6 +22,7 @@ public class ComplainService {
 	
 	public String makeMailText(int memberId, GetComplainReq req) throws BaseException{
 		try{
+			log.info("before flag : {}", req.getFlag());
 			// db에 신고 내역 저장하기 (차단)
 			complainRepository.saveComplain(req, memberId);
 			
